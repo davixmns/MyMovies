@@ -1,6 +1,8 @@
 import {User} from "../interfaces/interfaces";
-
+import * as jose from 'jose'
 export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+export const jwt_key = process.env.JWT_SECRET
 
 export function verifyIfUserIsFormatted(user: User) {
     if (user.name === "" || user.email === "" || user.password === "") {
@@ -14,4 +16,12 @@ export function verifyIfUserIsFormatted(user: User) {
     }
 
     return true;
+}
+
+export async function signJWT(email: string){
+    return await new jose.SignJWT({email: email})
+        .setProtectedHeader({alg: "HS256"})
+        .setIssuedAt()
+        .setExpirationTime("1y")
+        .sign(new TextEncoder().encode(jwt_key));
 }
