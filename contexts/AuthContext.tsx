@@ -2,9 +2,9 @@ import {useContext, createContext, useState, useEffect, ReactNode} from "react";
 import {useNavigation} from "@react-navigation/native"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthContextType, AuthProviderProps, User} from "../interfaces/interfaces";
-import {jwt_key, signJWT, verifyIfUserIsFormatted} from "../utils/utils";
+import {jwt_key, verifyIfUserIsFormatted} from "../utils/utils";
 import {Alert} from "react-native";
-import * as jose from 'jose'
+import pureJwt from "react-native-pure-jwt";
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
@@ -25,7 +25,7 @@ export function AuthProvider({children}: AuthProviderProps) {
         try {
             const userJwt = await AsyncStorage.getItem('@user-jwt');
             if (userJwt) {
-                const decoded = await jose.jwtVerify(userJwt, new TextEncoder().encode(jwt_key))
+                const decoded = await pureJwt.decode(userJwt, jwt_key, {skipValidation: true});
                 const userEmail = decoded.payload.email
                 if (userEmail) {
                     const user = await AsyncStorage.getItem('@user-' + userEmail);
