@@ -1,4 +1,5 @@
-import {ReactNode} from "react";
+import React, {ReactNode} from "react";
+import {Feather} from "@expo/vector-icons";
 
 export interface User {
     id: string;
@@ -32,3 +33,10 @@ export interface UserProviderProps {
 export interface DecodedToken {
     email: string;
 }
+
+interface StyledIconProps {
+    focused: boolean;
+    name: React.ComponentProps<typeof Feather>['name']; // herda o tipo de 'name' de Feather
+    size: number;
+}
+
