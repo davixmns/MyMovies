@@ -2,7 +2,7 @@ import {useContext, createContext, useState, useEffect, ReactNode} from "react";
 import {useNavigation} from "@react-navigation/native"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthContextType, AuthProviderProps, User} from "../interfaces/interfaces";
-import {jwt_key, verifyIfUserIsFormatted} from "../utils/utils";
+import {jwt_key, signJWT, verifyIfUserIsFormatted} from "../utils/utils";
 import {Alert} from "react-native";
 import pureJwt from "react-native-pure-jwt";
 
@@ -24,9 +24,10 @@ export function AuthProvider({children}: AuthProviderProps) {
     async function verifyIfUserIsAuthenticated() {
         try {
             const userJwt = await AsyncStorage.getItem('@user-jwt');
+            console.log("User jwt -> ", userJwt)
             if (userJwt) {
-                const decoded = await pureJwt.decode(userJwt, jwt_key, {skipValidation: true});
-                const userEmail = decoded.payload.email
+                const decoded = await pureJwt.decode(userJwt, jwt_key);
+                const userEmail = decoded.payload
                 if (userEmail) {
                     const user = await AsyncStorage.getItem('@user-' + userEmail);
                     setUser(JSON.parse(user as string));
@@ -41,17 +42,17 @@ export function AuthProvider({children}: AuthProviderProps) {
     async function login(email: string, password: string) {
         try {
             const user = await AsyncStorage.getItem('@user-' + email);
-            console.log("USER -> ", user)
             if (!user) {
                 Alert.alert("Erro", "Usuário não encontrado")
                 return
             }
-            // if (user?. === password) {
-            //     const jwt = await signJWT(email)
-            //     await AsyncStorage.setItem('@user-jwt', jwt)
-            //     setIsAuthenticated(true)
-            //     setUser(user)
-            // }
+            const parsedUser = JSON.parse(user)
+            if (parsedUser.password === password) {
+                const jwt = await signJWT(email)
+                await AsyncStorage.setItem('@user-jwt', jwt)
+                setIsAuthenticated(true)
+                setUser(parsedUser)
+            }
         } catch (e) {
             console.log(e)
         }

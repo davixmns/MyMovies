@@ -2,7 +2,7 @@ import {User} from "../interfaces/interfaces";
 import pureJwt from 'react-native-pure-jwt'
 
 export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-export const jwt_key = process.env.JWT_SECRET
+export const jwt_key = process.env.JWT_SECRET as string
 
 export function verifyIfUserIsFormatted(user: User) {
     if (user.name === '' || user.email === '' || user.password === '') {
@@ -33,17 +33,12 @@ export async function signJWT(email: string) {
         email, // dados que você quer assinar
         exp: Math.floor(Date.now() / 1000) + oneYearInSeconds // tempo de expiração do token em segundos
     };
-
     return pureJwt.sign(
         payload,
         jwt_key, // chave secreta para assinar o token
         {
             alg: 'HS256' // algoritmo para assinar o token, não alterar
         }
-    ).then(token => {
-        console.log(token); // seu token JWT
-    }).catch(error => {
-        console.error(error); // em caso de erro
-    });
+    )
 }
 

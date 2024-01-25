@@ -1,7 +1,7 @@
 import {CardStyleInterpolators, createStackNavigator} from "@react-navigation/stack";
 import {useAuthContext} from "../contexts/AuthContext";
 import {BottomBar} from "./BottomBar";
-import {Login} from "../screens/Login";
+import {Login} from "../screens/login/Login";
 import {Register} from "../screens/Register";
 
 const Stack = createStackNavigator();
