@@ -3,6 +3,7 @@ import {useAuthContext} from "../contexts/AuthContext";
 import {BottomBar} from "./BottomBar";
 import {Login} from "../screens/login/Login";
 import {Register} from "../screens/register/Register";
+import {MovieDetails} from "../screens/movie_details/MovieDetails";
 
 const Stack = createStackNavigator();
 
@@ -13,13 +14,19 @@ export function AuthStack() {
         <Stack.Navigator screenOptions={{
             headerShown: false,
             gestureEnabled: false,
-            cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS
+            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS
         }}>
             {isAuthenticated ? (
                 <>
                     <Stack.Screen
                         name={'BottomBar'}
                         component={BottomBar}
+                        options={{headerShown: false}}
+                    />
+
+                    <Stack.Screen
+                        name={'MovieDetails'}
+                        component={MovieDetails}
                         options={{headerShown: false}}
                     />
                 </>

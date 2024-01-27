@@ -1,4 +1,4 @@
-import {Alert, TouchableOpacity} from "react-native";
+import {Alert, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from "react-native";
 import {useState} from "react";
 import {useAuthContext} from "../../contexts/AuthContext";
 import {verifyLoginForm} from "../../utils/utils";
@@ -31,35 +31,38 @@ export function Login() {
 
     return (
         <ContainerLogin>
-            <ContentLogin>
-                <TitleLogin>My Movies</TitleLogin>
-                <LoginFormContainer>
-                    <MyTextInput
-                        text={email}
-                        setText={setEmail}
-                        placeholder={'email'}
-                        keyboardType={'email-address'}
-                        autoCapitalize={'none'}
-                    />
-                    <MyTextInput
-                        text={password}
-                        setText={setPassword}
-                        placeholder={'password'}
-                        keyboardType={'default'}
-                        secureTextEntry={true}
-                    />
-                </LoginFormContainer>
-                <ButtonContainer>
-                    <MyButton onPress={handleLogin}>Log in</MyButton>
-                </ButtonContainer>
-                <ButtonContainer>
-                    <TextRegisterBlack>Don't have an account?</TextRegisterBlack>
-                    <TouchableOpacity onPress={handleGoToSignUp}>
-                        <TextRegisterBlue> Sign up.</TextRegisterBlue>
-                    </TouchableOpacity>
-                </ButtonContainer>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-            </ContentLogin>
+                <ContentLogin>
+                    <TitleLogin>My Movies</TitleLogin>
+                    <LoginFormContainer>
+                        <MyTextInput
+                            text={email}
+                            setText={setEmail}
+                            placeholder={'email'}
+                            keyboardType={'email-address'}
+                            autoCapitalize={'none'}
+                        />
+                        <MyTextInput
+                            text={password}
+                            setText={setPassword}
+                            placeholder={'password'}
+                            keyboardType={'default'}
+                            secureTextEntry={true}
+                        />
+                    </LoginFormContainer>
+                    <ButtonContainer>
+                        <MyButton onPress={handleLogin}>Log in</MyButton>
+                    </ButtonContainer>
+                    <ButtonContainer>
+                        <TextRegisterBlack>Don't have an account?</TextRegisterBlack>
+                        <TouchableOpacity onPress={handleGoToSignUp}>
+                            <TextRegisterBlue> Sign up.</TextRegisterBlue>
+                        </TouchableOpacity>
+                    </ButtonContainer>
+
+                </ContentLogin>
+            </TouchableWithoutFeedback>
         </ContainerLogin>
     )
 }

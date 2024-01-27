@@ -17,8 +17,13 @@ export interface AuthContextType {
     logout?: () => void;
 }
 
+export interface MovieContextType {
+    topRatedMovies: Movie[];
+}
+
 export interface UserContextType {
     saveUserInCache: (user: User) => void;
+    updateUserInCache: (user: User) => void;
 }
 
 export interface AuthProviderProps {
@@ -29,13 +34,24 @@ export interface UserProviderProps {
     children: ReactNode
 }
 
-export interface DecodedToken {
-    email: string;
+export interface MovieProviderProps {
+    children: ReactNode
 }
 
-interface StyledIconProps {
-    focused: boolean;
-    name: React.ComponentProps<typeof Feather>['name']; // herda o tipo de 'name' de Feather
-    size: number;
+export interface Movie {
+    adult: boolean;
+    backdrop_path: string;
+    genre_ids: number[];
+    id: number;
+    original_language: string;
+    original_title: string;
+    overview: string;
+    popularity: number;
+    poster_path?: string;
+    release_date: string;
+    title: string;
+    video: boolean;
+    vote_average: number;
+    vote_count: number;
 }
 

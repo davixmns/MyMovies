@@ -6,3 +6,16 @@ export const ContainerProfile = styled.View`
   align-items: center;
   justify-content: center;
 `
+
+export const ContentProfile = styled.View`
+  width: 85%;
+  height: 70%;
+  align-items: flex-start;
+  justify-content: space-between;
+`
+
+export const TitleProfile = styled.Text`
+    font-size: 30px;
+    font-weight: bold;
+    color: #000;
+`

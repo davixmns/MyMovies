@@ -1,9 +1,9 @@
 import {User, UserContextType, UserProviderProps} from "../interfaces/interfaces";
 import {createContext, useContext} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {signJWT} from "../utils/utils";
 import {Alert} from "react-native";
 import {useAuthContext} from "./AuthContext";
+import {signJWT} from "../service/service";
 
 const UserContext = createContext<UserContextType>({} as UserContextType)
 
@@ -24,13 +24,21 @@ export function UserProvider({children}: UserProviderProps) {
             }
             // Assina e salva o JWT do usuário
             const userJwt = await signJWT(newUser.email);
+            await AsyncStorage.setItem("@user-jwt", userJwt.token.toString());
+            const newUserJson = JSON.stringify(newUser);
+            await AsyncStorage.setItem(`@user-${newUser.email}`, newUserJson);
+            setUser(newUser);
+            setIsAuthenticated(true);
+        } catch (error) {
+            console.error("Erro ao salvar usuário no cache: ", error);
+        }
+    }
 
-            // await AsyncStorage.setItem("@user-jwt", userJwt);
-            // // Salva o usuário no cache
-            // const newUserJson = JSON.stringify(newUser);
-            // await AsyncStorage.setItem(`@user-${newUser.email}`, newUserJson);
-            // setUser(newUser);
-            // setIsAuthenticated(true);
+    async function updateUserInCache(user: User) {
+        try {
+            const userJson = JSON.stringify(user);
+            await AsyncStorage.setItem(`@user-${user.email}`, userJson);
+            setUser(user);
         } catch (error) {
             console.error("Erro ao salvar usuário no cache: ", error);
         }
@@ -38,7 +46,8 @@ export function UserProvider({children}: UserProviderProps) {
 
     return (
         <UserContext.Provider value={{
-            saveUserInCache
+            saveUserInCache,
+            updateUserInCache
         }}>
             {children}
         </UserContext.Provider>

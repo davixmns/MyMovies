@@ -1,0 +1,11 @@
+
+executando o serviço jwt:
+1: 'cd api/'
+2: 'yarn install'
+3: 'yarn start' ou 'npm start'
+
+rodando o app:
+1: 'cd mobile/'
+2: coloque seu ip ipv4 no arquivo 'config.ts'
+3: 'yarn install'
+4: 'npx expo start'

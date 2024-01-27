@@ -4,7 +4,7 @@ import {ButtonContainer} from "../login/styles";
 import {MyButton} from "../../components/MyButton";
 import {useUserContext} from "../../contexts/UserContext";
 import {verifyRegisterForm} from "../../utils/utils";
-import {Alert, Text, TouchableOpacity} from "react-native";
+import {Alert, TouchableOpacity} from "react-native";
 import {User} from "../../interfaces/interfaces";
 import {CancelRegisterText, ContainerRegister, ContentRegister, RegisterFormContainer, TitleRegister} from "./styles";
 import {useNavigation} from "@react-navigation/native";
@@ -12,10 +12,10 @@ import {useNavigation} from "@react-navigation/native";
 export function Register() {
     const navigation = useNavigation()
     const {saveUserInCache} = useUserContext()
-    const [name, setName] = useState<string>('Davi Ximenes')
-    const [email, setEmail] = useState<string>('daviximenes@unifor.br')
-    const [password, setPassword] = useState<string>('asdasdasd')
-    const [confirmPassword, setConfirmPassword] = useState<string>('asdasdasd')
+    const [name, setName] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [confirmPassword, setConfirmPassword] = useState<string>('')
 
     async function handleCreateAccount() {
         if(!saveUserInCache) return;

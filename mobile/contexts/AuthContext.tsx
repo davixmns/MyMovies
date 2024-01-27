@@ -1,9 +1,8 @@
 import {useContext, createContext, useState, useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthContextType, AuthProviderProps, User} from "../interfaces/interfaces";
-import {jwt_key, signJWT} from "../utils/utils";
 import {Alert} from "react-native";
-import pureJwt from "react-native-pure-jwt";
+import {signJWT, verifyJWT} from "../service/service";
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
@@ -24,8 +23,8 @@ export function AuthProvider({children}: AuthProviderProps) {
         try {
             const userJwt = await AsyncStorage.getItem('@user-jwt');
             if (userJwt) {
-                const decoded = await pureJwt.decode(userJwt, jwt_key);
-                const userEmail = decoded.payload
+                const response = await verifyJWT(userJwt.toString())
+                const userEmail = response.decoded.email
                 if (userEmail) {
                     const user = await AsyncStorage.getItem('@user-' + userEmail);
                     setUser(JSON.parse(user as string));
@@ -46,10 +45,11 @@ export function AuthProvider({children}: AuthProviderProps) {
             }
             const parsedUser = JSON.parse(user)
             if (parsedUser.password === password) {
-                const jwt = await signJWT(email)
+                const response = await signJWT(email)
+                const jwt = response.token
                 await AsyncStorage.setItem('@user-jwt', jwt)
-                setIsAuthenticated(true)
                 setUser(parsedUser)
+                setIsAuthenticated(true)
             }
         } catch (e) {
             console.log(e)
