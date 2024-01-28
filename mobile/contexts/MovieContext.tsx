@@ -1,6 +1,7 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import {Movie, MovieContextType, MovieProviderProps} from "../interfaces/interfaces";
 import {
+    getNowPlayingMoviesService,
     getPopularMoviesService,
     getTopRatedMoviesService,
     getUpcomingMoviesService
@@ -43,7 +44,7 @@ export function MovieProvider({children}: MovieProviderProps) {
     }
 
     async function loadNowPlayingMovies() {
-        const response = await getUpcomingMoviesService()
+        const response = await getNowPlayingMoviesService()
         setNowPlayingMovies(response)
     }
 

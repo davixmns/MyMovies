@@ -30,12 +30,20 @@ export const TitleContainer = styled.View`
 
 export const MainScroll = styled.ScrollView`
   height: 100%;
+  
 `
 
 export const CardPadding = styled.View`
   padding-left: 10px;
   padding-right: 10px;
   box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
+`
+
+export const SearchContainer = styled.View`
+  width: 96%;
+  padding-left: 15px;
+  padding-bottom: 20px;
+  box-shadow: -5px 6px 5px rgba(0, 0, 0, 0.20);
 `
 
 

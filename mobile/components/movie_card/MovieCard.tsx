@@ -18,7 +18,7 @@ export function MovieCard({movie}: { movie: Movie }) {
                 <TouchableOpacity onPress={goToMovieDetails}>
                     <Image
                         source={{uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`}}
-                        style={{width: 220, height: 330, borderRadius: 12}}
+                        style={{width: 146, height: 220, borderRadius: 10}}
                     />
                     <MovieTitleContainer>
                         <MovieTitle>{movie.title}</MovieTitle>
@@ -32,7 +32,6 @@ export function MovieCard({movie}: { movie: Movie }) {
 
 const CardContainer = styled.View`
   flex: 1;
-  border-radius: 20px;
   overflow: hidden;
 `
 
@@ -41,7 +40,7 @@ const MovieTitle = styled.Text`
 `
 
 const MovieTitleContainer = styled.View`
-  max-width: 210px;
+  max-width: 146px;
   padding-left: 5px;
   padding-right: 10px;
   padding-top: 8px;
