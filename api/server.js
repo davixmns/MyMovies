@@ -11,6 +11,7 @@ app.use(express.json());
 app.post('/sign-jwt', (req, res) => {
     const email = req.body.email
     const token = jwt.sign({email}, SECRET_KEY, { expiresIn: '1y' });
+    console.log(`Token gerado: ${token}`);
     res.status(200).send({ token });
 });
 
@@ -20,8 +21,10 @@ app.post('/verify-jwt', (req, res) => {
     const decoded = jwt.verify(token, SECRET_KEY);
 
     if(decoded) {
+        console.log('Token válido')
         res.status(200).send({decoded: decoded, message: 'Token válido' });
     } else {
+        console.log('Token inválido')
         res.status(401).send({ message: 'Token inválido' });
     }
 });

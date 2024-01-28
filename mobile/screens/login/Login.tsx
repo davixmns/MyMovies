@@ -42,6 +42,7 @@ export function Login() {
                             placeholder={'email'}
                             keyboardType={'email-address'}
                             autoCapitalize={'none'}
+                            iconName={'envelope'}
                         />
                         <MyTextInput
                             text={password}
@@ -49,6 +50,8 @@ export function Login() {
                             placeholder={'password'}
                             keyboardType={'default'}
                             secureTextEntry={true}
+                            autoCapitalize={'none'}
+                            iconName={'lock'}
                         />
                     </LoginFormContainer>
                     <ButtonContainer>

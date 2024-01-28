@@ -10,6 +10,7 @@ export interface User {
 
 export interface AuthContextType {
     isAuthenticated: boolean;
+    isLoading: boolean;
     setIsAuthenticated: (isAuthenticated: boolean) => void;
     user: User | null;
     setUser: (user: User | null) => void;

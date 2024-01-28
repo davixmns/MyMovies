@@ -4,11 +4,11 @@ export const ContainerHome = styled.View`
   flex: 1;
   background-color: #fafafa;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 `
 
 export const ContentHome = styled.View`
-  flex: 0.85;
+  flex: 0.93;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
@@ -16,7 +16,7 @@ export const ContentHome = styled.View`
 `
 
 export const TitleHome = styled.Text`
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
     color: #000;
     margin-bottom: 10px;
@@ -43,7 +43,7 @@ export const SearchContainer = styled.View`
   width: 96%;
   padding-left: 15px;
   padding-bottom: 20px;
-  box-shadow: -5px 6px 5px rgba(0, 0, 0, 0.20);
+  //box-shadow: -5px 6px 5px rgba(0, 0, 0, 0.20);
 `
 
 

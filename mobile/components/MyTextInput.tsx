@@ -12,7 +12,7 @@ export const MyTextInput: React.FC<MyTextInputProps> = ({text, setText, iconName
     return (
         <View style={styles.inputContainer}>
             {iconName && (
-                <FontAwesome6 name={iconName} size={25} color={'gray'} style={{marginRight: 10}}/>
+                <FontAwesome6 name={iconName} size={22} color={'gray'} style={{marginRight: 10}}/>
             )}
             <TextInput
                 value={text}

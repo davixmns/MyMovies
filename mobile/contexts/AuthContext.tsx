@@ -13,6 +13,7 @@ export const useAuthContext = () => {
 export function AuthProvider({children}: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null)
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     useEffect(() => {
         verifyIfUserIsAuthenticated()
@@ -33,6 +34,8 @@ export function AuthProvider({children}: AuthProviderProps) {
             }
         } catch (e) {
             console.error('Erro ao verificar a jwt do usuário:', e);
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -69,6 +72,7 @@ export function AuthProvider({children}: AuthProviderProps) {
     return (
         <AuthContext.Provider value={{
             isAuthenticated,
+            isLoading,
             setIsAuthenticated,
             user,
             setUser,

@@ -1,11 +1,9 @@
-import {Image, TouchableOpacity} from 'react-native';
-import {Movie} from "../../interfaces/interfaces";
-import {useNavigation} from "@react-navigation/native";
-import * as Animatable from 'react-native-animatable';
+import {Movie} from "../interfaces/interfaces";
+import * as Animatable from "react-native-animatable";
+import {Image, TouchableOpacity} from "react-native";
 import styled from "styled-components/native";
 
-export function MovieCard({movie}: { movie: Movie }) {
-    const navigation = useNavigation()
+export default function BigMovieCard({movie}: { movie: Movie }) {
 
     function goToMovieDetails() {
         // @ts-ignore
@@ -18,11 +16,8 @@ export function MovieCard({movie}: { movie: Movie }) {
                 <TouchableOpacity onPress={goToMovieDetails}>
                     <Image
                         source={{uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`}}
-                        style={{width: 146, height: 220, borderRadius: 10}}
+                        style={{width: 220, height: 230, borderRadius: 10}}
                     />
-                    <MovieTitleContainer>
-                        <MovieTitle>{movie.title}</MovieTitle>
-                    </MovieTitleContainer>
                 </TouchableOpacity>
             </Animatable.View>
         </CardContainer>
@@ -45,3 +40,4 @@ const MovieTitleContainer = styled.View`
   padding-right: 10px;
   padding-top: 8px;
 `
+;

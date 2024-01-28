@@ -4,11 +4,16 @@ import {BottomBar} from "./BottomBar";
 import {Login} from "../screens/login/Login";
 import {Register} from "../screens/register/Register";
 import {MovieDetails} from "../screens/movie_details/MovieDetails";
+import {SplashScreen} from "../screens/SplashScreen";
 
 const Stack = createStackNavigator();
 
 export function AuthStack() {
-    const {isAuthenticated} = useAuthContext()
+    const {isAuthenticated, isLoading} = useAuthContext()
+
+    if (isLoading){
+        return <SplashScreen/>
+    }
 
     return (
         <Stack.Navigator screenOptions={{

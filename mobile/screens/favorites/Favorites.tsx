@@ -1,11 +1,11 @@
 import {FlatList, ScrollView, StyleSheet, View} from "react-native";
-import {MovieCard} from "../../components/movie_card/MovieCard";
+import {MovieCard} from "../../components/MovieCard";
 import {ContainerHome, ContentHome, TitleContainer, TitleHome} from "../home/styles";
 import {useEffect, useState} from "react";
 import {useAuthContext} from "../../contexts/AuthContext";
 import {getMovieByIdService} from "../../service/service";
 import {Movie} from "../../interfaces/interfaces";
-import CircleButton from "../../components/circle_button/CircleButton";
+import CircleButton from "../../components/CircleButton";
 import {BlurView} from "expo-blur";
 
 export function Favorites() {
