@@ -1,6 +1,10 @@
-import {createContext, ReactNode, useContext, useEffect, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import {Movie, MovieContextType, MovieProviderProps} from "../interfaces/interfaces";
-import {getMovieByIdService, getTopRatedMoviesService} from "../service/service";
+import {
+    getPopularMoviesService,
+    getTopRatedMoviesService,
+    getUpcomingMoviesService
+} from "../service/service";
 import {useAuthContext} from "./AuthContext";
 
 const MovieContext = createContext<MovieContextType>({} as MovieContextType);
@@ -12,9 +16,15 @@ export const useMovieContext = () => {
 export function MovieProvider({children}: MovieProviderProps) {
     const isAuthenticated = useAuthContext()
     const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([])
+    const [popularMovies, setPopularMovies] = useState<Movie[]>([])
+    const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>([])
+    const [nowPlayingMovies, setNowPlayingMovies] = useState<Movie[]>([])
 
     useEffect(() => {
         loadTopRatedMovies()
+        loadPopularMovies()
+        loadUpcomingMovies()
+        loadNowPlayingMovies()
     }, [isAuthenticated])
 
     async function loadTopRatedMovies() {
@@ -22,10 +32,28 @@ export function MovieProvider({children}: MovieProviderProps) {
         setTopRatedMovies(response)
     }
 
+    async function loadPopularMovies() {
+        const response = await getPopularMoviesService()
+        setPopularMovies(response)
+    }
+
+    async function loadUpcomingMovies() {
+        const response = await getUpcomingMoviesService()
+        setUpcomingMovies(response)
+    }
+
+    async function loadNowPlayingMovies() {
+        const response = await getUpcomingMoviesService()
+        setNowPlayingMovies(response)
+    }
+
     return (
         <MovieContext.Provider
             value={{
                 topRatedMovies,
+                popularMovies,
+                upcomingMovies,
+                nowPlayingMovies,
             }}>
             {children}
         </MovieContext.Provider>

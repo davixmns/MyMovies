@@ -1,36 +1,37 @@
 import React from 'react';
-import {FlatList, ScrollView} from 'react-native';
+import {FlatList} from 'react-native';
 import {useMovieContext} from "../../contexts/MovieContext";
 import {MovieCard} from "../../components/movie_card/MovieCard";
-import {ContainerHome, ContentHome, TitleContainer, TitleHome} from "./styles";
-import * as Animatable from "react-native-animatable";
+import {CardPadding, ContainerHome, ContentHome, MainScroll, TitleContainer, TitleHome} from "./styles";
 
 export function Home() {
-    const {topRatedMovies} = useMovieContext();
+    const {nowPlayingMovies} = useMovieContext();
 
     // @ts-ignore
     function renderMovies({item: movie}) {
-
         return (
-            <MovieCard movie={movie}/>
+            <CardPadding>
+                <MovieCard movie={movie}/>
+            </CardPadding>
         )
     }
 
     return (
         <ContainerHome>
             <ContentHome>
-                <ScrollView>
+                <MainScroll>
                     <TitleContainer>
-                        <TitleHome>Top Rated Movies</TitleHome>
+                        <TitleHome>Now Playing</TitleHome>
                     </TitleContainer>
                     <FlatList
-                        data={topRatedMovies}
+                        data={nowPlayingMovies}
                         renderItem={renderMovies}
                         keyExtractor={item => item.id.toString()}
-                        numColumns={2} // Adiciona duas colunas
-                        columnWrapperStyle={{justifyContent: 'space-between'}}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        numColumns={1}
                     />
-                </ScrollView>
+                </MainScroll>
             </ContentHome>
         </ContainerHome>
     );

@@ -30,6 +30,16 @@ export async function getPopularMoviesService(){
     return popularMovies.data.results
 }
 
+export async function getUpcomingMoviesService(){
+    const upcomingMovies = await axios.get(`${VITE_API}upcoming?api_key=${VITE_API_KEY}&language=pt-BR&page=1`)
+    return upcomingMovies.data.results
+}
+
+export async function getNowPlayingMoviesService(){
+    const nowPlayingMovies = await axios.get(`${VITE_API}now_playing?api_key=${VITE_API_KEY}&language=pt-BR&page=1`)
+    return nowPlayingMovies.data.results
+}
+
 export async function getMovieByIdService(id: string){
     const movie = await axios.get(`${VITE_API}${id}?api_key=${VITE_API_KEY}&language=pt-BR`)
     return movie.data

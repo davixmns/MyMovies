@@ -19,6 +19,9 @@ export interface AuthContextType {
 
 export interface MovieContextType {
     topRatedMovies: Movie[];
+    popularMovies: Movie[];
+    upcomingMovies: Movie[];
+    nowPlayingMovies: Movie[];
 }
 
 export interface UserContextType {

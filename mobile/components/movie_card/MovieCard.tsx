@@ -1,9 +1,8 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import {CardContainer} from './styles'
+import {Image, TouchableOpacity} from 'react-native';
 import {Movie} from "../../interfaces/interfaces";
-import {StyleSheet} from 'react-native';
 import {useNavigation} from "@react-navigation/native";
 import * as Animatable from 'react-native-animatable';
+import styled from "styled-components/native";
 
 export function MovieCard({movie}: { movie: Movie }) {
     const navigation = useNavigation()
@@ -15,39 +14,35 @@ export function MovieCard({movie}: { movie: Movie }) {
 
     return (
         <CardContainer>
-            <Animatable.View animation="fadeInUp" delay={200} style={{flex: 1}}>
-            <TouchableOpacity onPress={goToMovieDetails}>
-                <View style={styles.photoShadow}>
+            <Animatable.View animation="fadeInLeft" delay={100}>
+                <TouchableOpacity onPress={goToMovieDetails}>
                     <Image
                         source={{uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`}}
-                        style={{width: '100%', height: 250, borderRadius: 12}}
+                        style={{width: 220, height: 330, borderRadius: 12}}
                     />
-                </View>
-                <View style={styles.movieTitle}>
-                    <Text style={{fontSize: 18}}>{movie.title}</Text>
-                </View>
-            </TouchableOpacity>
+                    <MovieTitleContainer>
+                        <MovieTitle>{movie.title}</MovieTitle>
+                    </MovieTitleContainer>
+                </TouchableOpacity>
             </Animatable.View>
         </CardContainer>
     );
 
 }
 
-const styles = StyleSheet.create({
-    photoShadow: {
-        flex: 1,
-        backgroundColor: '#fafafa',
-        borderRadius: 12,
-        margin: 10,
-        elevation: 10,
-        shadowColor: '#000',
-        shadowOpacity: 0.2,
-        shadowRadius: 5,
-    },
+const CardContainer = styled.View`
+  flex: 1;
+  border-radius: 20px;
+  overflow: hidden;
+`
 
-    movieTitle: {
-        paddingBottom: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-    }
-})
+const MovieTitle = styled.Text`
+  font-size: 18px;
+`
+
+const MovieTitleContainer = styled.View`
+  max-width: 210px;
+  padding-left: 5px;
+  padding-right: 10px;
+  padding-top: 8px;
+`
