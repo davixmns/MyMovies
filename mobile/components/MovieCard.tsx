@@ -25,7 +25,7 @@ export function MovieCard({movie}: { movie: Movie }) {
             <Animatable.View animation="fadeInLeft" delay={100}>
                 <TouchableOpacity onPress={goToMovieDetails}>
                     <Image
-                        source={{uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`}}
+                        source={{uri: `https://image.tmdb.org/t/p/w300${movie.poster_path}`}}
                         style={{width: 146, height: 220, borderRadius: 10}}
                     />
                     <MovieTitleContainer>

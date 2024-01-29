@@ -13,7 +13,6 @@ import {
 import {useAuthContext} from "../../contexts/AuthContext";
 import {MyTextInput} from "../../components/MyTextInput";
 import {useState} from "react";
-import BigMovieCard from "../../components/BigMovieCard";
 
 export function Home() {
     const [searchText, setSearchText] = useState('')

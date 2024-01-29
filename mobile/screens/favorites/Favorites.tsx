@@ -14,6 +14,7 @@ export function Favorites() {
 
     useEffect(() => {
         loadFavorites()
+        console.log(favorites)
     }, [])
 
     function loadFavorites() {
