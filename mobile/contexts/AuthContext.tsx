@@ -2,7 +2,7 @@ import {useContext, createContext, useState, useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthContextType, AuthProviderProps, User} from "../interfaces/interfaces";
 import {Alert} from "react-native";
-import {signJWT, verifyJWT} from "../service/service";
+import {loginService, verifyUserJwtService} from "../service/service";
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
@@ -13,7 +13,7 @@ export const useAuthContext = () => {
 export function AuthProvider({children}: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null)
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     useEffect(() => {
         verifyIfUserIsAuthenticated()
@@ -21,42 +21,32 @@ export function AuthProvider({children}: AuthProviderProps) {
 
     // Verifica se o usuário está autenticado
     async function verifyIfUserIsAuthenticated() {
-        try {
-            const userJwt = await AsyncStorage.getItem('@user-jwt');
-            if (userJwt) {
-                const response = await verifyJWT(userJwt.toString())
-                const userEmail = response.decoded.email
-                if (userEmail) {
-                    const user = await AsyncStorage.getItem('@user-' + userEmail);
-                    setUser(JSON.parse(user as string));
-                    setIsAuthenticated(true);
+        const user_jwt = await AsyncStorage.getItem('@user-jwt')
+        await verifyUserJwtService(user_jwt)
+            .then((response) => {
+                const data = response.data
+                const user: User = {
+                    name: data.user.name,
+                    email: data.user.email,
                 }
-            }
-        } catch (e) {
-            console.error('Erro ao verificar a jwt do usuário:', e);
-        } finally {
-            setIsLoading(false)
-        }
+                setUser(user)
+                setIsAuthenticated(true)
+            })
+            .catch((e) => {
+                console.log(e)
+                Alert.alert('Erro', 'Erro ao verificar autenticação')
+            })
+            .finally(() => setIsLoading(false))
     }
 
     async function login(email: string, password: string) {
-        try {
-            const user = await AsyncStorage.getItem('@user-' + email);
-            if (!user) {
-                Alert.alert("Erro", "Usuário não encontrado")
-                return
-            }
-            const parsedUser = JSON.parse(user)
-            if (parsedUser.password === password) {
-                const response = await signJWT(email)
-                const jwt = response.token
-                await AsyncStorage.setItem('@user-jwt', jwt)
-                setUser(parsedUser)
-                setIsAuthenticated(true)
-            }
-        } catch (e) {
-            console.log(e)
-        }
+        await loginService(email, password)
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((e) => {
+                console.log(e)
+            })
     }
 
     async function logout() {

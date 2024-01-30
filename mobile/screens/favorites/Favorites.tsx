@@ -3,27 +3,24 @@ import {MovieCard} from "../../components/MovieCard";
 import {ContainerHome, ContentHome, TitleContainer, TitleHome} from "../home/styles";
 import {useEffect, useState} from "react";
 import {useAuthContext} from "../../contexts/AuthContext";
-import {getMovieByIdService} from "../../service/service";
-import {Movie} from "../../interfaces/interfaces";
+import {FavoritedMovie} from "../../interfaces/interfaces";
 import CircleButton from "../../components/CircleButton";
-import {BlurView} from "expo-blur";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {useUserContext} from "../../contexts/UserContext";
 
 export function Favorites() {
     const {user} = useAuthContext()
-    const [favorites, setFavorites] = useState<Movie[]>([])
+    const [favorites, setFavorites] = useState<FavoritedMovie[]>([])
 
     useEffect(() => {
         loadFavorites()
-        console.log(favorites)
     }, [])
 
     function loadFavorites() {
         setFavorites([])
-        const userFavorites = user?.favorite_movies
-        userFavorites?.forEach(async (favorite) => {
-            const movie = await getMovieByIdService(favorite)
-            setFavorites(favorites => [...favorites, movie])
-        })
+        if (user?.favorite_movies) {
+            setFavorites(user.favorite_movies)
+        }
     }
 
     // @ts-ignore
@@ -38,21 +35,21 @@ export function Favorites() {
                     <TitleContainer>
                         <TitleHome>Your Favorites</TitleHome>
                     </TitleContainer>
-                    <FlatList
-                        data={favorites}
-                        renderItem={renderMovies}
-                        keyExtractor={item => item.id.toString()}
-                        numColumns={2}
-                        columnWrapperStyle={{justifyContent: 'space-between'}}
-                    />
+                    {/*<FlatList*/}
+                    {/*    data={favorites}*/}
+                    {/*    renderItem={renderMovies}*/}
+                    {/*    keyExtractor={item => item.id.toString()}*/}
+                    {/*    numColumns={2}*/}
+                    {/*    columnWrapperStyle={{justifyContent: 'space-between'}}*/}
+                    {/*/>*/}
+                    <View style={styles.blurView}>
+                        <CircleButton
+                            iconName="rotate-right"
+                            color="#fafafa"
+                            onPress={loadFavorites}
+                        />
+                    </View>
                 </ScrollView>
-                <View style={styles.blurView}>
-                    <CircleButton
-                        iconName="rotate-right"
-                        color="#fafafa"
-                        onPress={loadFavorites}
-                    />
-                </View>
             </ContentHome>
         </ContainerHome>
     );

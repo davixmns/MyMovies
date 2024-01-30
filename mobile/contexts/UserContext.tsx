@@ -3,7 +3,7 @@ import {createContext, useContext} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Alert} from "react-native";
 import {useAuthContext} from "./AuthContext";
-import {signJWT} from "../service/service";
+import {createUserAccountService} from "../service/service";
 
 const UserContext = createContext<UserContextType>({} as UserContextType)
 
@@ -14,24 +14,16 @@ export function useUserContext() {
 export function UserProvider({children}: UserProviderProps) {
     const {setIsAuthenticated, setUser} = useAuthContext()
 
-    async function saveUserInCache(newUser: User) {
-        try {
-            // Verifica se já existe um usuário com o mesmo e-mail
-            const userExists = await AsyncStorage.getItem(`@user-${newUser.email}`);
-            if (userExists) {
-                Alert.alert("Erro", "Já existe uma conta com esse e-mail");
-                return;
-            }
-            // Assina e salva o JWT do usuário
-            const userJwt = await signJWT(newUser.email);
-            await AsyncStorage.setItem("@user-jwt", userJwt.token.toString());
-            const newUserJson = JSON.stringify(newUser);
-            await AsyncStorage.setItem(`@user-${newUser.email}`, newUserJson);
-            setUser(newUser);
-            setIsAuthenticated(true);
-        } catch (error) {
-            console.error("Erro ao salvar usuário no cache: ", error);
-        }
+    async function createUserAccount(newUser: User) {
+        await createUserAccountService(newUser)
+            .then(async (response) => {
+                const data = response.data
+                await AsyncStorage.setItem('@user-jwt', data.user_jwt)
+                setIsAuthenticated(true)
+            })
+            .catch((e) => {
+                console.log(e)
+            })
     }
 
     async function updateUserInCache(user: User) {
@@ -46,7 +38,8 @@ export function UserProvider({children}: UserProviderProps) {
 
     return (
         <UserContext.Provider value={{
-            saveUserInCache,
+            createUserAccount,
+            // @ts-ignore
             updateUserInCache
         }}>
             {children}

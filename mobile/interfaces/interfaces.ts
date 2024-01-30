@@ -4,8 +4,6 @@ import {Feather} from "@expo/vector-icons";
 export interface User {
     name: string;
     email: string;
-    password: string;
-    favorite_movies: string[];
 }
 
 export interface AuthContextType {
@@ -26,8 +24,7 @@ export interface MovieContextType {
 }
 
 export interface UserContextType {
-    saveUserInCache: (user: User) => void;
-    updateUserInCache: (user: User) => void;
+    createUserAccount: (user: User) => Promise<void>;
 }
 
 export interface AuthProviderProps {
@@ -45,7 +42,10 @@ export interface MovieProviderProps {
 export interface Movie {
     adult: boolean;
     backdrop_path: string;
-    genre_ids: number[];
+    belongs_to_collection: null;
+    budget: number;
+    genres: any[];
+    homepage: string;
     id: number;
     original_language: string;
     original_title: string;
@@ -53,9 +53,19 @@ export interface Movie {
     popularity: number;
     poster_path?: string;
     release_date: string;
+    revenue: number;
+    runtime: number;
+    status: string;
+    tagline: string;
     title: string;
     video: boolean;
     vote_average: number;
     vote_count: number;
+}
+
+export interface FavoritedMovie {
+    id: number;
+    title: string;
+    poster_path?: string;
 }
 

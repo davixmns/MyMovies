@@ -11,7 +11,7 @@ export function verifyLoginForm(email: string, password: string) {
 }
 
 export function verifyRegisterForm(name: string, email: string, password: string, confirmPassword: string) {
-    if (name === '' || email === '' || password === '' || confirmPassword === '') {
+    if (name === '' || email === '' || password === '') {
         return "Preencha todos os campos"
     }
     if (!emailRegex.test(email)) {

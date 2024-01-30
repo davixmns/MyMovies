@@ -8,15 +8,16 @@ import {useEffect, useState} from "react";
 export function MovieCard({movie}: { movie: Movie }) {
     const navigation = useNavigation()
     const [movieTitle, setMovieTitle] = useState(movie.title)
-    const maxTitleLength = 30
+
     function goToMovieDetails() {
+        const movieId = movie.id
         // @ts-ignore
-        navigation.navigate('MovieDetails', {movie})
+        navigation.navigate('MovieDetails', {movieId: movieId})
     }
 
     useEffect(() => {
-        if (movie.title.length > maxTitleLength) {
-            setMovieTitle(movie.title.substring(0, maxTitleLength) + '...')
+        if (movie.title.length > 20) {
+            setMovieTitle(movie.title.substring(0, 20) + '...')
         }
     }, [])
 
@@ -39,17 +40,17 @@ export function MovieCard({movie}: { movie: Movie }) {
 }
 
 const CardContainer = styled.View`
-  flex: 1;
-  overflow: hidden;
+    flex: 1;
+    overflow: hidden;
 `
 
 const MovieTitle = styled.Text`
-  font-size: 18px;
+    font-size: 18px;
 `
 
 const MovieTitleContainer = styled.View`
-  max-width: 170px;
-  padding-left: 5px;
-  padding-right: 10px;
-  padding-top: 8px;
+    max-width: 170px;
+    padding-left: 5px;
+    padding-right: 10px;
+    padding-top: 8px;
 `

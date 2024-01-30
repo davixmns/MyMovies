@@ -11,27 +11,24 @@ import {useNavigation} from "@react-navigation/native";
 
 export function Register() {
     const navigation = useNavigation()
-    const {saveUserInCache} = useUserContext()
-    const [name, setName] = useState<string>('')
-    const [email, setEmail] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
-    const [confirmPassword, setConfirmPassword] = useState<string>('')
+    const {createUserAccount} = useUserContext()
+    const [name, setName] = useState<string>('davi ximenes')
+    const [email, setEmail] = useState<string>('daviximenes@unifor.br')
+    const [password, setPassword] = useState<string>('asdasdasd')
+    const [confirmPassword, setConfirmPassword] = useState<string>('asdasdasd')
 
     async function handleCreateAccount() {
-        if(!saveUserInCache) return;
-        //validando os campos de registro
-        const validationResponse = verifyRegisterForm(name, email, password, confirmPassword);
-        if(validationResponse !== true) {
-            Alert.alert("Erro", validationResponse);
-            return;
-        }
-        const newUser: User = {
+        const user: User = {
             name: name,
             email: email,
-            password: password,
-            favorite_movies: []
-        };
-        saveUserInCache(newUser);
+            password: password
+        }
+        const validationResponse = verifyRegisterForm(name, email, password, confirmPassword)
+        if (validationResponse !== true) {
+            Alert.alert("Erro", validationResponse)
+            return
+        }
+        await createUserAccount(user)
     }
 
     function backToLogin() {
@@ -47,6 +44,7 @@ export function Register() {
                         placeholder={'name'}
                         text={name}
                         setText={setName}
+                        iconName={'user'}
                     />
                     <MyTextInput
                         placeholder={'email'}
@@ -54,18 +52,21 @@ export function Register() {
                         setText={setEmail}
                         keyboardType={'email-address'}
                         autoCapitalize={'none'}
+                        iconName={'envelope'}
                     />
                     <MyTextInput
                         placeholder={'password'}
                         text={password}
                         setText={setPassword}
                         secureTextEntry={true}
+                        iconName={'lock'}
                     />
                     <MyTextInput
                         placeholder={'confirm password'}
                         text={confirmPassword}
                         setText={setConfirmPassword}
                         secureTextEntry={true}
+                        iconName={'lock'}
                     />
                 </RegisterFormContainer>
                 <ButtonContainer>

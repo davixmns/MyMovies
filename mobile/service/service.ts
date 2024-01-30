@@ -1,23 +1,27 @@
 import axios from 'axios';
 import {MY_IP, VITE_API, VITE_API_KEY} from "../config";
+import {User} from "../interfaces/interfaces";
 
-export async function signJWT(email: string) {
-    return axios.post(
-        `http://${MY_IP}:3000/sign-jwt`,
-        {email: email}
+export async function loginService(email: string, password: string){
+    return await axios.post(
+        `http://${MY_IP}/login`,
+        {email, password}
     )
-        .then(res => res.data)
-        .catch(err => console.log(err))
 }
 
-export async function verifyJWT(token: string) {
+export async function createUserAccountService(user: User){
     return await axios.post(
-        `http://${MY_IP}:3000/verify-jwt`,
-        {},
-        {headers: {Authorization: `Bearer ${token}`}}
+        `http://${MY_IP}/user`,
+        {user}
     )
-        .then(res => res.data)
-        .catch(err => console.log(err))
+}
+
+export async function verifyUserJwtService(user_jwt: string){
+    return await axios.post(
+        `http://${MY_IP}/verify-jwt`,
+        {},
+        {headers: {Authorization: `Bearer ${user_jwt}`}}
+    )
 }
 
 export async function getTopRatedMoviesService(){

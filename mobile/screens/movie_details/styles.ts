@@ -57,3 +57,23 @@ export const LoadingContainer = styled.View`
     justify-content: center;
     padding-top: 100px;
 `;
+
+export const DescriptionContainer = styled.View`
+    width: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: red;
+    
+    margin-top: 40px;
+`;
+
+export const MovieTitle = styled.Text`
+    font-size: 25px;
+    font-weight: bold;
+    color: black;
+`;
+
+export const MovieGenres = styled.Text`
+    font-size: 16px;
+    color: black;
+`;
