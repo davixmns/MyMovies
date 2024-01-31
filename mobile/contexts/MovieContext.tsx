@@ -1,11 +1,13 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import {FavoritedMovie, Movie, MovieContextType, MovieProviderProps} from "../interfaces/interfaces";
 import {
-    saveFavoritedMovieService,
+    checkIfMovieIsFavoritedService,
+    deleteFavoritedMovieService,
     getNowPlayingMoviesService,
     getPopularMoviesService,
     getTopRatedMoviesService,
-    getUpcomingMoviesService, deleteFavoritedMovieService, checkIfMovieIsFavoritedService
+    getUpcomingMoviesService,
+    saveFavoritedMovieService
 } from "../service/service";
 import {useAuthContext} from "./AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -55,10 +57,10 @@ export function MovieProvider({children}: MovieProviderProps) {
         if (!user_jwt) return
         await saveFavoritedMovieService(movie, user_jwt)
             .then(() => {
-                console.log('Movie favorited')
+                console.log('Movie saved to favorites')
             })
             .catch((e) => {
-                console.log(e)
+                // console.log("Error saving the movie ->",e)
             })
     }
 
@@ -70,20 +72,19 @@ export function MovieProvider({children}: MovieProviderProps) {
                 console.log('Movie deleted from favorites')
             })
             .catch((e) => {
-                console.log(e)
+                // console.log("Error deleting the movie ->", e)
             })
     }
 
     async function checkIfMovieIsFavorited(tmdb_movie_id: number) {
-        const user_jwt = await AsyncStorage.getItem('@user-jwt')
-        if (!user_jwt) return
-        await checkIfMovieIsFavoritedService(tmdb_movie_id, user_jwt)
-            .then((response) => {
-                console.log(response.data)
-            })
-            .catch((e) => {
-                console.log('erro ao capturar status', e)
-            })
+        try {
+            const user_jwt = await AsyncStorage.getItem('@user-jwt')
+            if (!user_jwt) return
+            const response = await checkIfMovieIsFavoritedService(tmdb_movie_id, user_jwt)
+            return response.data
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     return (
@@ -95,6 +96,7 @@ export function MovieProvider({children}: MovieProviderProps) {
                 nowPlayingMovies,
                 saveFavoriteMovie,
                 deleteFavoriteMovie,
+                // @ts-ignore
                 checkIfMovieIsFavorited,
             }}>
             {children}

@@ -13,7 +13,7 @@ export const useAuthContext = () => {
 export function AuthProvider({children}: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null)
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     useEffect(() => {
         verifyIfUserIsAuthenticated()
@@ -24,7 +24,7 @@ export function AuthProvider({children}: AuthProviderProps) {
         const user_jwt = await AsyncStorage.getItem('@user-jwt')
         //@ts-ignore
         await verifyUserJwtService(user_jwt)
-            .then((response) => {
+            .then(async (response) => {
                 const data = response.data
                 const user: User = {
                     name: data.user.name,
@@ -33,19 +33,26 @@ export function AuthProvider({children}: AuthProviderProps) {
                 setUser(user)
                 setIsAuthenticated(true)
             })
-            .catch((e) => {
-                console.log(e)
+            .catch(() => {
+
             })
-            .finally(() => setIsLoading(false))
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }
+
+    async function enterIntoApp() {
+
     }
 
     async function login(email: string, password: string) {
         await loginService(email, password)
-            .then((response) => {
-                console.log(response)
-            })
-            .catch((e) => {
-                console.log(e)
+            .then(async (response) => {
+                const data = response.data
+                await AsyncStorage.setItem('@user-jwt', data.user_jwt)
+                setIsAuthenticated(true)
+            }).catch((e) => {
+                Alert.alert('Erro', e.response.data.message)
             })
     }
 

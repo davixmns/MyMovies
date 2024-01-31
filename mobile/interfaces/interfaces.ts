@@ -52,7 +52,7 @@ export interface MovieContextType {
     nowPlayingMovies: Movie[];
     saveFavoriteMovie: (movie: FavoritedMovie) => Promise<void>;
     deleteFavoriteMovie: (tmdbMovieId: number) => Promise<void>;
-    checkIfMovieIsFavorited: (tmdbMovieId: number) => Promise<void>;
+    checkIfMovieIsFavorited: (tmdbMovieId: number) => Promise<boolean>;
 }
 
 export interface UserContextType {

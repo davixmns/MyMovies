@@ -22,52 +22,52 @@ import {useMovieContext} from "../../contexts/MovieContext";
 export function MovieDetails({route}) {
     const navigation = useNavigation();
     const {movieId} = route.params
+    const [wasFavorited, setWasFavorited] = useState<boolean>(false);
     const [isFavorited, setIsFavorited] = useState<boolean>(false);
     const [posterIsLoading, setPosterIsLoading] = useState<boolean>(true);
     const [movie, setMovie] = useState<Movie>({} as Movie);
     const {saveFavoriteMovie, deleteFavoriteMovie, checkIfMovieIsFavorited} = useMovieContext()
-
-    useEffect(() => {
-        handleCheckIfMovieIsFavorited()
-    }, []);
+    const favoritedMovie: FavoritedMovie = {
+        id: movie.id,
+        title: movie.title,
+        poster_path: movie.poster_path,
+    }
 
     useEffect(() => {
         const loadMovie = async () => {
             const movie = await getMovieByIdService(movieId)
             setMovie(movie)
         }
-        loadMovie()
+        async function handleCheckIfMovieIsFavorited() {
+            const isMovieFavorited = await checkIfMovieIsFavorited(movieId)
+            setIsFavorited(isMovieFavorited)
+        }
+        async function init() {
+            await handleCheckIfMovieIsFavorited()
+            await loadMovie()
+        }
+        init()
     }, []);
 
-    async function handleCheckIfMovieIsFavorited() {
-        await checkIfMovieIsFavorited(movie.id)
-    }
+    useEffect(() => {
+        saveFavoritedMovieOrNot()
+    }, [isFavorited]);
 
-    async function handleSaveFavoritedMovie() {
-        const favoritedMovie: FavoritedMovie = {
-            id: movie.id,
-            title: movie.title,
-            poster_path: movie.poster_path,
+    async function saveFavoritedMovieOrNot() {
+        if (isFavorited && !wasFavorited) {
+            await saveFavoriteMovie(favoritedMovie)
+            setWasFavorited(true)
+        } else if (!isFavorited && wasFavorited) {
+            await deleteFavoriteMovie(movieId)
+            setWasFavorited(false)
         }
-        await saveFavoriteMovie(favoritedMovie)
     }
 
-    async function handleDeleteFavoritedMovie() {
-        await deleteFavoriteMovie(movie.id)
-    }
 
-    async function toggleButton(){
+    async function toggleButton() {
         setIsFavorited(!isFavorited)
-        await saveFavoritedMovieOrNot()
     }
 
-    async function saveFavoritedMovieOrNot(){
-        if(isFavorited){
-            await handleSaveFavoritedMovie()
-        } else {
-            await handleDeleteFavoritedMovie()
-        }
-    }
 
     return (
         <MovieDetailsContainer>

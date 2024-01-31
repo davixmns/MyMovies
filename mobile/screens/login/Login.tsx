@@ -11,8 +11,8 @@ import {ContainerLogin, ContentLogin, LoginFormContainer, TitleLogin} from "./st
 export function Login() {
     const navigation = useNavigation()
     const {login} = useAuthContext()
-    const [email, setEmail] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
+    const [email, setEmail] = useState<string>('daviximenes@unifor.br')
+    const [password, setPassword] = useState<string>('asdasdasd')
 
     async function handleLogin() {
         if (!login) return
