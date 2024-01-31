@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, ScrollView} from 'react-native';
+import {useEffect, useState} from 'react';
+import {ActivityIndicator, ScrollView} from 'react-native';
 import {AntDesign} from '@expo/vector-icons';
 import {
     FavoriteButton,
@@ -13,77 +13,61 @@ import {
     LoadingContainer, DescriptionContainer, MovieTitle, MovieGenres,
 } from "./styles";
 import {useNavigation} from "@react-navigation/native";
-import {useAuthContext} from "../../contexts/AuthContext";
-import {useUserContext} from "../../contexts/UserContext";
+
 import {FavoritedMovie, Movie} from "../../interfaces/interfaces";
 import {getMovieByIdService} from "../../service/service";
+import {useMovieContext} from "../../contexts/MovieContext";
 
 //@ts-ignore
 export function MovieDetails({route}) {
     const navigation = useNavigation();
-    const {user, setUser} = useAuthContext()
-    const {updateUserInCache} = useUserContext()
     const {movieId} = route.params
     const [isFavorited, setIsFavorited] = useState<boolean>(false);
     const [posterIsLoading, setPosterIsLoading] = useState<boolean>(true);
-    const [canClick, setCanClick] = useState<boolean>(true);
     const [movie, setMovie] = useState<Movie>({} as Movie);
-    const movieIsAlreadyFavorited = user?.favorite_movies.some(favorite => favorite.id === movieId)
+    const {saveFavoriteMovie, deleteFavoriteMovie, checkIfMovieIsFavorited} = useMovieContext()
 
     useEffect(() => {
+        handleCheckIfMovieIsFavorited()
+    }, []);
+
+    useEffect(() => {
+        const loadMovie = async () => {
+            const movie = await getMovieByIdService(movieId)
+            setMovie(movie)
+        }
         loadMovie()
     }, []);
 
-    const loadMovie = async () => {
-        const movie = await getMovieByIdService(movieId)
-        setMovie(movie)
+    async function handleCheckIfMovieIsFavorited() {
+        await checkIfMovieIsFavorited(movie.id)
     }
 
-    useEffect(() => {
-        if(movieIsAlreadyFavorited) {
-            setIsFavorited(true)
+    async function handleSaveFavoritedMovie() {
+        const favoritedMovie: FavoritedMovie = {
+            id: movie.id,
+            title: movie.title,
+            poster_path: movie.poster_path,
         }
-    }, []);
-
-    useEffect(() => {
-        handleSaveFavorite()
-    }, [isFavorited])
-
-    function handleSaveFavorite() {
-        try {
-            // @ts-ignore
-            // const newUser = {name: 'Davi Ximenes', email: 'daviximenes@unifor.br', password: 'asdasdasd', favorite_movies: []}
-            // setUser(newUser)
-            // updateUserInCache(newUser)
-
-            setCanClick(false)
-            if (isFavorited && !movieIsAlreadyFavorited) {
-                const favoritedMovie: FavoritedMovie = {
-                    id: movieId,
-                    title: movie.title,
-                    poster_path: movie.poster_path
-                }
-                user?.favorite_movies?.push(favoritedMovie)
-                console.log('filme favoritado')
-            } else if (!isFavorited && movieIsAlreadyFavorited) {
-                // @ts-ignore
-                user!.favorite_movies = user?.favorite_movies.filter(favorite => favorite.id !== movieId)
-                console.log('filme desfavoritado')
-            }
-            updateUserInCache(user)
-            console.log('seus favoritos -> ', user?.favorite_movies)
-        } catch (e) {
-            console.log(e)
-            Alert.alert('Error', 'An error occurred while trying to save the favorite movie')
-        } finally {
-            setCanClick(true)
-        }
+        await saveFavoriteMovie(favoritedMovie)
     }
 
-    const toggleFavorite = () => {
-        if (!canClick) return;
-        setIsFavorited(!isFavorited);
-    };
+    async function handleDeleteFavoritedMovie() {
+        await deleteFavoriteMovie(movie.id)
+    }
+
+    async function toggleButton(){
+        setIsFavorited(!isFavorited)
+        await saveFavoritedMovieOrNot()
+    }
+
+    async function saveFavoritedMovieOrNot(){
+        if(isFavorited){
+            await handleSaveFavoritedMovie()
+        } else {
+            await handleDeleteFavoritedMovie()
+        }
+    }
 
     return (
         <MovieDetailsContainer>
@@ -94,7 +78,7 @@ export function MovieDetails({route}) {
                             <AntDesign name="arrowleft" size={35} color="black" style={{padding: 5}}/>
                         </BackButton>
                         <HeaderTitle>Movie Detail</HeaderTitle>
-                        <FavoriteButton onPress={toggleFavorite}>
+                        <FavoriteButton onPress={toggleButton}>
                             <AntDesign name={isFavorited ? 'heart' : 'hearto'} size={30} color="red"/>
                         </FavoriteButton>
                     </HeaderContainer>

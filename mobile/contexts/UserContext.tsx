@@ -1,7 +1,6 @@
 import {User, UserContextType, UserProviderProps} from "../interfaces/interfaces";
 import {createContext, useContext} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {Alert} from "react-native";
 import {useAuthContext} from "./AuthContext";
 import {createUserAccountService} from "../service/service";
 
@@ -12,7 +11,7 @@ export function useUserContext() {
 }
 
 export function UserProvider({children}: UserProviderProps) {
-    const {setIsAuthenticated, setUser} = useAuthContext()
+    const {setIsAuthenticated} = useAuthContext()
 
     async function createUserAccount(newUser: User) {
         await createUserAccountService(newUser)
@@ -26,21 +25,9 @@ export function UserProvider({children}: UserProviderProps) {
             })
     }
 
-    async function updateUserInCache(user: User) {
-        try {
-            const userJson = JSON.stringify(user);
-            await AsyncStorage.setItem(`@user-${user.email}`, userJson);
-            setUser(user);
-        } catch (error) {
-            console.error("Erro ao salvar usuário no cache: ", error);
-        }
-    }
-
     return (
         <UserContext.Provider value={{
             createUserAccount,
-            // @ts-ignore
-            updateUserInCache
         }}>
             {children}
         </UserContext.Provider>

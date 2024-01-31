@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {MY_IP, VITE_API, VITE_API_KEY} from "../config";
-import {User} from "../interfaces/interfaces";
+import {FavoritedMovie, User} from "../interfaces/interfaces";
 
 export async function loginService(email: string, password: string){
     return await axios.post(
@@ -20,6 +20,32 @@ export async function verifyUserJwtService(user_jwt: string){
     return await axios.post(
         `http://${MY_IP}/verify-jwt`,
         {},
+        {headers: {Authorization: `Bearer ${user_jwt}`}}
+    )
+}
+
+export async function saveFavoritedMovieService(movie : FavoritedMovie, user_jwt: string) {
+    return await axios.post(
+        `http://${MY_IP}/favorite-movie`,
+        {
+            title: movie.title,
+            tmdb_movie_id: movie.id,
+            poster_path: movie.poster_path,
+        },
+        {headers: {Authorization: `Bearer ${user_jwt}`}}
+    )
+}
+
+export async function deleteFavoritedMovieService(tmdbMovieId: number, user_jwt: string){
+    return await axios.delete(
+        `http://${MY_IP}/favorite-movie/${tmdbMovieId}`,
+        {headers: {Authorization: `Bearer ${user_jwt}`}}
+    )
+}
+
+export async function checkIfMovieIsFavoritedService(tmdbMovieId: number, user_jwt: string){
+    return await axios.get(
+        `http://${MY_IP}/favorite-movie/${tmdbMovieId}`,
         {headers: {Authorization: `Bearer ${user_jwt}`}}
     )
 }

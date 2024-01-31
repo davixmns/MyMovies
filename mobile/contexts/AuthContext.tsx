@@ -22,6 +22,7 @@ export function AuthProvider({children}: AuthProviderProps) {
     // Verifica se o usuário está autenticado
     async function verifyIfUserIsAuthenticated() {
         const user_jwt = await AsyncStorage.getItem('@user-jwt')
+        //@ts-ignore
         await verifyUserJwtService(user_jwt)
             .then((response) => {
                 const data = response.data
@@ -34,7 +35,6 @@ export function AuthProvider({children}: AuthProviderProps) {
             })
             .catch((e) => {
                 console.log(e)
-                Alert.alert('Erro', 'Erro ao verificar autenticação')
             })
             .finally(() => setIsLoading(false))
     }

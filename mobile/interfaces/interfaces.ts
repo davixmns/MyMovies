@@ -1,42 +1,8 @@
-import React, {ReactNode} from "react";
-import {Feather} from "@expo/vector-icons";
+import {ReactNode} from "react";
 
 export interface User {
     name: string;
     email: string;
-}
-
-export interface AuthContextType {
-    isAuthenticated: boolean;
-    isLoading: boolean;
-    setIsAuthenticated: (isAuthenticated: boolean) => void;
-    user: User | null;
-    setUser: (user: User | null) => void;
-    login?: (email: string, password: string) => Promise<void>;
-    logout?: () => void;
-}
-
-export interface MovieContextType {
-    topRatedMovies: Movie[];
-    popularMovies: Movie[];
-    upcomingMovies: Movie[];
-    nowPlayingMovies: Movie[];
-}
-
-export interface UserContextType {
-    createUserAccount: (user: User) => Promise<void>;
-}
-
-export interface AuthProviderProps {
-    children: ReactNode;
-}
-
-export interface UserProviderProps {
-    children: ReactNode
-}
-
-export interface MovieProviderProps {
-    children: ReactNode
 }
 
 export interface Movie {
@@ -67,5 +33,41 @@ export interface FavoritedMovie {
     id: number;
     title: string;
     poster_path?: string;
+}
+
+export interface AuthContextType {
+    isAuthenticated: boolean;
+    isLoading: boolean;
+    setIsAuthenticated: (isAuthenticated: boolean) => void;
+    user: User | null;
+    setUser: (user: User | null) => void;
+    login?: (email: string, password: string) => Promise<void>;
+    logout?: () => void;
+}
+
+export interface MovieContextType {
+    topRatedMovies: Movie[];
+    popularMovies: Movie[];
+    upcomingMovies: Movie[];
+    nowPlayingMovies: Movie[];
+    saveFavoriteMovie: (movie: FavoritedMovie) => Promise<void>;
+    deleteFavoriteMovie: (tmdbMovieId: number) => Promise<void>;
+    checkIfMovieIsFavorited: (tmdbMovieId: number) => Promise<void>;
+}
+
+export interface UserContextType {
+    createUserAccount: (user: User) => Promise<void>;
+}
+
+export interface AuthProviderProps {
+    children: ReactNode;
+}
+
+export interface UserProviderProps {
+    children: ReactNode
+}
+
+export interface MovieProviderProps {
+    children: ReactNode
 }
 
