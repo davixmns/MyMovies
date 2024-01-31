@@ -6,6 +6,7 @@ import {
     ContainerHome,
     ContentHome,
     MainScroll,
+    NowPlayingContainer, PadddingContainer,
     SearchContainer,
     TitleContainer,
     TitleHome
@@ -17,25 +18,28 @@ import {useState} from "react";
 export function Home() {
     const [searchText, setSearchText] = useState('')
     const {user} = useAuthContext()
-    const {upcomingMovies, nowPlayingMovies} = useMovieContext();
+    const {upcomingMovies, nowPlayingMovies, moviesIsLoading} = useMovieContext();
     const sortedNowPlayingMovies = nowPlayingMovies.sort((a, b) => {
         return b.vote_average - a.vote_average
     })
 
     // @ts-ignore
-    function renderUpcomingMovie({item: movie}) {
+    function renderNowPlayingMovie({item: movie}) {
         return (
-            <CardPadding>
-                <MovieCard movie={movie}/>
-            </CardPadding>
-        )
+            <NowPlayingContainer>
+                <MovieCard movie={movie} size={'big'} />
+            </NowPlayingContainer>
+        );
     }
 
     // @ts-ignore
-    function renderNowPlayingMovie({item: movie}) {
+    function renderUpcomingMovie({item: movie}) {
         return (
             <CardPadding>
-                <MovieCard movie={movie}/>
+                <MovieCard
+                    movie={movie}
+                    size={'small'}
+                />
             </CardPadding>
         )
     }
@@ -45,7 +49,7 @@ export function Home() {
             <ContentHome>
                 <MainScroll showsVerticalScrollIndicator={false}>
                     <TitleContainer>
-                        <TitleHome>{`Hello ${user?.name.split(' ')[0]} ❤️`}</TitleHome>
+                        <TitleHome>{`Welcome ${user?.name.split(' ')[0]}! 👋`}</TitleHome>
                     </TitleContainer>
                     <SearchContainer>
                         <MyTextInput
@@ -61,7 +65,7 @@ export function Home() {
                         </TitleContainer>
                         <FlatList
                             data={sortedNowPlayingMovies}
-                            renderItem={renderUpcomingMovie}
+                            renderItem={renderNowPlayingMovie}
                             keyExtractor={item => item.id.toString()}
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}
@@ -74,7 +78,7 @@ export function Home() {
                         </TitleContainer>
                         <FlatList
                             data={upcomingMovies}
-                            renderItem={renderNowPlayingMovie}
+                            renderItem={renderUpcomingMovie}
                             keyExtractor={item => item.id.toString()}
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}

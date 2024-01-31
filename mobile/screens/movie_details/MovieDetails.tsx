@@ -1,6 +1,10 @@
 import {useEffect, useState} from 'react';
 import {ActivityIndicator, ScrollView} from 'react-native';
 import {AntDesign} from '@expo/vector-icons';
+import {useNavigation} from "@react-navigation/native";
+import {FavoritedMovie, Movie} from "../../interfaces/interfaces";
+import {getMovieByIdService} from "../../service/service";
+import {useMovieContext} from "../../contexts/MovieContext";
 import {
     FavoriteButton,
     MovieDetailsContainer,
@@ -12,11 +16,6 @@ import {
     HeaderTitle,
     LoadingContainer, DescriptionContainer, MovieTitle, MovieGenres,
 } from "./styles";
-import {useNavigation} from "@react-navigation/native";
-
-import {FavoritedMovie, Movie} from "../../interfaces/interfaces";
-import {getMovieByIdService} from "../../service/service";
-import {useMovieContext} from "../../contexts/MovieContext";
 
 //@ts-ignore
 export function MovieDetails({route}) {

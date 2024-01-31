@@ -62,7 +62,6 @@ export const DescriptionContainer = styled.View`
     width: 100%;
     align-items: flex-start;
     justify-content: flex-start;
-    background-color: red;
     
     margin-top: 40px;
 `;

@@ -18,6 +18,7 @@ export default function BigMovieCard({movie}: { movie: Movie }) {
                         source={{uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`}}
                         style={{width: 220, height: 230, borderRadius: 10}}
                     />
+
                 </TouchableOpacity>
             </Animatable.View>
         </CardContainer>

@@ -23,20 +23,19 @@ export const TitleHome = styled.Text`
 `
 
 export const TitleContainer = styled.View`
-  width: 100%;
-  align-items: flex-start;
-  padding: 0 10px;
+    width: 100%;
+    align-items: flex-start;
+    padding: 0 10px;
 `
 
 export const MainScroll = styled.ScrollView`
-  height: 100%;
-  
+    height: 100%;
 `
 
 export const CardPadding = styled.View`
-  padding-left: 10px;
-  padding-right: 10px;
-  box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
 `
 
 export const SearchContainer = styled.View`
@@ -46,4 +45,13 @@ export const SearchContainer = styled.View`
   //box-shadow: -5px 6px 5px rgba(0, 0, 0, 0.20);
 `
 
+export const NowPlayingContainer = styled.View`
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
+`
 
+export const PadddingContainer = styled.View`
+    margin-bottom: 100px;
+`

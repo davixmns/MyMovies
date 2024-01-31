@@ -2,7 +2,7 @@ import {createContext, useContext, useEffect, useState} from "react";
 import {FavoritedMovie, Movie, MovieContextType, MovieProviderProps} from "../interfaces/interfaces";
 import {
     checkIfMovieIsFavoritedService,
-    deleteFavoritedMovieService,
+    deleteFavoritedMovieService, getAllFavoriteMoviesService,
     getNowPlayingMoviesService,
     getPopularMoviesService,
     getTopRatedMoviesService,
@@ -24,12 +24,24 @@ export function MovieProvider({children}: MovieProviderProps) {
     const [popularMovies, setPopularMovies] = useState<Movie[]>([])
     const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>([])
     const [nowPlayingMovies, setNowPlayingMovies] = useState<Movie[]>([])
+    const [myFavoriteMovies, setMyFavoriteMovies] = useState<FavoritedMovie[]>([])
+    const [moviesIsLoading, setMoviesIsLoading] = useState<boolean>(true)
 
     useEffect(() => {
-        loadTopRatedMovies()
-        loadPopularMovies()
-        loadUpcomingMovies()
-        loadNowPlayingMovies()
+        async function init() {
+            try {
+                await loadTopRatedMovies()
+                await loadPopularMovies()
+                await loadUpcomingMovies()
+                await loadNowPlayingMovies()
+                await loadAllMyFavoriteMovies()
+            } catch (e) {
+                console.log(e)
+            } finally {
+                setMoviesIsLoading(false)
+            }
+        }
+        init()
     }, [isAuthenticated])
 
     async function loadTopRatedMovies() {
@@ -87,6 +99,13 @@ export function MovieProvider({children}: MovieProviderProps) {
         }
     }
 
+    async function loadAllMyFavoriteMovies() {
+        const user_jwt = await AsyncStorage.getItem('@user-jwt')
+        if (!user_jwt) return
+        const response = await getAllFavoriteMoviesService(user_jwt)
+        setMyFavoriteMovies(response.data)
+    }
+
     return (
         <MovieContext.Provider
             value={{
@@ -94,10 +113,12 @@ export function MovieProvider({children}: MovieProviderProps) {
                 popularMovies,
                 upcomingMovies,
                 nowPlayingMovies,
+                myFavoriteMovies,
                 saveFavoriteMovie,
                 deleteFavoriteMovie,
-                // @ts-ignore
                 checkIfMovieIsFavorited,
+                moviesIsLoading,
+                loadAllMyFavoriteMovies
             }}>
             {children}
         </MovieContext.Provider>

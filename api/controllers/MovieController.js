@@ -55,5 +55,16 @@ export default {
             console.log(e)
             return res.status(500).json({message: 'Erro ao verificar se filme é favorito'})
         }
+    },
+
+    async getAllFavoriteMovies(req, res) {
+        try {
+            const userId = req.user_id
+            const favorites = await FavoriteMovie.findAll({where: {user_id: userId}})
+            return res.status(200).json(favorites)
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({message: 'Erro ao buscar filmes favoritos'})
+        }
     }
 }

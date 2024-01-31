@@ -36,6 +36,13 @@ export async function saveFavoritedMovieService(movie : FavoritedMovie, user_jwt
     )
 }
 
+export async function getAllFavoriteMoviesService(user_jwt: string){
+    return await axios.get(
+        `http://${MY_IP}/favorite-movies`,
+        {headers: {Authorization: `Bearer ${user_jwt}`}}
+    )
+}
+
 export async function deleteFavoritedMovieService(tmdbMovieId: number, user_jwt: string){
     return await axios.delete(
         `http://${MY_IP}/favorite-movie/${tmdbMovieId}`,

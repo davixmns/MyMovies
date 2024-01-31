@@ -50,9 +50,12 @@ export interface MovieContextType {
     popularMovies: Movie[];
     upcomingMovies: Movie[];
     nowPlayingMovies: Movie[];
+    myFavoriteMovies: FavoritedMovie[];
     saveFavoriteMovie: (movie: FavoritedMovie) => Promise<void>;
     deleteFavoriteMovie: (tmdbMovieId: number) => Promise<void>;
     checkIfMovieIsFavorited: (tmdbMovieId: number) => Promise<boolean>;
+    moviesIsLoading: boolean;
+    loadAllMyFavoriteMovies: () => Promise<void>;
 }
 
 export interface UserContextType {

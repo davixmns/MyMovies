@@ -3,7 +3,7 @@ import Sequelize from "sequelize";
 import User from "./User.js";
 
 const FavoriteMovie = database.define("favorite_movie", {
-    reviewed_movie_id: {
+    favorite_movie_id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
