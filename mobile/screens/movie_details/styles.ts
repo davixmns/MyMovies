@@ -8,7 +8,7 @@ export const MovieDetailsContainer = styled.View`
 
 export const MovieDetailsContent = styled.View`
     width: 90%;
-    height: 95%;
+    height: 96%;
     align-items: center;
     justify-content: flex-start;
 `
@@ -46,7 +46,6 @@ export const MoviePoster = styled.Image`
 `;
 
 export const MoviePosterContainer = styled.View`
-    padding-top: 20px;
     flex-direction: column;
     align-items: center;
     box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.40);
@@ -109,7 +108,7 @@ export const WriteReviewContainer = styled.View`
     height: 50px;
     bottom: 0;
     margin-bottom: 30px;
-    box-shadow: 20px 10px 20px rgba(0, 0, 0, 0.40);
+    //box-shadow: 20px 10px 20px rgba(0, 0, 0, 0.40);
 `;
 
 export const VoteAverageContainer = styled.View`

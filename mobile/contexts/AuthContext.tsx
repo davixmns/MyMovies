@@ -41,16 +41,12 @@ export function AuthProvider({children}: AuthProviderProps) {
             })
     }
 
-    async function enterIntoApp() {
-
-    }
-
     async function login(email: string, password: string) {
         await loginService(email, password)
             .then(async (response) => {
                 const data = response.data
                 await AsyncStorage.setItem('@user-jwt', data.user_jwt)
-                setIsAuthenticated(true)
+                verifyIfUserIsAuthenticated()
             }).catch((e) => {
                 Alert.alert('Erro', e.response.data.message)
             })

@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, ScrollView, View} from 'react-native';
+import {useEffect, useState} from 'react';
+import {ActivityIndicator, Image, ScrollView, StyleSheet, View} from 'react-native';
 import {AntDesign} from '@expo/vector-icons';
 import {useNavigation} from "@react-navigation/native";
 import {FavoritedMovie, Movie} from "../../interfaces/interfaces";
 import {getMovieByIdService} from "../../service/service";
 import {useMovieContext} from "../../contexts/MovieContext";
+
 import {
     FavoriteButton,
     MovieDetailsContainer,
@@ -23,8 +24,9 @@ import {
     MovieDescription,
     WriteReviewContainer, VoteAverage, VoteAverageContainer,
 } from "./styles";
-import {MyButton} from "../../components/MyButton";
 import {WriteReviewButton} from "../../components/WriteReviewButton";
+import {BlurView} from "expo-blur";
+import * as Haptics from "expo-haptics";
 
 //@ts-ignore
 export function MovieDetails({route}) {
@@ -32,6 +34,7 @@ export function MovieDetails({route}) {
     const {tmdbMovieId} = route.params
     const [wasFavorited, setWasFavorited] = useState<boolean>(false);
     const [isFavorited, setIsFavorited] = useState<boolean>(false);
+    const [canClick, setCanClick] = useState<boolean>(true);
     const [posterIsLoading, setPosterIsLoading] = useState<boolean>(true);
     const [movie, setMovie] = useState<Movie>({} as Movie);
     const {saveFavoriteMovie, deleteFavoriteMovie, checkIfMovieIsFavorited} = useMovieContext()
@@ -78,10 +81,12 @@ export function MovieDetails({route}) {
     }, []);
 
     useEffect(() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
         saveFavoritedMovieOrNot()
     }, [isFavorited]);
 
     async function saveFavoritedMovieOrNot() {
+        if (!canClick) return
         if (isFavorited && !wasFavorited) {
             await saveFavoriteMovie(favoritedMovie)
             setWasFavorited(true)
@@ -89,6 +94,7 @@ export function MovieDetails({route}) {
             await deleteFavoriteMovie(tmdbMovieId)
             setWasFavorited(false)
         }
+        setCanClick(true)
     }
 
     async function toggleButton() {
@@ -97,6 +103,11 @@ export function MovieDetails({route}) {
 
     return (
         <MovieDetailsContainer>
+            <Image
+                style={styles.bg}
+                source={{uri: `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`}}
+                blurRadius={40}
+            />
             <MovieDetailsContent>
                 <ScrollView contentContainerStyle={{alignItems: 'center'}} showsVerticalScrollIndicator={false}>
                     <HeaderContainer>
@@ -144,3 +155,13 @@ export function MovieDetails({route}) {
         </MovieDetailsContainer>
     );
 }
+
+const styles = StyleSheet.create({
+    bg: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        opacity: 0.8,
+
+    },
+});

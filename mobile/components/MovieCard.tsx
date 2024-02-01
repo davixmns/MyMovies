@@ -12,6 +12,7 @@ export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: stri
     const [imgWidth, setImgWidth] = useState(0)
     const [imgHeight, setImgHeight] = useState(0)
     const [imgResolution, setImgResolution] = useState('w500')
+    const [cardAnimation, setCardAnimation] = useState('fadeIn')
 
     function goToMovieDetails() {
         // @ts-ignore
@@ -23,14 +24,17 @@ export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: stri
             setImgWidth(230)
             setImgHeight(345)
             setImgResolution('original')
+            setCardAnimation('fadeInLeft')
 
         } else if (size === 'medium') {
             setImgWidth(170)
             setImgHeight(260)
+            setCardAnimation('fadeIn')
 
         } else if (size === 'small') {
             setImgWidth(150)
             setImgHeight(220)
+            setCardAnimation('fadeInRight')
 
         }
 
@@ -38,7 +42,7 @@ export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: stri
 
     return (
         <CardContainer>
-            <Animatable.View animation="fadeInLeft" delay={100}>
+            <Animatable.View animation={cardAnimation} delay={100}>
                 <TouchableOpacity onPress={goToMovieDetails}>
                     <View style={{width: imgWidth}}>
                         <Image
@@ -74,6 +78,3 @@ const MovieTitleContainer = styled.View`
     padding-top: 8px;
 `
 
-const CardContent = styled.View`
-;
-`

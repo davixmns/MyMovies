@@ -1,6 +1,7 @@
 import {FlatList, View} from 'react-native';
 import {useMovieContext} from "../../contexts/MovieContext";
 import {MovieCard} from "../../components/MovieCard";
+
 import {
     CardPadding,
     ContainerHome,
@@ -18,7 +19,7 @@ import {useState} from "react";
 export function Home() {
     const [searchText, setSearchText] = useState('')
     const {user} = useAuthContext()
-    const {upcomingMovies, nowPlayingMovies, moviesIsLoading} = useMovieContext();
+    const {upcomingMovies, nowPlayingMovies, } = useMovieContext();
     const sortedNowPlayingMovies = nowPlayingMovies.sort((a, b) => {
         return b.vote_average - a.vote_average
     })
@@ -68,6 +69,7 @@ export function Home() {
                         <TitleContainer>
                             <TitleHome>Now Playing Movies 🎬</TitleHome>
                         </TitleContainer>
+
                         <FlatList
                             data={sortedNowPlayingMovies}
                             renderItem={renderNowPlayingMovie}
@@ -76,11 +78,13 @@ export function Home() {
                             showsHorizontalScrollIndicator={false}
                             numColumns={1}
                         />
+
                     </View>
                     <View>
                         <TitleContainer>
                             <TitleHome>Upcoming Movies 🏃‍♂️</TitleHome>
                         </TitleContainer>
+
                         <FlatList
                             data={upcomingMovies}
                             renderItem={renderUpcomingMovie}
@@ -89,6 +93,7 @@ export function Home() {
                             showsHorizontalScrollIndicator={false}
                             numColumns={1}
                         />
+
                     </View>
                     <View style={{height: 100}}></View>
                 </MainScroll>

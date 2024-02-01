@@ -16,8 +16,10 @@ export function Favorites() {
                         {myFavoriteMovies.map((movie, index) => (
                             <MovieCardWrapper key={index}>
                                 <MovieCard
+                                    // @ts-ignore
                                     movie={movie}
                                     size={'medium'}
+                                    // @ts-ignore
                                     tmdbMovieId={movie.tmdb_movie_id.toString()}
                                 />
                             </MovieCardWrapper>
@@ -48,6 +50,7 @@ const ScrollFavorites = styled.ScrollView.attrs({
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
+    showsVerticalScrollIndicator: false,
 })`
     width: 100%;
 `;

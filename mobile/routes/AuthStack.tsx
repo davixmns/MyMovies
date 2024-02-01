@@ -19,7 +19,7 @@ export function AuthStack() {
         <Stack.Navigator screenOptions={{
             headerShown: false,
             gestureEnabled: false,
-            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter
+            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS
         }}>
             {isAuthenticated ? (
                 <>

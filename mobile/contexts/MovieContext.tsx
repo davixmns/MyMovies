@@ -11,7 +11,6 @@ import {
 } from "../service/service";
 import {useAuthContext} from "./AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 const MovieContext = createContext<MovieContextType>({} as MovieContextType);
 
 export const useMovieContext = () => {
@@ -74,6 +73,7 @@ export function MovieProvider({children}: MovieProviderProps) {
             .catch((e) => {
                 // console.log("Error saving the movie ->",e)
             })
+        await loadAllMyFavoriteMovies()
     }
 
     async function deleteFavoriteMovie(tmdb_movie_id: number) {
@@ -86,6 +86,7 @@ export function MovieProvider({children}: MovieProviderProps) {
             .catch((e) => {
                 // console.log("Error deleting the movie ->", e)
             })
+        await loadAllMyFavoriteMovies()
     }
 
     async function checkIfMovieIsFavorited(tmdb_movie_id: number) {
@@ -103,6 +104,7 @@ export function MovieProvider({children}: MovieProviderProps) {
         const user_jwt = await AsyncStorage.getItem('@user-jwt')
         if (!user_jwt) return
         const response = await getAllFavoriteMoviesService(user_jwt)
+        setMyFavoriteMovies([])
         setMyFavoriteMovies(response.data)
     }
 
