@@ -3,12 +3,12 @@ import styled from "styled-components/native";
 export const MovieDetailsContainer = styled.View`
     flex: 1;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
 `;
 
 export const MovieDetailsContent = styled.View`
     width: 90%;
-    height: 90%;
+    height: 95%;
     align-items: center;
     justify-content: flex-start;
 `
@@ -26,11 +26,12 @@ export const HeaderTitle = styled.Text`
     font-size: 22px;
     font-weight: bold;
     color: black;
+    padding-right: 15px;
 `;
 
 
 export const FavoriteButton = styled.TouchableOpacity`
-    
+
 `;
 
 
@@ -46,7 +47,7 @@ export const MoviePoster = styled.Image`
 
 export const MoviePosterContainer = styled.View`
     padding-top: 20px;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.40);
 `;
@@ -62,8 +63,8 @@ export const DescriptionContainer = styled.View`
     width: 100%;
     align-items: flex-start;
     justify-content: flex-start;
-    
-    margin-top: 40px;
+
+    margin-top: 20px;
 `;
 
 export const MovieTitle = styled.Text`
@@ -72,7 +73,55 @@ export const MovieTitle = styled.Text`
     color: black;
 `;
 
-export const MovieGenres = styled.Text`
+export const MovieGenres = styled.Text.attrs({
+    numberOfLines: 2
+})`
     font-size: 16px;
     color: black;
+`
+
+
+export const MovieDuration = styled.Text`
+    font-size: 16px;
+    color: black;
+    font-style: italic;
 `;
+
+export const GenresContainer = styled.View`
+    width: 100%;
+    max-width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+`;
+
+export const MovieDescription = styled.Text`
+    font-size: 16px;
+    color: black;
+    padding-top: 45px;
+`;
+
+export const WriteReviewContainer = styled.View`
+    //border-radius: 40px;
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    bottom: 0;
+    margin-bottom: 30px;
+    box-shadow: 20px 10px 20px rgba(0, 0, 0, 0.40);
+`;
+
+export const VoteAverageContainer = styled.View`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 20px;
+`
+
+export const VoteAverage = styled.Text`
+    font-size: 30px;
+    color: black;
+    font-weight: bold;
+`;
+

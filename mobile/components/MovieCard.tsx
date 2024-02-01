@@ -6,22 +6,23 @@ import styled from "styled-components/native";
 import {useEffect, useState} from "react";
 
 // @ts-ignore
-export function MovieCard({movie, size}: { movie: Movie, size: string }) {
+export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: string, tmdbMovieId: string }) {
     const navigation = useNavigation()
     const [movieTitle, setMovieTitle] = useState(movie.title)
     const [imgWidth, setImgWidth] = useState(0)
     const [imgHeight, setImgHeight] = useState(0)
+    const [imgResolution, setImgResolution] = useState('w500')
 
     function goToMovieDetails() {
-        const movieId = movie.id
         // @ts-ignore
-        navigation.navigate('MovieDetails', {movieId: movieId})
+        navigation.navigate('MovieDetails', {tmdbMovieId: tmdbMovieId})
     }
 
     useEffect(() => {
         if (size === 'big') {
             setImgWidth(230)
             setImgHeight(345)
+            setImgResolution('original')
 
         } else if (size === 'medium') {
             setImgWidth(170)
@@ -41,7 +42,7 @@ export function MovieCard({movie, size}: { movie: Movie, size: string }) {
                 <TouchableOpacity onPress={goToMovieDetails}>
                     <View style={{width: imgWidth}}>
                         <Image
-                            source={{uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`}}
+                            source={{uri: `https://image.tmdb.org/t/p/${imgResolution}${movie.poster_path}`}}
                             style={{width: imgWidth, height: imgHeight, borderRadius: 10}}
                         />
                         <MovieTitleContainer>

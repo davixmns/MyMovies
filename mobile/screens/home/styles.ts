@@ -51,7 +51,3 @@ export const NowPlayingContainer = styled.View`
     padding-right: 10px;
     box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
 `
-
-export const PadddingContainer = styled.View`
-    margin-bottom: 100px;
-`

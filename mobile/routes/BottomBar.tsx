@@ -16,7 +16,7 @@ export function BottomBar() {
                 <Tab.Navigator
                     screenOptions={{
                         tabBarStyle: {
-                            backgroundColor: 'rgba(10, 10, 10, 0.3)', // Fundo translúcido
+                            backgroundColor: 'rgba(10, 10, 10, 0.3)',
                             position: 'absolute',
 
                             height: 90,

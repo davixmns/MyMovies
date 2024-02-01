@@ -6,7 +6,7 @@ import {
     ContainerHome,
     ContentHome,
     MainScroll,
-    NowPlayingContainer, PadddingContainer,
+    NowPlayingContainer,
     SearchContainer,
     TitleContainer,
     TitleHome
@@ -27,7 +27,11 @@ export function Home() {
     function renderNowPlayingMovie({item: movie}) {
         return (
             <NowPlayingContainer>
-                <MovieCard movie={movie} size={'big'} />
+                <MovieCard
+                    movie={movie}
+                    size={'big'}
+                    tmdbMovieId={movie.id.toString()}
+                />
             </NowPlayingContainer>
         );
     }
@@ -39,6 +43,7 @@ export function Home() {
                 <MovieCard
                     movie={movie}
                     size={'small'}
+                    tmdbMovieId={movie.id.toString()}
                 />
             </CardPadding>
         )
@@ -85,6 +90,7 @@ export function Home() {
                             numColumns={1}
                         />
                     </View>
+                    <View style={{height: 100}}></View>
                 </MainScroll>
             </ContentHome>
         </ContainerHome>
