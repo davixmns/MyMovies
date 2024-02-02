@@ -1,7 +1,9 @@
 import {FlatList, View} from 'react-native';
 import {useMovieContext} from "../../contexts/MovieContext";
 import {MovieCard} from "../../components/MovieCard";
-
+import {useAuthContext} from "../../contexts/AuthContext";
+import {MyTextInput} from "../../components/MyTextInput";
+import {useState} from "react";
 import {
     CardPadding,
     ContainerHome,
@@ -12,14 +14,11 @@ import {
     TitleContainer,
     TitleHome
 } from "./styles";
-import {useAuthContext} from "../../contexts/AuthContext";
-import {MyTextInput} from "../../components/MyTextInput";
-import {useState} from "react";
 
 export function Home() {
     const [searchText, setSearchText] = useState('')
     const {user} = useAuthContext()
-    const {upcomingMovies, nowPlayingMovies, } = useMovieContext();
+    const {upcomingMovies, nowPlayingMovies,} = useMovieContext();
     const sortedNowPlayingMovies = nowPlayingMovies.sort((a, b) => {
         return b.vote_average - a.vote_average
     })
@@ -55,7 +54,7 @@ export function Home() {
             <ContentHome>
                 <MainScroll showsVerticalScrollIndicator={false}>
                     <TitleContainer>
-                        <TitleHome>{`Welcome ${user?.name.split(' ')[0]}! 👋`}</TitleHome>
+                        <TitleHome>{`Bem vindo ${user?.name.split(' ')[0]}! 👋`}</TitleHome>
                     </TitleContainer>
                     <SearchContainer>
                         <MyTextInput
@@ -67,7 +66,7 @@ export function Home() {
                     </SearchContainer>
                     <View>
                         <TitleContainer>
-                            <TitleHome>Now Playing Movies 🎬</TitleHome>
+                            <TitleHome>Filmes em cartaz 🎬</TitleHome>
                         </TitleContainer>
 
                         <FlatList
@@ -82,7 +81,7 @@ export function Home() {
                     </View>
                     <View>
                         <TitleContainer>
-                            <TitleHome>Upcoming Movies 🏃‍♂️</TitleHome>
+                            <TitleHome>Chegando em breve 🏃‍♂️</TitleHome>
                         </TitleContainer>
 
                         <FlatList

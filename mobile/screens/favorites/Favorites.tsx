@@ -36,6 +36,7 @@ const ContainerFavorites = styled.View`
     align-items: center;
     justify-content: flex-end;
     width: 100%;
+    background-color: white;
 `;
 
 const ContentFavorites = styled.View`

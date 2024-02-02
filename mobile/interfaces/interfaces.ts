@@ -29,6 +29,11 @@ export interface Movie {
     vote_count: number;
 }
 
+export interface Genre {
+    id: number;
+    name: string;
+}
+
 export interface FavoritedMovie {
     id: number;
     title: string;

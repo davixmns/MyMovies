@@ -1,8 +1,8 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import {FavoritedMovie, Movie, MovieContextType, MovieProviderProps} from "../interfaces/interfaces";
+import {FavoritedMovie, Genre, Movie, MovieContextType, MovieProviderProps} from "../interfaces/interfaces";
 import {
     checkIfMovieIsFavoritedService,
-    deleteFavoritedMovieService, getAllFavoriteMoviesService,
+    deleteFavoritedMovieService, getAllFavoriteMoviesService, getMovieByIdService,
     getNowPlayingMoviesService,
     getPopularMoviesService,
     getTopRatedMoviesService,
@@ -25,15 +25,19 @@ export function MovieProvider({children}: MovieProviderProps) {
     const [nowPlayingMovies, setNowPlayingMovies] = useState<Movie[]>([])
     const [myFavoriteMovies, setMyFavoriteMovies] = useState<FavoritedMovie[]>([])
     const [moviesIsLoading, setMoviesIsLoading] = useState<boolean>(true)
+    const [myFavoriteGenres, setMyFavoriteGenres] = useState<string[]>([])
 
     useEffect(() => {
         async function init() {
             try {
-                await loadTopRatedMovies()
-                await loadPopularMovies()
-                await loadUpcomingMovies()
-                await loadNowPlayingMovies()
-                await loadAllMyFavoriteMovies()
+                await Promise.all([
+                    loadTopRatedMovies(),
+                    loadPopularMovies(),
+                    loadUpcomingMovies(),
+                    loadNowPlayingMovies(),
+                    loadAllMyFavoriteMovies(),
+                ])
+                console.log(myFavoriteGenres)
             } catch (e) {
                 console.log(e)
             } finally {

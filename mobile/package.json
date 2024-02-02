@@ -24,8 +24,10 @@
     "react-native": "0.73.2",
     "react-native-animatable": "^1.4.0",
     "react-native-gesture-handler": "^2.14.1",
+    "react-native-gradients": "^2.1.1",
     "react-native-pure-jwt": "^3.0.2",
     "react-native-safe-area-context": "^4.8.2",
+    "react-native-svg": "^14.1.0",
     "styled-components": "^6.1.8"
   },
   "devDependencies": {

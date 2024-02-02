@@ -1,10 +1,10 @@
 import styled from "styled-components/native";
 
 export const ContainerHome = styled.View`
-  flex: 1;
-  background-color: #fafafa;
-  align-items: center;
-  justify-content: flex-end;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: white;
 `
 
 export const ContentHome = styled.View`
@@ -18,7 +18,7 @@ export const ContentHome = styled.View`
 export const TitleHome = styled.Text`
     font-size: 25px;
     font-weight: bold;
-    color: #000;
+    color: black;
     margin-bottom: 10px;
 `
 
@@ -39,10 +39,10 @@ export const CardPadding = styled.View`
 `
 
 export const SearchContainer = styled.View`
-  width: 96%;
-  padding-left: 15px;
-  padding-bottom: 20px;
-  //box-shadow: -5px 6px 5px rgba(0, 0, 0, 0.20);
+    width: 96%;
+    padding-left: 15px;
+    padding-bottom: 20px;
+    //box-shadow: -5px 6px 5px rgba(0, 0, 0, 0.20);
 `
 
 export const NowPlayingContainer = styled.View`

@@ -6,15 +6,11 @@ import {View} from "react-native";
 // @ts-ignore
 //coloque 2 parametros, color e placeholder
 export function WriteReviewButton({isActive, placeholder}) {
-    const buttonColor = isActive ? 'rgba(55, 151, 239, 0.7)' : 'rgba(10, 10, 10, 0.5)'
+    const buttonColor = isActive ? 'rgba(55, 151, 239, 1)' : 'rgba(10, 10, 10, 1)'
     return (
-        <View style={{overflow: 'hidden', borderRadius: 23}}>
-            <BlurView intensity={20} style={{backgroundColor: buttonColor}}>
-                <WriteReviewStyles>
-                    <ButtonPlaceholder>{placeholder}</ButtonPlaceholder>
-                </WriteReviewStyles>
-            </BlurView>
-        </View>
+        <WriteReviewStyles style={{backgroundColor: buttonColor}}>
+            <ButtonPlaceholder disabled={!isActive}>{placeholder}</ButtonPlaceholder>
+        </WriteReviewStyles>
     )
 
 }

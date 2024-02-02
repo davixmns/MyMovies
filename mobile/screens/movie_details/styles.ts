@@ -70,35 +70,36 @@ export const MovieTitle = styled.Text`
     font-size: 25px;
     font-weight: bold;
     color: black;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.20);
 `;
 
-export const MovieGenres = styled.Text.attrs({
-    numberOfLines: 2
-})`
-    font-size: 16px;
+export const SectionTitle = styled.Text`
+    font-size: 20px;
+    font-weight: bold;
     color: black;
-`
+`;
 
+export const MovieDurationContainer = styled.View`
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: row;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+`;
 
 export const MovieDuration = styled.Text`
-    font-size: 16px;
+    font-size: 13px;
     color: black;
-    font-style: italic;
-`;
-
-export const GenresContainer = styled.View`
-    width: 100%;
-    max-width: 100%;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 10px;
+    font-weight: bold;
+    padding: 7px 8px 7px 8px;
 `;
 
 export const MovieDescription = styled.Text`
     font-size: 16px;
     color: black;
-    padding-top: 45px;
+    padding-top: 10px;
 `;
 
 export const WriteReviewContainer = styled.View`
@@ -111,16 +112,56 @@ export const WriteReviewContainer = styled.View`
     //box-shadow: 20px 10px 20px rgba(0, 0, 0, 0.40);
 `;
 
-export const VoteAverageContainer = styled.View`
+export const GenreContainer = styled.View`
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-between;
-    padding-top: 20px;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+`
+
+export const MovieGenre = styled.Text`
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    padding: 2px 8px 2px 8px;
 `
 
 export const VoteAverage = styled.Text`
     font-size: 30px;
-    color: black;
+    color: #ffc83a;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.40);
     font-weight: bold;
 `;
 
+export const ReleaseAndRatingContainer = styled.View`
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+    justify-content: space-between;
+    margin-top: 15px;
+`
+
+export const ReleaseAndRatingContent = styled.View`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+`
+
+export const VoteAverageContainer = styled.View`
+    display: flex;
+    flex-direction: row;
+    gap: 5px
+`
+
+export const OverviewContainer = styled.View`
+    margin-top: 30px;
+`
+
+export const ReleaseDateText = styled.Text`
+    font-size: 30px;
+    color: black;
+    font-weight: bold;
+`

@@ -67,7 +67,7 @@ const CardContainer = styled.View`
 
 const MovieTitle = styled.Text`
     font-size: 18px;
-
+    color: black;
 `
 
 const MovieTitleContainer = styled.View`
