@@ -1,4 +1,4 @@
-import {FlatList, View} from 'react-native';
+import {FlatList, ScrollView, View} from 'react-native';
 import {useMovieContext} from "../../contexts/MovieContext";
 import {MovieCard} from "../../components/MovieCard";
 import {useAuthContext} from "../../contexts/AuthContext";
@@ -7,18 +7,19 @@ import {useState} from "react";
 import {
     CardPadding,
     ContainerHome,
-    ContentHome,
+    ContentHome, GenresContainer,
     MainScroll,
     NowPlayingContainer,
     SearchContainer,
     TitleContainer,
     TitleHome
 } from "./styles";
+import GenresCapsules from "../../components/GenresCapsules";
 
 export function Home() {
     const [searchText, setSearchText] = useState('')
     const {user} = useAuthContext()
-    const {upcomingMovies, nowPlayingMovies,} = useMovieContext();
+    const {upcomingMovies, nowPlayingMovies, allGenres} = useMovieContext();
     const sortedNowPlayingMovies = nowPlayingMovies.sort((a, b) => {
         return b.vote_average - a.vote_average
     })
@@ -54,7 +55,7 @@ export function Home() {
             <ContentHome>
                 <MainScroll showsVerticalScrollIndicator={false}>
                     <TitleContainer>
-                        <TitleHome>{`Bem vindo ${user?.name.split(' ')[0]}! 👋`}</TitleHome>
+                        <TitleHome>{`Welcome, ${user?.name.split(' ')[0]}! 👋`}</TitleHome>
                     </TitleContainer>
                     <SearchContainer>
                         <MyTextInput
@@ -64,9 +65,14 @@ export function Home() {
                             iconName={'magnifying-glass'}
                         />
                     </SearchContainer>
+                    <GenresContainer>
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                            <GenresCapsules genres={allGenres}/>
+                        </ScrollView>
+                    </GenresContainer>
                     <View>
                         <TitleContainer>
-                            <TitleHome>Filmes em cartaz 🎬</TitleHome>
+                            <TitleHome>Now Playing Movies 🎬</TitleHome>
                         </TitleContainer>
 
                         <FlatList
@@ -81,7 +87,7 @@ export function Home() {
                     </View>
                     <View>
                         <TitleContainer>
-                            <TitleHome>Chegando em breve 🏃‍♂️</TitleHome>
+                            <TitleHome>Upcoming Movies 🏃‍♂️</TitleHome>
                         </TitleContainer>
 
                         <FlatList

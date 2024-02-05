@@ -63,6 +63,7 @@ export interface MovieContextType {
     checkIfMovieIsFavorited: (tmdbMovieId: number) => Promise<boolean>;
     moviesIsLoading: boolean;
     loadAllMyFavoriteMovies: () => Promise<void>;
+    allGenres: Genre[];
 }
 
 export interface UserContextType {

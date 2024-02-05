@@ -11,7 +11,7 @@ import {
     MovieDetailsContainer, BackButton, MovieDetailsContent, MoviePosterContainer,
     MoviePoster, HeaderContainer, HeaderTitle, LoadingContainer,
     DescriptionContainer, MovieTitle, MovieDuration, MovieDescription,
-    WriteReviewContainer, VoteAverage, GenreContainer, MovieGenre,
+    WriteReviewContainer, VoteAverage, GenreContainer,
     MovieDurationContainer, SectionTitle, ReleaseAndRatingContent,
     ReleaseAndRatingContainer, VoteAverageContainer, OverviewContainer,
     FavoriteButton, ReleaseDateText,
@@ -115,7 +115,7 @@ export function MovieDetails({route}) {
                         <BackButton onPress={() => navigation.goBack()}>
                             <AntDesign name="arrowleft" size={35} color="black" style={{padding: 5}}/>
                         </BackButton>
-                        <HeaderTitle>Detalhes</HeaderTitle>
+                        <HeaderTitle>Movie Details</HeaderTitle>
                         <FavoriteButton onPress={toggleButton}>
                             <AntDesign name={isFavorited ? 'heart' : 'hearto'} size={30} color="red"/>
                         </FavoriteButton>
@@ -137,10 +137,8 @@ export function MovieDetails({route}) {
                         <GenreContainer>
                             <GenresCapsules genres={movieGenres}/>
                             <MovieDurationContainer>
-                                <>
-                                    <FontAwesome6 name={'clock'} size={15} color={'black'}/>
-                                    <MovieDuration>{movieDuration}</MovieDuration>
-                                </>
+                                <FontAwesome6 name={'clock'} size={16} color={'black'}/>
+                                <MovieDuration>{movieDuration}</MovieDuration>
                             </MovieDurationContainer>
                         </GenreContainer>
 

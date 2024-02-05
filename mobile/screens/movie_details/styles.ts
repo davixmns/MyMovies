@@ -62,7 +62,6 @@ export const DescriptionContainer = styled.View`
     width: 100%;
     align-items: flex-start;
     justify-content: flex-start;
-
     margin-top: 20px;
 `;
 
@@ -78,6 +77,15 @@ export const SectionTitle = styled.Text`
     color: black;
 `;
 
+export const GenreContainer = styled.View`
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 10px;
+`
+
+
 export const MovieDurationContainer = styled.View`
     background-color: #fafafa;
     display: flex;
@@ -85,14 +93,16 @@ export const MovieDurationContainer = styled.View`
     border-radius: 10px;
     align-items: center;
     justify-content: center;
-    width: 100px;
+    width: 90px;
+    height: 30px;
 `;
 
 export const MovieDuration = styled.Text`
     font-size: 13px;
     color: black;
     font-weight: bold;
-    padding: 7px 8px 7px 8px;
+    padding-left: 5px;
+    padding-right: 5px;
 `;
 
 export const MovieDescription = styled.Text`
@@ -111,21 +121,6 @@ export const WriteReviewContainer = styled.View`
     //box-shadow: 20px 10px 20px rgba(0, 0, 0, 0.40);
 `;
 
-export const GenreContainer = styled.View`
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    gap: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-`
-
-export const MovieGenre = styled.Text`
-    font-size: 13px;
-    font-weight: bold;
-    color: white;
-    padding: 2px 8px 2px 8px;
-`
 
 export const VoteAverage = styled.Text`
     font-size: 30px;

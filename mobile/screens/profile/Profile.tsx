@@ -21,14 +21,14 @@ export const Profile = () => {
     function handleLogout() {
         if (!logout) return
         Alert.alert(
-            "Sair",
-            "Deseja realmente sair?",
+            "Sign out",
+            "Are you sure you want to sign out?",
             [
                 {
-                    text: "Cancelar",
+                    text: "Cancel",
                     style: "cancel"
                 },
-                {text: "Sair", onPress: () => logout()}
+                {text: "Sign out", onPress: () => logout()}
             ]
         );
     }
@@ -58,7 +58,7 @@ export const Profile = () => {
                     <ProfileItemContainer>
                         <TextButton
                             onPress={handleLogout}
-                            placeholder={'Sair'}
+                            placeholder={'Sign out'}
                             iconName={'right-from-bracket'}
                         />
                     </ProfileItemContainer>

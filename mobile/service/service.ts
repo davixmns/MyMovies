@@ -9,6 +9,10 @@ export async function loginService(email: string, password: string){
     )
 }
 
+export async function getAllGenresService(){
+    return await axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${TMDB_API_KEY}&language=en-US`)
+}
+
 export async function createUserAccountService(user: User){
     return await axios.post(
         `http://${MY_IP}/user`,
@@ -59,27 +63,27 @@ export async function checkIfMovieIsFavoritedService(tmdbMovieId: number, user_j
 }
 
 export async function getTopRatedMoviesService(){
-    const topRatedMovies = await axios.get(`${TMDB_URL}top_rated?api_key=${TMDB_API_KEY}&language=pt-BR&page=1`)
+    const topRatedMovies = await axios.get(`${TMDB_URL}top_rated?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
     return topRatedMovies.data.results
 }
 
 export async function getPopularMoviesService(){
-    const popularMovies = await axios.get(`${TMDB_URL}popular?api_key=${TMDB_API_KEY}&language=pt-BR&page=1`)
+    const popularMovies = await axios.get(`${TMDB_URL}popular?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
     return popularMovies.data.results
 }
 
 export async function getUpcomingMoviesService(){
-    const upcomingMovies = await axios.get(`${TMDB_URL}upcoming?api_key=${TMDB_API_KEY}&language=pt-BR&page=1`)
+    const upcomingMovies = await axios.get(`${TMDB_URL}upcoming?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
     return upcomingMovies.data.results
 }
 
 export async function getNowPlayingMoviesService(){
-    const nowPlayingMovies = await axios.get(`${TMDB_URL}now_playing?api_key=${TMDB_API_KEY}&language=pt-BR&page=1`)
+    const nowPlayingMovies = await axios.get(`${TMDB_URL}now_playing?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
     return nowPlayingMovies.data.results
 }
 
 export async function getMovieByIdService(id: string){
-    const movie = await axios.get(`${TMDB_URL}${id}?api_key=${TMDB_API_KEY}&language=pt-BR`)
+    const movie = await axios.get(`${TMDB_URL}${id}?api_key=${TMDB_API_KEY}&language=en-US`)
     return movie.data
 }
 

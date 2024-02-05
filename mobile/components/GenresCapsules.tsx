@@ -1,57 +1,51 @@
 import {View} from "react-native";
-import {MovieGenre} from "../screens/movie_details/styles";
 import {Genre} from "../interfaces/interfaces";
+import styled from "styled-components/native";
 
 export default function GenresCapsules({genres}: { genres: Genre[] }) {
     function getGenreColor(genre: string) {
         let genderColor;
         switch (genre) {
-            case 'Ficção científica':
+            case 'Science Fiction':
                 genderColor = '#7f8c8d';
                 break;
-            case 'Ação':
+            case 'Action':
                 genderColor = '#e74c3c';
                 break;
-            case 'Animação':
+            case 'Animation':
                 genderColor = '#2ecc71';
                 break;
-            case 'Aventura':
+            case 'Adventure':
                 genderColor = '#f39c12';
                 break;
-            case 'Comédia':
+            case 'Comedy':
                 genderColor = '#f1c40f';
                 break;
-            case 'Terror':
-                genderColor = '#95a5a6';
-                break;
-            case 'Fantasia':
+            case 'Fantasy':
                 genderColor = '#9b59b6';
                 break;
             case 'Romance':
                 genderColor = '#e08283';
                 break;
-            case 'Suspense':
-                genderColor = '#bdc3c7';
-                break;
             case 'Drama':
                 genderColor = '#8d6e63';
                 break;
-            case 'Documentário':
+            case 'Documentary':
                 genderColor = '#27ae60';
                 break;
-            case 'Família':
+            case 'Family':
                 genderColor = '#3498db';
                 break;
-            case 'Guerra':
+            case 'War':
                 genderColor = '#34495e';
                 break;
-            case 'História':
+            case 'History':
                 genderColor = '#e67e22';
                 break;
-            case 'Música':
+            case 'Music':
                 genderColor = '#8e44ad';
                 break;
-            case 'Mistério':
+            case 'Mystery':
                 genderColor = '#8e44ad';
                 break;
             case 'Crime':
@@ -63,23 +57,50 @@ export default function GenresCapsules({genres}: { genres: Genre[] }) {
             case 'Horror':
                 genderColor = '#95a5a6';
                 break;
+            case 'TV Movie':
+                genderColor = '#d35400';
+                break;
+            case 'Western':
+                genderColor = '#c0392b';
+                break;
             default:
-                genderColor = 'white'; // default color
+                genderColor = 'gray'; // default color
         }
         return genderColor;
     }
 
 
     return (
-        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+        <CapsuleContainer>
             {genres.map((genre) => (
-                <View key={genre.id.toString()}
-                      style={{backgroundColor: getGenreColor(genre.name), borderRadius: 10, padding: 5, margin: 2}}>
+                <CapsuleContent key={genre.id} style={{backgroundColor: getGenreColor(genre.name)}}>
                     <MovieGenre>
                         {genre.name}
                     </MovieGenre>
-                </View>
+                </CapsuleContent>
             ))}
-        </View>
+        </CapsuleContainer>
     );
 }
+
+const CapsuleContent = styled.View`
+    margin-right: 10px;
+    margin-top: 10px;
+    
+    
+    
+    border-radius: 10px;
+    padding: 5px;
+`
+
+const CapsuleContainer = styled.View`
+    flex-direction: row;
+    flex-wrap: wrap;
+`;
+
+export const MovieGenre = styled.Text`
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    padding: 2px 8px 2px 8px;
+`

@@ -10,7 +10,7 @@ export function Favorites() {
             <ContentFavorites>
                 <ScrollFavorites>
                     <TitleFavoriteContainer>
-                        <TitleFavorites>Seus Favoritos ❤️</TitleFavorites>
+                        <TitleFavorites>Your Favorites ❤️</TitleFavorites>
                     </TitleFavoriteContainer>
                     <MoviesContainer>
                         {myFavoriteMovies.map((movie, index) => (

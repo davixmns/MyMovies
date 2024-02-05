@@ -1,17 +1,19 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import {FavoritedMovie, Genre, Movie, MovieContextType, MovieProviderProps} from "../interfaces/interfaces";
+import {useAuthContext} from "./AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const MovieContext = createContext<MovieContextType>({} as MovieContextType);
 import {
     checkIfMovieIsFavoritedService,
-    deleteFavoritedMovieService, getAllFavoriteMoviesService, getMovieByIdService,
+    deleteFavoritedMovieService,
+    getAllFavoriteMoviesService, getAllGenresService,
     getNowPlayingMoviesService,
     getPopularMoviesService,
     getTopRatedMoviesService,
     getUpcomingMoviesService,
     saveFavoritedMovieService
 } from "../service/service";
-import {useAuthContext} from "./AuthContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-const MovieContext = createContext<MovieContextType>({} as MovieContextType);
 
 export const useMovieContext = () => {
     return useContext(MovieContext)
@@ -25,17 +27,19 @@ export function MovieProvider({children}: MovieProviderProps) {
     const [nowPlayingMovies, setNowPlayingMovies] = useState<Movie[]>([])
     const [myFavoriteMovies, setMyFavoriteMovies] = useState<FavoritedMovie[]>([])
     const [moviesIsLoading, setMoviesIsLoading] = useState<boolean>(true)
+    const [allGenres, setAllGenres] = useState<Genre[]>([])
     const [myFavoriteGenres, setMyFavoriteGenres] = useState<string[]>([])
 
     useEffect(() => {
         async function init() {
             try {
                 await Promise.all([
-                    loadTopRatedMovies(),
-                    loadPopularMovies(),
+                    // loadTopRatedMovies(),
+                    // loadPopularMovies(),
                     loadUpcomingMovies(),
                     loadNowPlayingMovies(),
                     loadAllMyFavoriteMovies(),
+                    loadAllGenres()
                 ])
             } catch (e) {
                 console.log(e)
@@ -43,7 +47,7 @@ export function MovieProvider({children}: MovieProviderProps) {
                 setMoviesIsLoading(false)
             }
         }
-        init()
+        if (isAuthenticated) init()
     }, [isAuthenticated])
 
     async function loadTopRatedMovies() {
@@ -111,6 +115,11 @@ export function MovieProvider({children}: MovieProviderProps) {
         setMyFavoriteMovies(response.data)
     }
 
+    async function loadAllGenres() {
+        const response = await getAllGenresService()
+        setAllGenres(response.data.genres)
+    }
+
     return (
         <MovieContext.Provider
             value={{
@@ -123,7 +132,8 @@ export function MovieProvider({children}: MovieProviderProps) {
                 deleteFavoriteMovie,
                 checkIfMovieIsFavorited,
                 moviesIsLoading,
-                loadAllMyFavoriteMovies
+                loadAllMyFavoriteMovies,
+                allGenres,
             }}>
             {children}
         </MovieContext.Provider>
