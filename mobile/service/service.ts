@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {MY_IP, VITE_API, VITE_API_KEY} from "../config";
+import {MY_IP, TMDB_URL, TMDB_API_KEY} from "../config";
 import {FavoritedMovie, User} from "../interfaces/interfaces";
 
 export async function loginService(email: string, password: string){
@@ -31,6 +31,7 @@ export async function saveFavoritedMovieService(movie : FavoritedMovie, user_jwt
             title: movie.title,
             tmdb_movie_id: movie.id,
             poster_path: movie.poster_path,
+            genres: movie.genres
         },
         {headers: {Authorization: `Bearer ${user_jwt}`}}
     )
@@ -58,27 +59,27 @@ export async function checkIfMovieIsFavoritedService(tmdbMovieId: number, user_j
 }
 
 export async function getTopRatedMoviesService(){
-    const topRatedMovies = await axios.get(`${VITE_API}top_rated?api_key=${VITE_API_KEY}&language=pt-BR&page=1`)
+    const topRatedMovies = await axios.get(`${TMDB_URL}top_rated?api_key=${TMDB_API_KEY}&language=pt-BR&page=1`)
     return topRatedMovies.data.results
 }
 
 export async function getPopularMoviesService(){
-    const popularMovies = await axios.get(`${VITE_API}popular?api_key=${VITE_API_KEY}&language=pt-BR&page=1`)
+    const popularMovies = await axios.get(`${TMDB_URL}popular?api_key=${TMDB_API_KEY}&language=pt-BR&page=1`)
     return popularMovies.data.results
 }
 
 export async function getUpcomingMoviesService(){
-    const upcomingMovies = await axios.get(`${VITE_API}upcoming?api_key=${VITE_API_KEY}&language=pt-BR&page=1`)
+    const upcomingMovies = await axios.get(`${TMDB_URL}upcoming?api_key=${TMDB_API_KEY}&language=pt-BR&page=1`)
     return upcomingMovies.data.results
 }
 
 export async function getNowPlayingMoviesService(){
-    const nowPlayingMovies = await axios.get(`${VITE_API}now_playing?api_key=${VITE_API_KEY}&language=pt-BR&page=1`)
+    const nowPlayingMovies = await axios.get(`${TMDB_URL}now_playing?api_key=${TMDB_API_KEY}&language=pt-BR&page=1`)
     return nowPlayingMovies.data.results
 }
 
 export async function getMovieByIdService(id: string){
-    const movie = await axios.get(`${VITE_API}${id}?api_key=${VITE_API_KEY}&language=pt-BR`)
+    const movie = await axios.get(`${TMDB_URL}${id}?api_key=${TMDB_API_KEY}&language=pt-BR`)
     return movie.data
 }
 

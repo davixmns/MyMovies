@@ -12,11 +12,13 @@ export function useUserContext() {
 
 export function UserProvider({children}: UserProviderProps) {
     const {setIsAuthenticated} = useAuthContext()
+    const {setUser} = useAuthContext()
 
     async function createUserAccount(newUser: User) {
         await createUserAccountService(newUser)
             .then(async (response) => {
                 const data = response.data
+                setUser(data.user)
                 await AsyncStorage.setItem('@user-jwt', data.user_jwt)
                 setIsAuthenticated(true)
             })

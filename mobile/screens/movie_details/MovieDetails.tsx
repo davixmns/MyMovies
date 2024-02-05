@@ -52,6 +52,7 @@ export function MovieDetails({route}) {
         id: movie.id,
         title: movie.title,
         poster_path: movie.poster_path,
+        genres: movieGenres,
     }
 
     useEffect(() => {
@@ -114,7 +115,7 @@ export function MovieDetails({route}) {
                         <BackButton onPress={() => navigation.goBack()}>
                             <AntDesign name="arrowleft" size={35} color="black" style={{padding: 5}}/>
                         </BackButton>
-                        <HeaderTitle>Movie Detail</HeaderTitle>
+                        <HeaderTitle>Detalhes</HeaderTitle>
                         <FavoriteButton onPress={toggleButton}>
                             <AntDesign name={isFavorited ? 'heart' : 'hearto'} size={30} color="red"/>
                         </FavoriteButton>

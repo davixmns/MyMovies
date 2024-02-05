@@ -4,10 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "type": "module",
-    "scripts": {
-        "start": "nodemon server.js"
-    },
+  "scripts": {
+    "start": "nodemon server.js"
+  },
   "dependencies": {
+    "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",

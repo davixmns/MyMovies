@@ -37,7 +37,6 @@ export function MovieProvider({children}: MovieProviderProps) {
                     loadNowPlayingMovies(),
                     loadAllMyFavoriteMovies(),
                 ])
-                console.log(myFavoriteGenres)
             } catch (e) {
                 console.log(e)
             } finally {

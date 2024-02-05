@@ -1,36 +1,36 @@
+import {useAuthContext} from "../../contexts/AuthContext";
+//@ts-ignore
+import defaultPicture from '../../assets/default_picture.jpg'
+import {Alert} from "react-native";
+import {TextButton} from "../../components/TextButton";
 import {
     ContainerProfile,
     ContentProfile,
-    HeaderProfileContainer,
+    HeaderProfileContainer, OptionsContainer,
     ProfileImage,
-    ProfileImageShadow,
+    ProfileImageShadow, ProfileItemContainer,
     UserDataContainer,
     UserEmailText,
     UserNameText
 } from "./styles";
-import {MyButton} from "../../components/MyButton";
-import {ButtonContainer} from "../login/styles";
-import {useAuthContext} from "../../contexts/AuthContext";
 
-//@ts-ignore
-import defaultPicture from '../../assets/default_picture.jpg'
-import {useMovieContext} from "../../contexts/MovieContext";
-import {useEffect} from "react";
 
 export const Profile = () => {
-    const {myFavoriteMovies} = useMovieContext()
     const {user, logout} = useAuthContext()
 
-    useEffect(() => {
-        console.log(favoritesGenres())
-    }, []);
-
-    function favoritesGenres() {
-        
-    }
-
     function handleLogout() {
-        if (logout) logout()
+        if (!logout) return
+        Alert.alert(
+            "Sair",
+            "Deseja realmente sair?",
+            [
+                {
+                    text: "Cancelar",
+                    style: "cancel"
+                },
+                {text: "Sair", onPress: () => logout()}
+            ]
+        );
     }
 
     function renderProfileImage() {
@@ -54,9 +54,16 @@ export const Profile = () => {
                         <UserEmailText>{user?.email}</UserEmailText>
                     </UserDataContainer>
                 </HeaderProfileContainer>
-                <ButtonContainer>
-                    <MyButton onPress={handleLogout}>Log Out</MyButton>
-                </ButtonContainer>
+                <OptionsContainer>
+                    <ProfileItemContainer>
+                        <TextButton
+                            onPress={handleLogout}
+                            placeholder={'Sair'}
+                            iconName={'right-from-bracket'}
+                        />
+                    </ProfileItemContainer>
+
+                </OptionsContainer>
             </ContentProfile>
         </ContainerProfile>
     );

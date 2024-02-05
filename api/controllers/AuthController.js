@@ -1,6 +1,6 @@
-import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import utils from "../utils/utils.js";
+import {User} from "../models/Models.js";
 
 export default {
     async login(req, res) {
@@ -12,7 +12,12 @@ export default {
             const passwordMatch = await bcrypt.compare(password, userExists.password);
             if (!passwordMatch) return res.status(401).json({message: 'Invalid password'});
             const user_jwt = utils.signJWT({user_id: userExists.user_id});
-            return res.status(200).json({user_jwt: user_jwt, message: 'Login successful'});
+            const userDTO = {
+                user_id: userExists.user_id,
+                name: userExists.name,
+                email: userExists.email
+            }
+            return res.status(200).json({user_jwt: user_jwt, user: userDTO, message: 'Login successful'});
         } catch (e) {
             console.log(e)
             return res.status(500).json({message: 'Error logging in'})

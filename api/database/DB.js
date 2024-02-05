@@ -1,5 +1,6 @@
 import {Sequelize} from "sequelize";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const dbName = process.env.DB_NAME
@@ -18,12 +19,13 @@ console.log("Conectando ao banco de dados: ", dbName, dbUser, dbPass, host, port
 
 sequelize.authenticate()
     .then(() => {
-        console.log("Conectado ao banco");
-        sequelize.sync();
+        sequelize.sync({ force: false })
     })
     .catch((error) => {
         console.error("Unable to connect to the database: ", error);
     });
+
+
 
 
 export default sequelize;

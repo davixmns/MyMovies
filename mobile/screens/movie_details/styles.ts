@@ -70,7 +70,6 @@ export const MovieTitle = styled.Text`
     font-size: 25px;
     font-weight: bold;
     color: black;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.20);
 `;
 
 export const SectionTitle = styled.Text`

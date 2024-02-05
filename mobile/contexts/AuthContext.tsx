@@ -30,8 +30,8 @@ export function AuthProvider({children}: AuthProviderProps) {
                     name: data.user.name,
                     email: data.user.email,
                 }
-                setUser(user)
                 setIsAuthenticated(true)
+                setUser(user)
             })
             .catch(() => {
 
@@ -45,8 +45,9 @@ export function AuthProvider({children}: AuthProviderProps) {
         await loginService(email, password)
             .then(async (response) => {
                 const data = response.data
+                setUser(data.user)
                 await AsyncStorage.setItem('@user-jwt', data.user_jwt)
-                verifyIfUserIsAuthenticated()
+                setIsAuthenticated(true)
             }).catch((e) => {
                 Alert.alert('Erro', e.response.data.message)
             })

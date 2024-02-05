@@ -1,7 +1,6 @@
-import User from "../models/User.js";
+import {User} from "../models/Models.js";
 import bcrypt from 'bcrypt';
 import utils from "../utils/utils.js";
-
 
 export default {
     async createUserAccount(req, res){
@@ -14,7 +13,12 @@ export default {
             const hashedPassword = await bcrypt.hash(password, 10);
             const newUser = await User.create({name, email, password: hashedPassword});
             const user_jwt = utils.signJWT({user_id: newUser.user_id});
-            return res.status(201).json({user_jwt: user_jwt, message: 'Conta criada com sucesso'});
+            const userDTO = {
+                user_id: newUser.user_id,
+                name: newUser.name,
+                email: newUser.email
+            }
+            return res.status(201).json({user_jwt: user_jwt, user: userDTO, message: 'Conta criada com sucesso'});
         }catch (e) {
             console.log("Erro ao criar usuario: ", e)
             return res.status(500).json({message: 'Erro ao criar conta'})

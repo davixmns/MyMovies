@@ -1,8 +1,9 @@
-import middleware from '../middlewares/middleware.js';
-import UserController from "../controllers/UserController.js";
-import AuthController from "../controllers/AuthController.js";
-import MovieController from "../controllers/MovieController.js";
+
 import {Router} from 'express';
+import AuthController from "../controllers/AuthController.js";
+import UserController from "../controllers/UserController.js";
+import middleware from "../middlewares/middleware.js";
+import MovieController from "../controllers/MovieController.js";
 
 const router = Router();
 

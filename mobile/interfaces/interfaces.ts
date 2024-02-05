@@ -3,6 +3,7 @@ import {ReactNode} from "react";
 export interface User {
     name: string;
     email: string;
+    password?: string;
 }
 
 export interface Movie {
@@ -38,6 +39,7 @@ export interface FavoritedMovie {
     id: number;
     title: string;
     poster_path?: string;
+    genres: Genre[];
 }
 
 export interface AuthContextType {
