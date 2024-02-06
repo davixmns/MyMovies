@@ -12,9 +12,9 @@ import {
     MoviePoster, HeaderContainer, HeaderTitle, LoadingContainer,
     DescriptionContainer, MovieTitle, MovieDuration, MovieDescription,
     WriteReviewContainer, VoteAverage, GenreContainer,
-    MovieDurationContainer, SectionTitle, ReleaseAndRatingContent,
+    MovieDurationContent, SectionTitle, ReleaseAndRatingContent,
     ReleaseAndRatingContainer, VoteAverageContainer, OverviewContainer,
-    FavoriteButton, ReleaseDateText,
+    FavoriteButton, ReleaseDateText, GenreAndDurationContainer, MovieDurationContainer,
 } from "./styles";
 import GenresCapsules from "../../components/GenresCapsules";
 
@@ -110,16 +110,16 @@ export function MovieDetails({route}) {
                 blurRadius={40}
             />
             <MovieDetailsContent>
+                <HeaderContainer>
+                    <BackButton onPress={() => navigation.goBack()}>
+                        <AntDesign name="arrowleft" size={35} color="black" style={{padding: 5}}/>
+                    </BackButton>
+                    <HeaderTitle>Movie Details</HeaderTitle>
+                    <FavoriteButton onPress={toggleButton}>
+                        <AntDesign name={isFavorited ? 'heart' : 'hearto'} size={30} color="red"/>
+                    </FavoriteButton>
+                </HeaderContainer>
                 <ScrollView contentContainerStyle={{alignItems: 'center'}} showsVerticalScrollIndicator={false}>
-                    <HeaderContainer>
-                        <BackButton onPress={() => navigation.goBack()}>
-                            <AntDesign name="arrowleft" size={35} color="black" style={{padding: 5}}/>
-                        </BackButton>
-                        <HeaderTitle>Movie Details</HeaderTitle>
-                        <FavoriteButton onPress={toggleButton}>
-                            <AntDesign name={isFavorited ? 'heart' : 'hearto'} size={30} color="red"/>
-                        </FavoriteButton>
-                    </HeaderContainer>
                     {posterIsLoading && (
                         <LoadingContainer>
                             <ActivityIndicator size="large" color='black'/>
@@ -134,13 +134,18 @@ export function MovieDetails({route}) {
                     </MoviePosterContainer>
                     <DescriptionContainer>
                         <MovieTitle>{movie.title}</MovieTitle>
-                        <GenreContainer>
-                            <GenresCapsules genres={movieGenres}/>
+
+                        <GenreAndDurationContainer>
+                            <GenreContainer>
+                                <GenresCapsules genres={movieGenres}/>
+                            </GenreContainer>
                             <MovieDurationContainer>
-                                <FontAwesome6 name={'clock'} size={16} color={'black'}/>
-                                <MovieDuration>{movieDuration}</MovieDuration>
+                                <MovieDurationContent>
+                                    <FontAwesome6 name={'clock'} size={16} color={'black'}/>
+                                    <MovieDuration>{movieDuration}</MovieDuration>
+                                </MovieDurationContent>
                             </MovieDurationContainer>
-                        </GenreContainer>
+                        </GenreAndDurationContainer>
 
                         <ReleaseAndRatingContainer>
                             <ReleaseAndRatingContent>

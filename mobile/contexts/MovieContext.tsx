@@ -11,7 +11,7 @@ import {
     getNowPlayingMoviesService,
     getPopularMoviesService,
     getTopRatedMoviesService,
-    getUpcomingMoviesService,
+    getUpcomingMoviesService, getUserFavoriteGenresService,
     saveFavoritedMovieService
 } from "../service/service";
 
@@ -28,7 +28,7 @@ export function MovieProvider({children}: MovieProviderProps) {
     const [myFavoriteMovies, setMyFavoriteMovies] = useState<FavoritedMovie[]>([])
     const [moviesIsLoading, setMoviesIsLoading] = useState<boolean>(true)
     const [allGenres, setAllGenres] = useState<Genre[]>([])
-    const [myFavoriteGenres, setMyFavoriteGenres] = useState<string[]>([])
+    const [userFavoriteGenres, setUserFavoriteGenres] = useState<Genre[]>([])
 
     useEffect(() => {
         async function init() {
@@ -39,7 +39,8 @@ export function MovieProvider({children}: MovieProviderProps) {
                     loadUpcomingMovies(),
                     loadNowPlayingMovies(),
                     loadAllMyFavoriteMovies(),
-                    loadAllGenres()
+                    loadAllGenres(),
+                    loadUserFavoriteGenres(),
                 ])
             } catch (e) {
                 console.log(e)
@@ -47,7 +48,11 @@ export function MovieProvider({children}: MovieProviderProps) {
                 setMoviesIsLoading(false)
             }
         }
-        if (isAuthenticated) init()
+
+        if (isAuthenticated) {
+            init()
+            return
+        }
     }, [isAuthenticated])
 
     async function loadTopRatedMovies() {
@@ -108,16 +113,35 @@ export function MovieProvider({children}: MovieProviderProps) {
     }
 
     async function loadAllMyFavoriteMovies() {
-        const user_jwt = await AsyncStorage.getItem('@user-jwt')
-        if (!user_jwt) return
-        const response = await getAllFavoriteMoviesService(user_jwt)
-        setMyFavoriteMovies([])
-        setMyFavoriteMovies(response.data)
+        try {
+            const user_jwt = await AsyncStorage.getItem('@user-jwt')
+            if (!user_jwt) return
+            const response = await getAllFavoriteMoviesService(user_jwt)
+            setMyFavoriteMovies([])
+            setMyFavoriteMovies(response.data)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     async function loadAllGenres() {
-        const response = await getAllGenresService()
-        setAllGenres(response.data.genres)
+        try {
+            const response = await getAllGenresService()
+            setAllGenres(response.data.genres)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async function loadUserFavoriteGenres() {
+        try {
+            const user_jwt = await AsyncStorage.getItem('@user-jwt')
+            if (!user_jwt) return
+            const favoriteGenres = await getUserFavoriteGenresService(user_jwt)
+            setUserFavoriteGenres(favoriteGenres.data)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     return (
@@ -128,12 +152,13 @@ export function MovieProvider({children}: MovieProviderProps) {
                 upcomingMovies,
                 nowPlayingMovies,
                 myFavoriteMovies,
+                moviesIsLoading,
+                allGenres,
+                userFavoriteGenres,
                 saveFavoriteMovie,
                 deleteFavoriteMovie,
                 checkIfMovieIsFavorited,
-                moviesIsLoading,
                 loadAllMyFavoriteMovies,
-                allGenres,
             }}>
             {children}
         </MovieContext.Provider>

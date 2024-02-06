@@ -14,5 +14,6 @@ router.post('/favorite-movie', middleware.verifyUserJWT, MovieController.favorit
 router.delete(`/favorite-movie/:tmdb_movie_id`, middleware.verifyUserJWT, MovieController.unfavoriteMovie)
 router.get(`/favorite-movie/:tmdb_movie_id`, middleware.verifyUserJWT, MovieController.checkIfMovieIsFavorited)
 router.get(`/favorite-movies`, middleware.verifyUserJWT, MovieController.getAllFavoriteMovies)
+router.get(`/favorite-genres`, middleware.verifyUserJWT, MovieController.getFavoriteGenres)
 
 export default router;

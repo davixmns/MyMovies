@@ -2,7 +2,7 @@ import {useContext, createContext, useState, useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthContextType, AuthProviderProps, User} from "../interfaces/interfaces";
 import {Alert} from "react-native";
-import {loginService, verifyUserJwtService} from "../service/service";
+import {deleteMyAccountService, loginService, verifyUserJwtService} from "../service/service";
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
@@ -63,6 +63,19 @@ export function AuthProvider({children}: AuthProviderProps) {
         }
     }
 
+    async function deleteMyAccount() {
+        try {
+            const user_jwt = await AsyncStorage.getItem('@user-jwt')
+            if (!user_jwt) return
+            await deleteMyAccountService(user_jwt)
+            setIsAuthenticated(false)
+            setUser(null)
+            await AsyncStorage.removeItem('@user-jwt')
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     return (
         <AuthContext.Provider value={{
             isAuthenticated,
@@ -71,7 +84,8 @@ export function AuthProvider({children}: AuthProviderProps) {
             user,
             setUser,
             login,
-            logout
+            logout,
+            deleteMyAccount
         }}>
             {children}
         </AuthContext.Provider>

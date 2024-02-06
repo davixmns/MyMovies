@@ -33,6 +33,7 @@ export interface Movie {
 export interface Genre {
     id: number;
     name: string;
+    count?: number;
 }
 
 export interface FavoritedMovie {
@@ -50,6 +51,7 @@ export interface AuthContextType {
     setUser: (user: User | null) => void;
     login?: (email: string, password: string) => Promise<void>;
     logout?: () => void;
+    deleteMyAccount?: () => Promise<void>;
 }
 
 export interface MovieContextType {
@@ -64,6 +66,7 @@ export interface MovieContextType {
     moviesIsLoading: boolean;
     loadAllMyFavoriteMovies: () => Promise<void>;
     allGenres: Genre[];
+    userFavoriteGenres: Genre[];
 }
 
 export interface UserContextType {

@@ -65,5 +65,40 @@ export default {
             console.log(e)
             return res.status(500).json({message: 'Erro ao buscar filmes favoritos'})
         }
+    },
+
+    async getFavoriteGenres(req, res) {
+        try {
+            const favoriteMovies = await FavoriteMovie.findAll({where: {user_id: req.user_id}})
+            const favoriteGenres = []
+
+            for (const favoriteMovie of favoriteMovies) {
+                const genres = await FavoriteMovieGenre.findAll({where: {favorite_movie_id: favoriteMovie.favorite_movie_id}})
+                for (const genre of genres) {
+                    const genreOnDatabase = await Genre.findOne({where: {genre_id: genre.genre_id}})
+                    favoriteGenres.push({id: genreOnDatabase.tmdb_genre_id, name: genreOnDatabase.name})
+                }
+            }
+
+            const genresCounter = []
+            for (const genre of favoriteGenres) {
+                const index = genresCounter.findIndex(g => g.id === genre.id)
+                if (index !== -1) {
+                    genresCounter[index].count++
+                } else {
+                    genresCounter.push({...genre, count: 1})
+                }
+            }
+
+            //deixar em ordem decrescente
+            genresCounter.sort((a, b) => b.count - a.count)
+            //deixar os primeiros 5 gêneros
+            const top5Genres = genresCounter.slice(0, 5)
+
+            return res.status(200).json(top5Genres)
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({message: 'Erro ao buscar gêneros favoritos'})
+        }
     }
 }

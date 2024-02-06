@@ -1,8 +1,11 @@
 import {View} from "react-native";
 import {Genre} from "../interfaces/interfaces";
 import styled from "styled-components/native";
+import {useNavigation} from "@react-navigation/native";
 
 export default function GenresCapsules({genres}: { genres: Genre[] }) {
+    const navigation = useNavigation();
+
     function getGenreColor(genre: string) {
         let genderColor;
         switch (genre) {
@@ -69,11 +72,21 @@ export default function GenresCapsules({genres}: { genres: Genre[] }) {
         return genderColor;
     }
 
+    function goToMoviesByGenre(genre: Genre) {
+        // @ts-ignore
+        navigation.navigate('MoviesByGenre',
+            {movieGenreId: genre.id, movieGenreName: genre.name}
+        )
+    }
 
     return (
         <CapsuleContainer>
             {genres.map((genre) => (
-                <CapsuleContent key={genre.id} style={{backgroundColor: getGenreColor(genre.name)}}>
+                <CapsuleContent
+                    key={genre.id}
+                    style={{backgroundColor: getGenreColor(genre.name)}}
+                    onPress={() => goToMoviesByGenre(genre)}
+                >
                     <MovieGenre>
                         {genre.name}
                     </MovieGenre>
@@ -83,14 +96,13 @@ export default function GenresCapsules({genres}: { genres: Genre[] }) {
     );
 }
 
-const CapsuleContent = styled.View`
+const CapsuleContent = styled.TouchableOpacity`
     margin-right: 10px;
-    margin-top: 10px;
-    
-    
-    
+    margin-top: 5px;
+    margin-bottom: 5px;
     border-radius: 10px;
     padding: 5px;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.20);
 `
 
 const CapsuleContainer = styled.View`

@@ -77,16 +77,34 @@ export const SectionTitle = styled.Text`
     color: black;
 `;
 
+export const GenreAndDurationContainer = styled.View`
+    display: flex;
+    flex-direction: row;
+    //flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+`;
+
 export const GenreContainer = styled.View`
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     gap: 10px;
     margin-bottom: 10px;
+    width: 73%;
+    align-items: center;
 `
 
-
 export const MovieDurationContainer = styled.View`
+    display: flex;
+    align-self: flex-start;
+    margin-top: 5px;
+    width: 100%;
+`;
+
+export const MovieDurationContent = styled.View`
     background-color: #fafafa;
     display: flex;
     flex-direction: row;
