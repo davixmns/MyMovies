@@ -16,11 +16,20 @@ export const ContentHome = styled.View`
 `
 
 export const TitleHome = styled.Text`
-    font-size: 25px;
+    font-size: 30px;
     font-weight: bold;
     color: black;
     margin-bottom: 10px;
 `
+
+export const SubTitleHome = styled.Text`
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 10px;
+`
+
+
 
 export const TitleContainer = styled.View`
     width: 100%;

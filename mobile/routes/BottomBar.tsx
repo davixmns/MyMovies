@@ -2,11 +2,11 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import styled from "styled-components/native";
 import {Home} from "../screens/home/Home";
 import {Favorites} from "../screens/favorites/Favorites";
-import {Reviews} from "../screens/reviews/Reviews";
 import {Profile} from "../screens/profile/Profile";
 import {FontAwesome6} from '@expo/vector-icons';
 import {MaterialIcons} from '@expo/vector-icons';
 import { BlurView } from "expo-blur";
+import {SearchMovies} from "../screens/search_movies/SearchMovies";
 
 const Tab = createBottomTabNavigator();
 
@@ -48,6 +48,24 @@ export function BottomBar() {
                     />
 
                     <Tab.Screen
+                        name={'SearchMovies'}
+                        component={SearchMovies}
+                        options={{
+                            tabBarHideOnKeyboard: true,
+                            tabBarShowLabel: false,
+                            headerShown: false,
+                            tabBarIcon: ({focused}) => (
+                                <MaterialIcons
+                                    name={'search'}
+                                    size={40}
+                                    color={focused ? '#3797EF' : '#fafafa'}
+                                    style={{width: 40, height: 40}}
+                                />
+                            )
+                        }}
+                    />
+
+                    <Tab.Screen
                         name={'Favorites'}
                         component={Favorites}
                         options={{
@@ -58,24 +76,6 @@ export function BottomBar() {
                                 <MaterialIcons
                                     name={'favorite'}
                                     size={32}
-                                    color={focused ? '#3797EF' : '#fafafa'}
-                                    style={{width: 30, height: 30}}
-                                />
-                            )
-                        }}
-                    />
-
-                    <Tab.Screen
-                        name={'Reviews'}
-                        component={Reviews}
-                        options={{
-                            tabBarHideOnKeyboard: true,
-                            tabBarShowLabel: false,
-                            headerShown: false,
-                            tabBarIcon: ({focused}) => (
-                                <MaterialIcons
-                                    name={'reviews'}
-                                    size={30}
                                     color={focused ? '#3797EF' : '#fafafa'}
                                     style={{width: 30, height: 30}}
                                 />

@@ -1,25 +1,24 @@
-import {FlatList, ScrollView, View} from 'react-native';
+import {ActivityIndicator, FlatList, ScrollView, View} from 'react-native';
 import {useMovieContext} from "../../contexts/MovieContext";
 import {MovieCard} from "../../components/MovieCard";
 import {useAuthContext} from "../../contexts/AuthContext";
-import {MyTextInput} from "../../components/MyTextInput";
-import {useState} from "react";
+import GenresCapsules from "../../components/GenresCapsules";
 import {
     CardPadding,
     ContainerHome,
-    ContentHome, GenresContainer,
+    ContentHome,
+    GenresContainer,
     MainScroll,
     NowPlayingContainer,
-    SearchContainer,
+    SubTitleHome,
     TitleContainer,
     TitleHome
 } from "./styles";
-import GenresCapsules from "../../components/GenresCapsules";
+import {LoadingContainer} from "../movie_details/styles";
 
 export function Home() {
-    const [searchText, setSearchText] = useState('')
     const {user} = useAuthContext()
-    const {upcomingMovies, nowPlayingMovies, allGenres} = useMovieContext();
+    const {upcomingMovies, nowPlayingMovies, allGenres, moviesIsLoading} = useMovieContext();
     const sortedNowPlayingMovies = nowPlayingMovies.sort((a, b) => {
         return b.vote_average - a.vote_average
     })
@@ -57,14 +56,6 @@ export function Home() {
                     <TitleContainer>
                         <TitleHome>{`Welcome, ${user?.name.split(' ')[0]}! 👋`}</TitleHome>
                     </TitleContainer>
-                    <SearchContainer>
-                        <MyTextInput
-                            text={searchText}
-                            setText={setSearchText}
-                            placeholder={'Search Here'}
-                            iconName={'magnifying-glass'}
-                        />
-                    </SearchContainer>
                     <GenresContainer>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                             <GenresCapsules genres={allGenres}/>
@@ -72,9 +63,8 @@ export function Home() {
                     </GenresContainer>
                     <View>
                         <TitleContainer>
-                            <TitleHome>Now Playing Movies 🎬</TitleHome>
+                            <SubTitleHome>Now Playing Movies 🎬</SubTitleHome>
                         </TitleContainer>
-
                         <FlatList
                             data={sortedNowPlayingMovies}
                             renderItem={renderNowPlayingMovie}
@@ -83,13 +73,11 @@ export function Home() {
                             showsHorizontalScrollIndicator={false}
                             numColumns={1}
                         />
-
                     </View>
                     <View>
                         <TitleContainer>
-                            <TitleHome>Upcoming Movies 🏃‍♂️</TitleHome>
+                            <SubTitleHome>Upcoming Movies 🏃‍♂️</SubTitleHome>
                         </TitleContainer>
-
                         <FlatList
                             data={upcomingMovies}
                             renderItem={renderUpcomingMovie}
@@ -98,7 +86,6 @@ export function Home() {
                             showsHorizontalScrollIndicator={false}
                             numColumns={1}
                         />
-
                     </View>
                     <View style={{height: 100}}></View>
                 </MainScroll>

@@ -13,6 +13,8 @@ export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: stri
     const [imgHeight, setImgHeight] = useState(0)
     const [imgResolution, setImgResolution] = useState('w500')
     const [cardAnimation, setCardAnimation] = useState('fadeIn')
+    const [posterIsLoading, setPosterIsLoading] = useState(true)
+    const bgColor = posterIsLoading ? 'lightgray' : 'transparent'
 
     function goToMovieDetails() {
         // @ts-ignore
@@ -41,13 +43,14 @@ export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: stri
     }, [])
 
     return (
-        <CardContainer>
+        <CardContainer style={{backgroundColor: bgColor, borderRadius: 10}}>
             <Animatable.View animation={cardAnimation} delay={100}>
                 <TouchableOpacity onPress={goToMovieDetails}>
                     <View style={{width: imgWidth}}>
                         <Image
                             source={{uri: `https://image.tmdb.org/t/p/${imgResolution}${movie.poster_path}`}}
                             style={{width: imgWidth, height: imgHeight, borderRadius: 10}}
+                            onLoad={() => setPosterIsLoading(false)}
                         />
                         <MovieTitleContainer>
                             <MovieTitle numberOfLines={2}>{movieTitle}</MovieTitle>
