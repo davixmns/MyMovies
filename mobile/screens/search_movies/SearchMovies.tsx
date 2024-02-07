@@ -1,9 +1,8 @@
 import styled from "styled-components/native";
 import {MyTextInput} from "../../components/MyTextInput";
 import {useState} from "react";
-import {ScrollView, StyleSheet} from "react-native";
-import {FontAwesome6} from "@expo/vector-icons";
-import {LinearGradient} from "expo-linear-gradient";
+import {GenreCard} from "../../components/GenreCard";
+
 
 export function SearchMovies() {
     const [searchText, setSearchText] = useState('')
@@ -24,32 +23,13 @@ export function SearchMovies() {
                     <GridContainer>
                         <SubTitle>Maybe Interesting</SubTitle>
                         <GridContent>
-                            <LinearGradient colors={['#fceabb', '#f8b500']} style={styles.boxLinearGradient}>
-                                <ColorBoxContent>
-                                    <FontAwesome6 name="star" size={30} color="white"/>
-                                    <BoxTitle>Best Rated Movies</BoxTitle>
-                                </ColorBoxContent>
-                            </LinearGradient>
-                            <LinearGradient colors={[ '#fbc7d4', '#9796f0']} style={styles.boxLinearGradient}>
-                                <ColorBoxContent>
-                                    <FontAwesome6 name="star" size={30} color="white"/>
-                                    <BoxTitle>Best Rated Movies</BoxTitle>
-                                </ColorBoxContent>
-                            </LinearGradient>
-                            <LinearGradient colors={['#ff512f', '#f09819']} style={styles.boxLinearGradient}>
-                                <ColorBoxContent>
-                                    <FontAwesome6 name="star" size={30} color="white"/>
-                                    <BoxTitle>Best Rated Movies</BoxTitle>
-                                </ColorBoxContent>
-                            </LinearGradient>
-                            <LinearGradient colors={['#2ecc71', '#27ae60']} style={styles.boxLinearGradient}>
-                                <ColorBoxContent>
-                                    <FontAwesome6 name="star" size={30} color="white"/>
-                                    <BoxTitle>Best Rated Movies</BoxTitle>
-                                </ColorBoxContent>
-                            </LinearGradient>
+                            <GenreCard genreName={'Top Rated'}  colors={['#fceabb', '#f8b500']} iconName={'star'}/>
+                            <GenreCard genreName={'TV Movie'} colors={['#fbc7d4', '#9796f0']} iconName={'tv'}/>
+                            <GenreCard genreName={'Music'} colors={['#ff512f', '#f09819']} iconName={'music'}/>
+                            <GenreCard genreName={'Documentary'} colors={['#2ecc71', '#27ae60']} iconName={'file'}/>
                         </GridContent>
                     </GridContainer>
+                    {/*<BigMovieCard */}
                 </ScrollContainer>
 
             </Content>
@@ -74,7 +54,6 @@ const ScrollContainer = styled.ScrollView.attrs({
 })`
 `
 
-
 const Content = styled.View`
     height: 85%;
     align-items: flex-start;
@@ -85,32 +64,10 @@ const Content = styled.View`
 const Header = styled.View`
 `
 
-const styles = StyleSheet.create({
-    boxLinearGradient: {
-        width: '48%',
-        height: '25%',
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
-})
-
-const ColorBoxContent = styled.View`
-    width: 80%;
-    height: 80%;
-    gap: 5px
-`
-
-const BoxTitle = styled.Text`
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-`
-
 const GridContainer = styled.View`
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 45%;
     margin-top: 40px;
 `
 

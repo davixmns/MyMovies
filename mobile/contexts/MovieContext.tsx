@@ -34,8 +34,8 @@ export function MovieProvider({children}: MovieProviderProps) {
         async function init() {
             try {
                 await Promise.all([
-                    // loadTopRatedMovies(),
-                    // loadPopularMovies(),
+                    loadTopRatedMovies(),
+                    loadPopularMovies(),
                     loadUpcomingMovies(),
                     loadNowPlayingMovies(),
                     loadAllMyFavoriteMovies(),

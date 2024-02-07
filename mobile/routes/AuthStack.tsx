@@ -6,6 +6,7 @@ import {Register} from "../screens/register/Register";
 import {MovieDetails} from "../screens/movie_details/MovieDetails";
 import {SplashScreen} from "../screens/SplashScreen";
 import {MoviesByGenre} from "../screens/movies_by_genre/MoviesByGenre";
+import {TopRatedMovies} from "../screens/top_movies/TopRatedMovies";
 
 const Stack = createStackNavigator();
 
@@ -44,6 +45,15 @@ export function AuthStack() {
                     <Stack.Screen
                         name={'MoviesByGenre'}
                         component={MoviesByGenre}
+                        options={{
+                            headerShown: false,
+                            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS
+                        }}
+                    />
+
+                    <Stack.Screen
+                        name={'TopRatedMovies'}
+                        component={TopRatedMovies}
                         options={{
                             headerShown: false,
                             cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS

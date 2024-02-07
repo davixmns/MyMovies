@@ -1,4 +1,3 @@
-import {View} from "react-native";
 import {Genre} from "../interfaces/interfaces";
 import styled from "styled-components/native";
 import {useNavigation} from "@react-navigation/native";
@@ -6,70 +5,26 @@ import {useNavigation} from "@react-navigation/native";
 export default function GenresCapsules({genres}: { genres: Genre[] }) {
     const navigation = useNavigation();
 
-    function getGenreColor(genre: string) {
-        let genderColor;
-        switch (genre) {
-            case 'Science Fiction':
-                genderColor = '#7f8c8d';
-                break;
-            case 'Action':
-                genderColor = '#e74c3c';
-                break;
-            case 'Animation':
-                genderColor = '#2ecc71';
-                break;
-            case 'Adventure':
-                genderColor = '#f39c12';
-                break;
-            case 'Comedy':
-                genderColor = '#f1c40f';
-                break;
-            case 'Fantasy':
-                genderColor = '#9b59b6';
-                break;
-            case 'Romance':
-                genderColor = '#e08283';
-                break;
-            case 'Drama':
-                genderColor = '#8d6e63';
-                break;
-            case 'Documentary':
-                genderColor = '#27ae60';
-                break;
-            case 'Family':
-                genderColor = '#3498db';
-                break;
-            case 'War':
-                genderColor = '#34495e';
-                break;
-            case 'History':
-                genderColor = '#e67e22';
-                break;
-            case 'Music':
-                genderColor = '#8e44ad';
-                break;
-            case 'Mystery':
-                genderColor = '#8e44ad';
-                break;
-            case 'Crime':
-                genderColor = 'gray';
-                break;
-            case 'Thriller':
-                genderColor = 'black';
-                break;
-            case 'Horror':
-                genderColor = '#95a5a6';
-                break;
-            case 'TV Movie':
-                genderColor = '#d35400';
-                break;
-            case 'Western':
-                genderColor = '#c0392b';
-                break;
-            default:
-                genderColor = 'gray'; // default color
-        }
-        return genderColor;
+    const genderColors = {
+        'Science Fiction': '#7f8c8d',
+        'Action': '#e74c3c',
+        'Animation': '#2ecc71',
+        'Adventure': '#f39c12',
+        'Comedy': '#f1c40f',
+        'Fantasy': '#9b59b6',
+        'Romance': '#e08283',
+        'Drama': '#8d6e63',
+        'Documentary': '#27ae60',
+        'Family': '#3498db',
+        'War': '#34495e',
+        'History': '#e67e22',
+        'Music': '#8e44ad',
+        'Mystery': '#8e44ad',
+        'Crime': 'gray',
+        'Thriller': 'black',
+        'Horror': '#95a5a6',
+        'TV Movie': '#d35400',
+        'Western': '#c0392b',
     }
 
     function goToMoviesByGenre(genre: Genre) {
@@ -84,7 +39,8 @@ export default function GenresCapsules({genres}: { genres: Genre[] }) {
             {genres.map((genre) => (
                 <CapsuleContent
                     key={genre.id}
-                    style={{backgroundColor: getGenreColor(genre.name)}}
+                    // @ts-ignore
+                    style={{backgroundColor: genderColors[genre.name]}}
                     onPress={() => goToMoviesByGenre(genre)}
                 >
                     <MovieGenre>
