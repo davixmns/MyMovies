@@ -1,19 +1,21 @@
 import styled from "styled-components/native";
+import {Platform} from "react-native";
 
 export const ContainerHome = styled.View`
     flex: 1;
     align-items: center;
     justify-content: flex-end;
     background-color: white;
+
 `
 
 export const ContentHome = styled.View`
-  flex: 0.93;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 100%;
-`
+    flex: ${Platform.OS === 'ios' ? 0.93 : 0.97};
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 95%;
+`;
 
 export const TitleHome = styled.Text`
     font-size: 30px;
@@ -34,33 +36,24 @@ export const SubTitleHome = styled.Text`
 export const TitleContainer = styled.View`
     width: 100%;
     align-items: flex-start;
-    padding: 0 10px;
 `
 
 export const MainScroll = styled.ScrollView`
     height: 100%;
+    width: 100%;
 `
 
 export const CardPadding = styled.View`
-    padding-left: 10px;
     padding-right: 10px;
     box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
 `
 
-export const SearchContainer = styled.View`
-    width: 97%;
-    padding-left: 10px;
-    padding-bottom: 10px;
-`
-
 export const NowPlayingContainer = styled.View`
     padding-bottom: 20px;
-    padding-left: 10px;
     padding-right: 10px;
     box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
 `
 
 export const GenresContainer = styled.View`
-    margin-bottom: 20px;
-    padding-left: 10px;
+    margin-bottom: 10px;
 `

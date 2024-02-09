@@ -2,10 +2,13 @@ import styled from "styled-components/native";
 import {MyTextInput} from "../../components/MyTextInput";
 import {useState} from "react";
 import {GenreCard} from "../../components/GenreCard";
+import {Platform} from "react-native";
+import {useMovieContext} from "../../contexts/MovieContext";
 
 
 export function SearchMovies() {
     const [searchText, setSearchText] = useState('')
+    const {userFavoriteGenres, genreStylesForConsult} = useMovieContext()
 
     return (
         <Container>
@@ -19,18 +22,38 @@ export function SearchMovies() {
                         iconName={'magnifying-glass'}
                     />
                 </Header>
-                <ScrollContainer>
-                    <GridContainer>
-                        <SubTitle>Maybe Interesting</SubTitle>
-                        <GridContent>
-                            <GenreCard genreName={'Top Rated'}  colors={['#fceabb', '#f8b500']} iconName={'star'}/>
-                            <GenreCard genreName={'TV Movie'} colors={['#fbc7d4', '#9796f0']} iconName={'tv'}/>
-                            <GenreCard genreName={'Music'} colors={['#ff512f', '#f09819']} iconName={'music'}/>
-                            <GenreCard genreName={'Documentary'} colors={['#2ecc71', '#27ae60']} iconName={'file'}/>
-                        </GridContent>
-                    </GridContainer>
-                    {/*<BigMovieCard */}
-                </ScrollContainer>
+
+                <GridContainer>
+                    <SubTitle>Maybe Interesting</SubTitle>
+                    <GridContent>
+                        <GenreCard genreName={'Top Rated'} iconName={'star'}/>
+                        <GenreCard genreName={'TV Movie'} iconName={'tv'}/>
+                        <GenreCard genreName={'Music'} iconName={'music'}/>
+                        <GenreCard genreName={'Documentary'} iconName={'file'}/>
+                    </GridContent>
+                </GridContainer>
+
+                <GridContent>
+                    <SubTitle>Favorite Genres</SubTitle>
+                    <GridContent>
+                        <GenreCard
+                            genreName={userFavoriteGenres[0].name}
+                            iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[0].name)?.icon}
+                        />
+                        <GenreCard
+                            genreName={userFavoriteGenres[1].name}
+                            iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[1].name)?.icon}
+                        />
+                        <GenreCard
+                            genreName={userFavoriteGenres[2].name}
+                            iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[2].name)?.icon}
+                        />
+                        <GenreCard
+                            genreName={userFavoriteGenres[3].name}
+                            iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[3].name)?.icon}
+                        />
+                    </GridContent>
+                </GridContent>
 
             </Content>
         </Container>
@@ -44,18 +67,8 @@ const Container = styled.View`
     background-color: white;
 `
 
-const ScrollContainer = styled.ScrollView.attrs({
-    contentContainerStyle: {
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        height: '100%',
-        width: '100%',
-    },
-})`
-`
-
 const Content = styled.View`
-    height: 85%;
+    flex: ${Platform.OS === 'ios' ? 0.93 : 0.95};
     align-items: flex-start;
     justify-content: flex-start;
     width: 95%;

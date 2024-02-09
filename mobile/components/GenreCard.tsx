@@ -5,13 +5,13 @@ import styled from "styled-components/native";
 import {useNavigation} from "@react-navigation/native";
 import {useMovieContext} from "../contexts/MovieContext";
 
-export function GenreCard({genreName, colors, iconName}: {
+export function GenreCard({genreName, iconName}: {
     genreName: string,
-    colors: string[],
     iconName: string,
 }) {
     const navigation = useNavigation();
     const {allGenres} = useMovieContext()
+    const {genreStylesForConsult} = useMovieContext()
 
     function goToGenreMovies() {
         if (genreName === 'Top Rated') {
@@ -25,7 +25,8 @@ export function GenreCard({genreName, colors, iconName}: {
     }
 
     return (
-        <LinearGradient colors={[colors[0], colors[1]]} style={styles.boxLinearGradient}>
+        // @ts-ignore
+        <LinearGradient colors={genreStylesForConsult.find(genre => genre.name === genreName)?.colors} style={styles.boxLinearGradient}>
             <ColorBoxContent onPress={goToGenreMovies}>
                 <FontAwesome6 name={iconName} size={30} color="white"/>
                 <BoxTitle>{genreName}</BoxTitle>
@@ -38,6 +39,8 @@ const styles = StyleSheet.create({
     boxLinearGradient: {
         width: '48%',
         height: '55%',
+        maxHeight: 130,
+        minHeight: 120,
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',

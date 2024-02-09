@@ -1,6 +1,7 @@
 import {useMovieContext} from "../../contexts/MovieContext";
 import {MovieCard} from "../../components/MovieCard";
 import styled from "styled-components/native";
+import {Platform} from "react-native";
 
 export function Favorites() {
     const {myFavoriteMovies} = useMovieContext();
@@ -8,10 +9,10 @@ export function Favorites() {
     return (
         <ContainerFavorites>
             <ContentFavorites>
+                <TitleFavoriteContainer>
+                    <TitleFavorites>Your Favorites ❤️</TitleFavorites>
+                </TitleFavoriteContainer>
                 <ScrollFavorites>
-                    <TitleFavoriteContainer>
-                        <TitleFavorites>Your Favorites ❤️</TitleFavorites>
-                    </TitleFavoriteContainer>
                     <MoviesContainer>
                         {myFavoriteMovies.map((movie, index) => (
                             <MovieCardWrapper key={index}>
@@ -40,7 +41,7 @@ const ContainerFavorites = styled.View`
 `;
 
 const ContentFavorites = styled.View`
-    flex: 0.93;
+    flex: ${Platform.OS === 'ios' ? 0.93 : 0.97};
     align-items: center;
     justify-content: flex-start;
     width: 95%;
@@ -61,7 +62,6 @@ const MoviesContainer = styled.View`
     flex-wrap: wrap;
     justify-content: space-around;
     width: 100%;
-    padding-top: 20px;
 `;
 
 const MovieCardWrapper = styled.View`
@@ -74,6 +74,7 @@ const MovieCardWrapper = styled.View`
 const TitleFavoriteContainer = styled.View`
     width: 100%;
     align-items: flex-start;
+    padding-bottom: 15px;
     //padding-left: 20px;
 `;
 

@@ -67,6 +67,8 @@ export interface MovieContextType {
     loadAllMyFavoriteMovies: () => Promise<void>;
     allGenres: Genre[];
     userFavoriteGenres: Genre[];
+    recommendedMovie: Movie[] | {};
+    genreStylesForConsult: any[];
 }
 
 export interface UserContextType {

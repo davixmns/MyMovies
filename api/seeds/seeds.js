@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {Genre} from "../models/Models.js";
 
-const TMDB_URL = 'https://api.themoviedb.org/3/genre/movie/list?'
+export const TMDB_URL = 'https://api.themoviedb.org/3/genre/movie/list?'
 
 export async function createMovieGenres(){
     await axios.get(`${TMDB_URL}api_key=${process.env.TMDB_API_KEY}&language=en-US`)

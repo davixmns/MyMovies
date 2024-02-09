@@ -13,6 +13,13 @@ export async function getAllGenresService(){
     return await axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${TMDB_API_KEY}&language=en-US`)
 }
 
+export async function getMovieRecommendationService(user_jwt: string){
+    return await axios.get(
+        `http://${MY_IP}/movie-recommendation`,
+        {headers: {Authorization: `Bearer ${user_jwt}`}}
+    )
+}
+
 export async function getMoviesByGenreService(genreId: number){
     return await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}`)
 }

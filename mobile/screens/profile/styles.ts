@@ -1,4 +1,5 @@
 import styled from "styled-components/native";
+import {Platform} from "react-native";
 
 export const ContainerProfile = styled.View`
     flex: 1;
@@ -14,8 +15,8 @@ export const UserNameText = styled.Text`
 `
 
 export const ContentProfile = styled.View`
-    width: 90%;
-    height: 85%;
+    width: 92%;
+    flex: 0.90;
     align-items: center;
     flex-direction: column;
     justify-content: flex-start;

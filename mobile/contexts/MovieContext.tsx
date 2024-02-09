@@ -1,13 +1,12 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import {FavoritedMovie, Genre, Movie, MovieContextType, MovieProviderProps} from "../interfaces/interfaces";
-import {useAuthContext} from "./AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MovieContext = createContext<MovieContextType>({} as MovieContextType);
 import {
     checkIfMovieIsFavoritedService,
     deleteFavoritedMovieService,
-    getAllFavoriteMoviesService, getAllGenresService,
+    getAllFavoriteMoviesService, getAllGenresService, getMovieRecommendationService,
     getNowPlayingMoviesService,
     getPopularMoviesService,
     getTopRatedMoviesService,
@@ -20,7 +19,6 @@ export const useMovieContext = () => {
 }
 
 export function MovieProvider({children}: MovieProviderProps) {
-    const isAuthenticated = useAuthContext()
     const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([])
     const [popularMovies, setPopularMovies] = useState<Movie[]>([])
     const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>([])
@@ -29,11 +27,38 @@ export function MovieProvider({children}: MovieProviderProps) {
     const [moviesIsLoading, setMoviesIsLoading] = useState<boolean>(true)
     const [allGenres, setAllGenres] = useState<Genre[]>([])
     const [userFavoriteGenres, setUserFavoriteGenres] = useState<Genre[]>([])
+    const [recommendedMovie, setRecommendedMovie] = useState<Movie>({} as Movie)
+
+    const genreStylesForConsult = [
+        { name: 'Top Rated', colors: ['#fceabb', '#f8b500'], icon: 'star' },
+        { name: 'Music', colors: ['#fbc7d4', '#9796f0'], icon: 'music' },
+        { name: 'TV Movie', colors: ['#ff512f', '#f09819'], icon: 'tv' },
+        { name: 'Documentary', colors: ['#2ecc71', '#27ae60'], icon: 'file' },
+        { name: 'Science Fiction', colors: ['#7f8c8d', '#95a5a6'], icon: 'flask' },
+        { name: 'Action', colors: ['#e74c3c', '#c0392b'], icon: 'fire' },
+        { name: 'Animation', colors: ['#2ecc71', '#27ae60'], icon: 'smile' },
+        { name: 'Adventure', colors: ['#f39c12', '#e67e22'], icon: 'compass' },
+        { name: 'Comedy', colors: ['#f1c40f', '#f39c12'], icon: 'laugh' },
+        { name: 'Fantasy', colors: ['#9b59b6', '#8e44ad'], icon: 'hat-wizard' },
+        { name: 'Romance', colors: ['#e08283', '#e74c3c'], icon: 'heart' },
+        { name: 'Drama', colors: ['#8d6e63', '#7f8c8d'], icon: 'masks-theater' },
+        { name: 'Family', colors: ['#3498db', '#2980b9'], icon: 'home' },
+        { name: 'War', colors: ['#34495e', '#2c3e50'], icon: 'helicopter' },
+        { name: 'History', colors: ['#e67e22', '#d35400'], icon: 'landmark' },
+        { name: 'Mystery', colors: ['#8e44ad', '#9b59b6'], icon: 'search' },
+        { name: 'Crime', colors: ['gray', '#95a5a6'], icon: 'user-secret' },
+        { name: 'Thriller', colors: ['black', '#34495e'], icon: 'mask' },
+        { name: 'Horror', colors: ['#95a5a6', '#7f8c8d'], icon: 'ghost' },
+        { name: 'Western', colors: ['#c0392b', '#e74c3c'], icon: 'horse' },
+    ];
+
 
     useEffect(() => {
         async function init() {
+            console.log('MovieContext init')
             try {
                 await Promise.all([
+                    // getMovieRecommendation(),
                     loadTopRatedMovies(),
                     loadPopularMovies(),
                     loadUpcomingMovies(),
@@ -49,11 +74,9 @@ export function MovieProvider({children}: MovieProviderProps) {
             }
         }
 
-        if (isAuthenticated) {
-            init()
-            return
-        }
-    }, [isAuthenticated])
+        init()
+        return
+    }, [])
 
     async function loadTopRatedMovies() {
         const response = await getTopRatedMoviesService()
@@ -144,6 +167,17 @@ export function MovieProvider({children}: MovieProviderProps) {
         }
     }
 
+    async function getMovieRecommendation() {
+        try {
+            const user_jwt = await AsyncStorage.getItem('@user-jwt')
+            if (!user_jwt) return
+            const response = await getMovieRecommendationService(user_jwt)
+            setRecommendedMovie(response.data)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     return (
         <MovieContext.Provider
             value={{
@@ -155,6 +189,8 @@ export function MovieProvider({children}: MovieProviderProps) {
                 moviesIsLoading,
                 allGenres,
                 userFavoriteGenres,
+                recommendedMovie,
+                genreStylesForConsult,
                 saveFavoriteMovie,
                 deleteFavoriteMovie,
                 checkIfMovieIsFavorited,

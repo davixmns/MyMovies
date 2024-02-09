@@ -1,31 +1,12 @@
 import {Genre} from "../interfaces/interfaces";
 import styled from "styled-components/native";
 import {useNavigation} from "@react-navigation/native";
+import {useMovieContext} from "../contexts/MovieContext";
 
 export default function GenresCapsules({genres}: { genres: Genre[] }) {
     const navigation = useNavigation();
+    const {genreStylesForConsult} = useMovieContext()
 
-    const genderColors = {
-        'Science Fiction': '#7f8c8d',
-        'Action': '#e74c3c',
-        'Animation': '#2ecc71',
-        'Adventure': '#f39c12',
-        'Comedy': '#f1c40f',
-        'Fantasy': '#9b59b6',
-        'Romance': '#e08283',
-        'Drama': '#8d6e63',
-        'Documentary': '#27ae60',
-        'Family': '#3498db',
-        'War': '#34495e',
-        'History': '#e67e22',
-        'Music': '#8e44ad',
-        'Mystery': '#8e44ad',
-        'Crime': 'gray',
-        'Thriller': 'black',
-        'Horror': '#95a5a6',
-        'TV Movie': '#d35400',
-        'Western': '#c0392b',
-    }
 
     function goToMoviesByGenre(genre: Genre) {
         // @ts-ignore
@@ -34,13 +15,17 @@ export default function GenresCapsules({genres}: { genres: Genre[] }) {
         )
     }
 
+    function getGenreCardColor(genreName: string) {
+        return genreStylesForConsult.find(genre => genre.name === genreName)?.colors[0]
+    }
+
     return (
         <CapsuleContainer>
             {genres.map((genre) => (
                 <CapsuleContent
                     key={genre.id}
                     // @ts-ignore
-                    style={{backgroundColor: genderColors[genre.name]}}
+                    style={{backgroundColor: getGenreCardColor(genre.name)}}
                     onPress={() => goToMoviesByGenre(genre)}
                 >
                     <MovieGenre>

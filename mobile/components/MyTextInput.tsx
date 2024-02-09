@@ -1,45 +1,44 @@
-import {StyleSheet, TextInput, TextInputProps, View} from "react-native";
-import {FontAwesome6} from "@expo/vector-icons";
-import React from "react";
+import React from 'react';
+import { TextInput, TextInputProps } from 'react-native';
+import styled from 'styled-components/native';
+import { FontAwesome6 } from '@expo/vector-icons';
 
 interface MyTextInputProps extends TextInputProps {
     text: string;
     setText: (text: string) => void;
-    iconName: string;
+    iconName: React.ComponentProps<typeof FontAwesome6>['name'];
 }
 
 export const MyTextInput: React.FC<MyTextInputProps> = ({text, setText, iconName, ...props}) => {
     return (
-        <View style={styles.inputContainer}>
+        <InputContainer>
             {iconName && (
                 <FontAwesome6 name={iconName} size={22} color={'gray'} style={{marginRight: 10}}/>
             )}
-            <TextInput
+            <StyledTextInput
                 value={text}
                 onChangeText={setText}
-                {...props} // Passa todas as outras props para o TextInput (como placeholder, secureTextEntry, etc.)
-                style={styles.inputStyle}
+                {...props} // Passa todas as outras props para o StyledTextInput
             />
-        </View>
+        </InputContainer>
     );
 };
 
-const styles = StyleSheet.create({
-    inputContainer: {
-        width: '100%',
-        height: 50,
-        borderWidth: 0.2,
-        borderColor: 'black',
-        borderRadius: 7,
-        backgroundColor: '#F2F2F2',
-        paddingLeft: 15,
-        paddingRight: 10,
-        flexDirection: 'row', // Essencial para alinhar ícone e input horizontalmente
-        alignItems: 'center', // Centraliza o ícone e o input verticalmente
-    },
+// Styled Components
+const InputContainer = styled.View`
+    width: 100%;
+    height: 50px;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 7px;
+    background-color: #F2F2F2;
+    padding-left: 15px;
+    padding-right: 10px;
+    flex-direction: row;
+    align-items: center;
+`;
 
-    inputStyle: {
-        flex: 1,
-        fontSize: 18,
-    }
-})
+const StyledTextInput = styled.TextInput`
+    flex: 1;
+    font-size: 18px;
+`;
