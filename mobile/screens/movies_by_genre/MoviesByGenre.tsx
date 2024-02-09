@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 import {MovieCard} from "../../components/MovieCard";
 import {useEffect, useState} from "react";
 import {getMoviesByGenreService} from "../../service/service";
-import {Alert, Image} from "react-native";
+import {Alert, Image, Platform} from "react-native";
 import {Movie} from "../../interfaces/interfaces";
 import {AntDesign} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
@@ -81,7 +81,7 @@ const Container = styled.View`
 `;
 
 const Content = styled.View`
-    flex: 0.93;
+    flex: ${Platform.OS === 'ios' ? 0.93 : 0.97};
     align-items: center;
     justify-content: flex-start;
     width: 95%;

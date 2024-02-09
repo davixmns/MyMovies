@@ -36,6 +36,9 @@ export const SubTitleHome = styled.Text`
 export const TitleContainer = styled.View`
     width: 100%;
     align-items: flex-start;
+    flex-direction: row;
+    gap: 15px;
+    margin-bottom: 15px;
 `
 
 export const MainScroll = styled.ScrollView`
@@ -56,4 +59,10 @@ export const NowPlayingContainer = styled.View`
 
 export const GenresContainer = styled.View`
     margin-bottom: 10px;
+`
+
+export const TinyProfilePic = styled.Image`
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
 `

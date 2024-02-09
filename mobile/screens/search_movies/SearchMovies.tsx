@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 import {MyTextInput} from "../../components/MyTextInput";
 import {useState} from "react";
 import {GenreCard} from "../../components/GenreCard";
-import {Platform} from "react-native";
+import {Platform, View} from "react-native";
 import {useMovieContext} from "../../contexts/MovieContext";
 
 
@@ -23,37 +23,40 @@ export function SearchMovies() {
                     />
                 </Header>
 
-                <GridContainer>
-                    <SubTitle>Maybe Interesting</SubTitle>
-                    <GridContent>
-                        <GenreCard genreName={'Top Rated'} iconName={'star'}/>
-                        <GenreCard genreName={'TV Movie'} iconName={'tv'}/>
-                        <GenreCard genreName={'Music'} iconName={'music'}/>
-                        <GenreCard genreName={'Documentary'} iconName={'file'}/>
-                    </GridContent>
-                </GridContainer>
+                <SearchScroll>
 
-                <GridContent>
-                    <SubTitle>Favorite Genres</SubTitle>
+                    <GridContainer>
+                        <SubTitle>Maybe Interesting</SubTitle>
+                        <GridContent>
+                            <GenreCard genreName={'Top Rated'} iconName={'star'}/>
+                            <GenreCard genreName={'TV Movie'} iconName={'tv'}/>
+                            <GenreCard genreName={'Music'} iconName={'music'}/>
+                            <GenreCard genreName={'Documentary'} iconName={'file'}/>
+                        </GridContent>
+                    </GridContainer>
+
                     <GridContent>
-                        <GenreCard
-                            genreName={userFavoriteGenres[0].name}
-                            iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[0].name)?.icon}
-                        />
-                        <GenreCard
-                            genreName={userFavoriteGenres[1].name}
-                            iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[1].name)?.icon}
-                        />
-                        <GenreCard
-                            genreName={userFavoriteGenres[2].name}
-                            iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[2].name)?.icon}
-                        />
-                        <GenreCard
-                            genreName={userFavoriteGenres[3].name}
-                            iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[3].name)?.icon}
-                        />
+                        <SubTitle>Favorite Genres</SubTitle>
+                        <GridContent>
+                            <GenreCard
+                                genreName={userFavoriteGenres[0].name}
+                                iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[0].name)?.icon}
+                            />
+                            <GenreCard
+                                genreName={userFavoriteGenres[1].name}
+                                iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[1].name)?.icon}
+                            />
+                            <GenreCard
+                                genreName={userFavoriteGenres[2].name}
+                                iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[2].name)?.icon}
+                            />
+                            <GenreCard
+                                genreName={userFavoriteGenres[3].name}
+                                iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[3].name)?.icon}
+                            />
+                        </GridContent>
                     </GridContent>
-                </GridContent>
+                </SearchScroll>
 
             </Content>
         </Container>
@@ -81,7 +84,7 @@ const GridContainer = styled.View`
     display: flex;
     flex-direction: column;
     height: 45%;
-    margin-top: 40px;
+    margin-top: 30px;
 `
 
 const GridContent = styled.View`
@@ -91,6 +94,7 @@ const GridContent = styled.View`
     width: 100%;
     height: 70%;
     gap: 10px;
+    padding-bottom: 30px;
 `
 const SubTitle = styled.Text`
     font-size: 20px;
@@ -104,4 +108,11 @@ const Title = styled.Text`
     font-size: 30px;
     font-weight: bold;
     color: black;
+`
+
+const SearchScroll = styled.ScrollView.attrs({
+    showsVerticalScrollIndicator: false,
+})`
+    width: 100%;
+    height: 100%;
 `

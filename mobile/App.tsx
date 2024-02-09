@@ -11,7 +11,7 @@ export default function App() {
             <AuthProvider>
                 <UserProvider>
                     <MovieProvider>
-                        <StatusBar backgroundColor={'#000000'} barStyle={'dark-content'} translucent={false}/>
+                        <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} translucent={false}/>
                         <AuthStack/>
                     </MovieProvider>
                 </UserProvider>

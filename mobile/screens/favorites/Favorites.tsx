@@ -1,7 +1,7 @@
 import {useMovieContext} from "../../contexts/MovieContext";
 import {MovieCard} from "../../components/MovieCard";
 import styled from "styled-components/native";
-import {Platform} from "react-native";
+import {Platform, View} from "react-native";
 
 export function Favorites() {
     const {myFavoriteMovies} = useMovieContext();
@@ -26,6 +26,7 @@ export function Favorites() {
                             </MovieCardWrapper>
                         ))}
                     </MoviesContainer>
+                    <View style={{height: 100}}/>
                 </ScrollFavorites>
             </ContentFavorites>
         </ContainerFavorites>

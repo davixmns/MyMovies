@@ -43,10 +43,11 @@ export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: stri
     }, [])
 
     return (
-        <CardContainer style={{backgroundColor: bgColor, borderRadius: 10}}>
+        <CardContainer>
             <Animatable.View animation={cardAnimation} delay={100}>
                 <TouchableOpacity onPress={goToMovieDetails}>
                     <View style={{width: imgWidth}}>
+                        <LoadingBackground bgColor={bgColor} height={imgHeight}/>
                         <Image
                             source={{uri: `https://image.tmdb.org/t/p/${imgResolution}${movie.poster_path}`}}
                             style={{width: imgWidth, height: imgHeight, borderRadius: 10}}
@@ -80,4 +81,10 @@ const MovieTitleContainer = styled.View`
     padding-right: 10px;
     padding-top: 8px;
 `
-
+const LoadingBackground = styled.View<{bgColor: string, height: number}>`
+    position: absolute;
+    width: 100%;
+    height: ${props => props.height}px;
+    background-color: ${props => props.bgColor};
+    border-radius: 10px;
+`

@@ -26,9 +26,13 @@ export function GenreCard({genreName, iconName}: {
 
     return (
         // @ts-ignore
-        <LinearGradient colors={genreStylesForConsult.find(genre => genre.name === genreName)?.colors} style={styles.boxLinearGradient}>
+        <LinearGradient colors={genreStylesForConsult.find(genre => genre.name === genreName)?.colors}
+                        style={styles.boxLinearGradient}>
+            <IconContainer>
+
+                <FontAwesome6 name={iconName} size={80} color="white"/>
+            </IconContainer>
             <ColorBoxContent onPress={goToGenreMovies}>
-                <FontAwesome6 name={iconName} size={30} color="white"/>
                 <BoxTitle>{genreName}</BoxTitle>
             </ColorBoxContent>
         </LinearGradient>
@@ -48,7 +52,7 @@ const styles = StyleSheet.create({
 })
 
 const BoxTitle = styled.Text`
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     color: white;
 `
@@ -57,4 +61,10 @@ const ColorBoxContent = styled.TouchableOpacity`
     width: 80%;
     height: 80%;
     gap: 5px
+`
+
+const IconContainer = styled.View`
+    position: absolute;
+    bottom: -5px;
+    right: 12px;
 `

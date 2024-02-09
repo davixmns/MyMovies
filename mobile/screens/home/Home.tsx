@@ -10,12 +10,14 @@ import {
     GenresContainer,
     MainScroll,
     NowPlayingContainer,
-    SubTitleHome,
+    SubTitleHome, TinyProfilePic,
     TitleContainer,
     TitleHome
 } from "./styles";
-import {LoadingContainer} from "../movie_details/styles";
-import BigMovieCard from "../../components/BigMovieCard";
+
+
+// @ts-ignore
+import defaultPicture from '../../assets/default_picture.jpg'
 
 export function Home() {
     const {user} = useAuthContext()
@@ -68,6 +70,11 @@ export function Home() {
             <ContentHome>
                 <MainScroll showsVerticalScrollIndicator={false}>
                     <TitleContainer>
+                        {user?.profile_picture === undefined ? (
+                            <TinyProfilePic source={defaultPicture}/>
+                        ) : (
+                            <TinyProfilePic source={{uri: user?.profile_picture}}/>
+                        )}
                         <TitleHome>{`Welcome, ${user?.name.split(' ')[0]}! 👋`}</TitleHome>
                     </TitleContainer>
                     <GenresContainer>
