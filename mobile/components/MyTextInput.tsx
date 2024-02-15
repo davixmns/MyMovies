@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, TextInputProps } from 'react-native';
+import {TextInput, TextInputProps, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import { FontAwesome6 } from '@expo/vector-icons';
 
@@ -20,6 +20,11 @@ export const MyTextInput: React.FC<MyTextInputProps> = ({text, setText, iconName
                 onChangeText={setText}
                 {...props} // Passa todas as outras props para o StyledTextInput
             />
+            {text !== '' && (
+                <TouchableOpacity onPress={() => setText('')} style={{padding: 10}}>
+                    <FontAwesome6 name={'x'} size={20} color={'gray'}/>
+                </TouchableOpacity>
+            )}
         </InputContainer>
     );
 };
@@ -28,7 +33,7 @@ export const MyTextInput: React.FC<MyTextInputProps> = ({text, setText, iconName
 const InputContainer = styled.View`
     width: 100%;
     height: 50px;
-    border-width: 1px;
+    border-width: 0.5px;
     border-color: black;
     border-radius: 7px;
     background-color: #F2F2F2;

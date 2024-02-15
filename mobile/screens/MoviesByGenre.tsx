@@ -1,15 +1,38 @@
-import {useMovieContext} from "../../contexts/MovieContext";
-import {Image} from "react-native";
-import {AntDesign} from "@expo/vector-icons";
-import {MovieCard} from "../../components/MovieCard";
 import styled from "styled-components/native";
+import {MovieCard} from "../components/MovieCard";
+import {useEffect, useState} from "react";
+import {getMoviesByGenreService} from "../service/service";
+import {Alert, Image, Platform} from "react-native";
+import {Movie} from "../interfaces/interfaces";
+import {AntDesign} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
 
-export function TopRatedMovies() {
+// @ts-ignore
+export function MoviesByGenre({route}) {
+    const movieGenreId = route.params.movieGenreId;
+    const movieGenreName = route.params.movieGenreName;
+    const [moviesByGenre, setMoviesByGenre] = useState<Movie[]>([]);
     const navigation = useNavigation();
-    const {topRatedMovies} = useMovieContext()
-    const randomIndex = Math.floor(Math.random() * topRatedMovies.length);
-    const posterBackground = topRatedMovies[randomIndex]?.backdrop_path;
+    //escolher index aleatorio com limite de moviesByGenre.length
+    const randomIndex = Math.floor(Math.random() * moviesByGenre.length);
+    const posterBackground = moviesByGenre[randomIndex]?.backdrop_path;
+
+    useEffect(() => {
+        async function loadMoviesByGenre() {
+            await getMoviesByGenreService(movieGenreId)
+                .then((response) => {
+                    const movies = response.data.results
+                    setMoviesByGenre(movies)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    Alert.alert('Error', 'An error occurred while trying to load movies by genre')
+                })
+        }
+
+        loadMoviesByGenre()
+    }, []);
+
 
     return (
         <Container>
@@ -26,12 +49,12 @@ export function TopRatedMovies() {
                         <AntDesign name="arrowleft" size={35} color="black" style={{padding: 5}}/>
                     </BackButton>
                     <TitleContainer>
-                        <Title>Top Rated Movies</Title>
+                        <Title>{movieGenreName} Movies</Title>
                     </TitleContainer>
                 </HeaderContainer>
                 <ScrollMovies>
                     <MoviesContainer>
-                        {topRatedMovies.map((movie, index) => (
+                        {moviesByGenre.map((movie, index) => (
                             <MovieCardWrapper key={index}>
                                 <MovieCard
                                     // @ts-ignore
@@ -58,7 +81,7 @@ const Container = styled.View`
 `;
 
 const Content = styled.View`
-    flex: 0.93;
+    flex: ${Platform.OS === 'ios' ? 0.93 : 0.97};
     align-items: center;
     justify-content: flex-start;
     width: 95%;
@@ -77,16 +100,15 @@ const ScrollMovies = styled.ScrollView.attrs({
 const MoviesContainer = styled.View`
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
     width: 100%;
     padding-top: 20px;
+    gap: 15px;
 `;
 
 const MovieCardWrapper = styled.View`
-    width: 48%;
     margin-bottom: 10px;
     box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
-
 `;
 
 const TitleContainer = styled.View`

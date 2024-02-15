@@ -1,5 +1,5 @@
-import {useMovieContext} from "../../contexts/MovieContext";
-import {MovieCard} from "../../components/MovieCard";
+import {useMovieContext} from "../contexts/MovieContext";
+import {MovieCard} from "../components/MovieCard";
 import styled from "styled-components/native";
 import {Platform, View} from "react-native";
 
@@ -7,11 +7,11 @@ export function Favorites() {
     const {myFavoriteMovies} = useMovieContext();
 
     return (
-        <ContainerFavorites>
-            <ContentFavorites>
-                <TitleFavoriteContainer>
-                    <TitleFavorites>Your Favorites ❤️</TitleFavorites>
-                </TitleFavoriteContainer>
+        <Container>
+            <Content>
+                <TitleContainer>
+                    <Title>Your Favorites ❤️</Title>
+                </TitleContainer>
                 <ScrollFavorites>
                     <MoviesContainer>
                         {myFavoriteMovies.map((movie, index) => (
@@ -28,12 +28,12 @@ export function Favorites() {
                     </MoviesContainer>
                     <View style={{height: 100}}/>
                 </ScrollFavorites>
-            </ContentFavorites>
-        </ContainerFavorites>
+            </Content>
+        </Container>
     );
 }
 
-const ContainerFavorites = styled.View`
+const Container = styled.View`
     flex: 1;
     align-items: center;
     justify-content: flex-end;
@@ -41,7 +41,7 @@ const ContainerFavorites = styled.View`
     background-color: white;
 `;
 
-const ContentFavorites = styled.View`
+const Content = styled.View`
     flex: ${Platform.OS === 'ios' ? 0.93 : 0.97};
     align-items: center;
     justify-content: flex-start;
@@ -61,25 +61,24 @@ const ScrollFavorites = styled.ScrollView.attrs({
 const MoviesContainer = styled.View`
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
     width: 100%;
+    gap: 15px;
 `;
 
 const MovieCardWrapper = styled.View`
-    width: 48%;
     margin-bottom: 10px;
     box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
-
+    width: 46%;
 `;
 
-const TitleFavoriteContainer = styled.View`
+const TitleContainer = styled.View`
     width: 100%;
     align-items: flex-start;
-    padding-bottom: 15px;
-    //padding-left: 20px;
+    padding-bottom: 20px;
 `;
 
-const TitleFavorites = styled.Text`
+const Title = styled.Text`
     font-size: 30px;
     font-weight: bold;
     text-align: center;

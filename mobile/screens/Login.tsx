@@ -1,12 +1,11 @@
 import {Alert, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from "react-native";
 import {useState} from "react";
-import {useAuthContext} from "../../contexts/AuthContext";
-import {verifyLoginForm} from "../../utils/utils";
-import {ButtonContainer, TextRegisterBlack, TextRegisterBlue} from "./styles";
-import {MyTextInput} from "../../components/MyTextInput";
-import {MyButton} from "../../components/MyButton";
+import {useAuthContext} from "../contexts/AuthContext";
+import {verifyLoginForm} from "../utils/utils";
+import {MyTextInput} from "../components/MyTextInput";
+import {MyButton} from "../components/MyButton";
 import {useNavigation} from "@react-navigation/native";
-import {ContainerLogin, ContentLogin, LoginFormContainer, TitleLogin} from "./styles";
+import styled from "styled-components/native";
 
 export function Login() {
     const navigation = useNavigation()
@@ -30,12 +29,11 @@ export function Login() {
     }
 
     return (
-        <ContainerLogin>
+        <Container>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-
-                <ContentLogin>
-                    <TitleLogin>My Movies</TitleLogin>
-                    <LoginFormContainer>
+                <Content>
+                    <Title>My Movies</Title>
+                    <FormContainer>
                         <MyTextInput
                             text={email}
                             setText={setEmail}
@@ -53,7 +51,7 @@ export function Login() {
                             autoCapitalize={'none'}
                             iconName={'lock'}
                         />
-                    </LoginFormContainer>
+                    </FormContainer>
                     <ButtonContainer>
                         <MyButton onPress={handleLogin}>Log in</MyButton>
                     </ButtonContainer>
@@ -63,9 +61,53 @@ export function Login() {
                             <TextRegisterBlue> Sign up.</TextRegisterBlue>
                         </TouchableOpacity>
                     </ButtonContainer>
-
-                </ContentLogin>
+                </Content>
             </TouchableWithoutFeedback>
-        </ContainerLogin>
+        </Container>
     )
 }
+
+const ButtonContainer = styled.View`
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+    flex-direction: row;
+`
+
+const Title = styled.Text`
+  font-size: 36px;
+  color: black;
+  font-weight: 500;
+`
+
+const Container = styled.View`
+  flex: 1;
+  background-color: #fafafa;
+  align-items: center;
+  justify-content: center;
+`
+
+const Content = styled.View`
+  width: 85%;
+  height: 40%;
+  align-items: center;
+`
+
+const FormContainer = styled.View`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-top: 70px;
+  gap: 20px;
+`
+
+const TextRegisterBlack = styled.Text`
+    font-size: 18px;
+    color: #000;
+`
+
+const TextRegisterBlue = styled.Text`
+    font-size: 18px;
+    color: #3797EF;
+`

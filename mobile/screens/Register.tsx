@@ -1,13 +1,12 @@
-import {MyTextInput} from "../../components/MyTextInput";
+import {MyTextInput} from "../components/MyTextInput";
 import {useState} from "react";
-import {ButtonContainer} from "../login/styles";
-import {MyButton} from "../../components/MyButton";
-import {useUserContext} from "../../contexts/UserContext";
-import {verifyRegisterForm} from "../../utils/utils";
+import {MyButton} from "../components/MyButton";
+import {useUserContext} from "../contexts/UserContext";
+import {verifyRegisterForm} from "../utils/utils";
 import {Alert, TouchableOpacity} from "react-native";
-import {User} from "../../interfaces/interfaces";
-import {CancelRegisterText, ContainerRegister, ContentRegister, RegisterFormContainer, TitleRegister} from "./styles";
+import {User} from "../interfaces/interfaces";
 import {useNavigation} from "@react-navigation/native";
+import styled from "styled-components/native";
 
 export function Register() {
     const navigation = useNavigation()
@@ -21,7 +20,8 @@ export function Register() {
         const user: User = {
             name: name,
             email: email,
-            password: password
+            password: password,
+            profile_picture: null
         }
         const validationResponse = verifyRegisterForm(name, email, password, confirmPassword)
         if (validationResponse !== true) {
@@ -36,10 +36,10 @@ export function Register() {
     }
 
     return (
-        <ContainerRegister>
-                <TitleRegister>Sign Up</TitleRegister>
-            <ContentRegister>
-                <RegisterFormContainer>
+        <Container>
+            <Title>Sign Up</Title>
+            <Content>
+                <FormContainer>
                     <MyTextInput
                         placeholder={'name'}
                         text={name}
@@ -68,14 +68,59 @@ export function Register() {
                         secureTextEntry={true}
                         iconName={'lock'}
                     />
-                </RegisterFormContainer>
+                </FormContainer>
                 <ButtonContainer>
                     <MyButton onPress={handleCreateAccount}>Sign Up</MyButton>
                 </ButtonContainer>
-                    <TouchableOpacity onPress={backToLogin}>
-                        <CancelRegisterText>Cancel</CancelRegisterText>
-                    </TouchableOpacity>
-            </ContentRegister>
-        </ContainerRegister>
+                <TouchableOpacity onPress={backToLogin}>
+                    <CancelRegisterText>Cancel</CancelRegisterText>
+                </TouchableOpacity>
+            </Content>
+        </Container>
     )
 }
+
+const ButtonContainer = styled.View`
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+    flex-direction: row;
+`
+
+export const Title = styled.Text`
+    font-size: 36px;
+    color: black;
+    font-weight: 500;
+    padding-bottom: 50px;
+`
+
+export const Container = styled.View`
+    flex: 1;
+    background-color: #fafafa;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 140px;
+`
+
+export const Content = styled.View`
+    width: 85%;
+    height: 40%;
+    align-items: center;
+`
+
+export const FormContainer = styled.View`
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+`
+
+export const CancelRegisterText = styled.Text`
+    font-size: 18px;
+    color: #000;
+    font-weight: bold;
+    margin-top: 20px;
+`
+
+

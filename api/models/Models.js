@@ -21,6 +21,10 @@ export const User = database.define('user', {
         type: Sequelize.STRING,
         allowNull: false
     },
+    profile_picture: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
 })
 
 export const FavoriteMovie = database.define("favorite_movie", {

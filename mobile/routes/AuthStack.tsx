@@ -1,12 +1,12 @@
 import {CardStyleInterpolators, createStackNavigator} from "@react-navigation/stack";
 import {useAuthContext} from "../contexts/AuthContext";
 import {BottomBar} from "./BottomBar";
-import {Login} from "../screens/login/Login";
-import {Register} from "../screens/register/Register";
-import {MovieDetails} from "../screens/movie_details/MovieDetails";
+import {Login} from "../screens/Login";
+import {Register} from "../screens/Register";
+import {MovieDetails} from "../screens/MovieDetails";
 import {SplashScreen} from "../screens/SplashScreen";
-import {MoviesByGenre} from "../screens/movies_by_genre/MoviesByGenre";
-import {TopRatedMovies} from "../screens/top_movies/TopRatedMovies";
+import {MoviesByGenre} from "../screens/MoviesByGenre";
+import {TopRatedMovies} from "../screens/TopRatedMovies";
 
 const Stack = createStackNavigator();
 

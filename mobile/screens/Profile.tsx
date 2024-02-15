@@ -1,20 +1,11 @@
-import {useAuthContext} from "../../contexts/AuthContext";
+import {useAuthContext} from "../contexts/AuthContext";
 //@ts-ignore
-import defaultPicture from '../../assets/default_picture.jpg'
-import {Alert} from "react-native";
-import {TextButton} from "../../components/TextButton";
-import {
-    ContainerProfile,
-    ContentProfile, FavoriteGenresContainer, FavoriteGenresTitle, HeaderProfileContainer,
-    HeaderProfileContent, OptionsContainer,
-    ProfileImage,
-    ProfileImageShadow, ProfileItemContainer,
-    UserDataContainer,
-    UserEmailText,
-    UserNameText
-} from "./styles";
-import {useMovieContext} from "../../contexts/MovieContext";
-import GenresCapsules from "../../components/GenresCapsules";
+import defaultPicture from '../assets/default_picture.jpg'
+import {Alert, Platform} from "react-native";
+import {TextButton} from "../components/TextButton";
+import {useMovieContext} from "../contexts/MovieContext";
+import GenresCapsules from "../components/GenresCapsules";
+import styled from "styled-components/native";
 
 
 export const Profile = () => {
@@ -61,10 +52,10 @@ export const Profile = () => {
     }
 
     return (
-        <ContainerProfile>
-            <ContentProfile>
-                <HeaderProfileContainer>
-                    <HeaderProfileContent>
+        <Container>
+            <Content>
+                <HeaderContainer>
+                    <HeaderContent>
                         <ProfileImageShadow>
                             {renderProfileImage()}
                         </ProfileImageShadow>
@@ -72,14 +63,13 @@ export const Profile = () => {
                             <UserNameText>{user?.name.split(' ')[0] + ' ' + user?.name.split(' ')[1]}</UserNameText>
                             <UserEmailText>{user?.email}</UserEmailText>
                         </UserDataContainer>
-                    </HeaderProfileContent>
+                    </HeaderContent>
 
                     <FavoriteGenresContainer>
                         <FavoriteGenresTitle>Favorite Genres:</FavoriteGenresTitle>
-                        <GenresCapsules genres={userFavoriteGenres} />
+                        <GenresCapsules genres={userFavoriteGenres}/>
                     </FavoriteGenresContainer>
-
-                </HeaderProfileContainer>
+                </HeaderContainer>
                 <OptionsContainer>
                     <ProfileItemContainer>
                         <TextButton
@@ -117,7 +107,100 @@ export const Profile = () => {
                     </ProfileItemContainer>
 
                 </OptionsContainer>
-            </ContentProfile>
-        </ContainerProfile>
+            </Content>
+        </Container>
     );
 };
+
+const Container = styled.View`
+    flex: 1;
+    background-color: white;
+    align-items: center;
+    justify-content: center;
+`
+
+const UserNameText = styled.Text.attrs({
+    numberOfLines: 1
+})`
+    font-size: 30px;
+    font-weight: bold;
+    color: #000;
+`
+
+const Content = styled.View`
+    width: 92%;
+    flex: ${Platform.OS === 'ios' ? 0.93 : 0.95};
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+`
+
+const HeaderContainer = styled.View`
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+    width: 100%;
+`
+
+const HeaderContent = styled.View`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+`
+
+const ProfileImageShadow = styled.View`
+    box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.20);
+`
+
+const ProfileImage = styled.Image`
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    background-color: black;
+`
+
+const UserDataContainer = styled.View`
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+`
+
+const UserEmailText = styled.Text`
+    font-size: 20px;
+    color: #000;
+`
+
+const OptionsContainer = styled.View`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 70%;
+    gap: 30px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-top: 50px;
+`
+
+const ProfileItemContainer = styled.View`
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+`
+
+const FavoriteGenresContainer = styled.View`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+`
+
+const FavoriteGenresTitle = styled.Text`
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+`

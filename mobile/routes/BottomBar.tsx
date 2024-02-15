@@ -1,12 +1,12 @@
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import styled from "styled-components/native";
-import {Home} from "../screens/home/Home";
-import {Favorites} from "../screens/favorites/Favorites";
-import {Profile} from "../screens/profile/Profile";
+import {Home} from "../screens/Home";
+import {Favorites} from "../screens/Favorites";
+import {Profile} from "../screens/Profile";
 import {FontAwesome6} from '@expo/vector-icons';
 import {MaterialIcons} from '@expo/vector-icons';
 import { BlurView } from "expo-blur";
-import {SearchMovies} from "../screens/search_movies/SearchMovies";
+import {SearchMovies} from "../screens/SearchMovies";
 
 const Tab = createBottomTabNavigator();
 
