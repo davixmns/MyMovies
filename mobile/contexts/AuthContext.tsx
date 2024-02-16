@@ -29,6 +29,7 @@ export function AuthProvider({children}: AuthProviderProps) {
                 const user: User = {
                     name: data.user.name,
                     email: data.user.email,
+                    profile_picture: data.user.profile_picture
                 }
                 setIsAuthenticated(true)
                 setUser(user)

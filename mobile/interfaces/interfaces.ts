@@ -74,6 +74,7 @@ export interface MovieContextType {
 
 export interface UserContextType {
     createUserAccount: (user: User) => Promise<void>;
+    updateUserAccount: (user: User) => Promise<void>;
 }
 
 export interface AuthProviderProps {

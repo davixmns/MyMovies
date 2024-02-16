@@ -6,9 +6,12 @@ import {TextButton} from "../components/TextButton";
 import {useMovieContext} from "../contexts/MovieContext";
 import GenresCapsules from "../components/GenresCapsules";
 import styled from "styled-components/native";
+import {useNavigation} from "@react-navigation/native";
+import {useState} from "react";
 
 
 export const Profile = () => {
+    const navigation = useNavigation()
     const {user, logout, deleteMyAccount} = useAuthContext()
     const {userFavoriteGenres} = useMovieContext()
 
@@ -43,12 +46,15 @@ export const Profile = () => {
     }
 
     function renderProfileImage() {
-        // @ts-ignore
-        if (user?.profile_image) {
-            // @ts-ignore
-            return <ProfileImage source={{uri: user?.profile_image}}/>
+        if (user?.profile_picture) {
+            return <ProfileImage source={{uri: user?.profile_picture}}/>
         }
         return <ProfileImage source={defaultPicture}/>
+    }
+
+    function goToEditProfile() {
+        // @ts-ignore
+        navigation.navigate('EditProfile')
     }
 
     return (
@@ -73,8 +79,7 @@ export const Profile = () => {
                 <OptionsContainer>
                     <ProfileItemContainer>
                         <TextButton
-                            onPress={() => {
-                            }}
+                            onPress={goToEditProfile}
                             placeholder={'Edit profile'}
                             iconName={'pencil'}
                             iconColor={'lightblue'}
@@ -116,7 +121,7 @@ const Container = styled.View`
     flex: 1;
     background-color: white;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
 `
 
 const UserNameText = styled.Text.attrs({
@@ -152,7 +157,7 @@ const HeaderContent = styled.View`
 `
 
 const ProfileImageShadow = styled.View`
-    box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.20);
+    //box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.20);
 `
 
 const ProfileImage = styled.Image`

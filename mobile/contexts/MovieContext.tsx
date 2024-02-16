@@ -141,7 +141,7 @@ export function MovieProvider({children}: MovieProviderProps) {
             if (!user_jwt) return
             const response = await getAllFavoriteMoviesService(user_jwt)
             setMyFavoriteMovies([])
-            setMyFavoriteMovies(response.data)
+            setMyFavoriteMovies(response.data.reverse())
         } catch (e) {
             console.log(e)
         }

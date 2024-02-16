@@ -88,14 +88,14 @@ const ButtonContainer = styled.View`
     flex-direction: row;
 `
 
-export const Title = styled.Text`
+const Title = styled.Text`
     font-size: 36px;
     color: black;
     font-weight: 500;
     padding-bottom: 50px;
 `
 
-export const Container = styled.View`
+const Container = styled.View`
     flex: 1;
     background-color: #fafafa;
     align-items: center;
@@ -103,20 +103,20 @@ export const Container = styled.View`
     padding-bottom: 140px;
 `
 
-export const Content = styled.View`
+const Content = styled.View`
     width: 85%;
     height: 40%;
     align-items: center;
 `
 
-export const FormContainer = styled.View`
+const FormContainer = styled.View`
     width: 100%;
     align-items: center;
     justify-content: center;
     gap: 20px;
 `
 
-export const CancelRegisterText = styled.Text`
+const CancelRegisterText = styled.Text`
     font-size: 18px;
     color: #000;
     font-weight: bold;

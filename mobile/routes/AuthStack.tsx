@@ -7,6 +7,7 @@ import {MovieDetails} from "../screens/MovieDetails";
 import {SplashScreen} from "../screens/SplashScreen";
 import {MoviesByGenre} from "../screens/MoviesByGenre";
 import {TopRatedMovies} from "../screens/TopRatedMovies";
+import {EditProfile} from "../screens/EditProfile";
 
 const Stack = createStackNavigator();
 
@@ -57,6 +58,15 @@ export function AuthStack() {
                         options={{
                             headerShown: false,
                             cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS
+                        }}
+                    />
+
+                    <Stack.Screen
+                        name={'EditProfile'}
+                        component={EditProfile}
+                        options={{
+                            headerShown: false,
+                            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                         }}
                     />
 

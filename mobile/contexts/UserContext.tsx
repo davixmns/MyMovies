@@ -2,7 +2,8 @@ import {User, UserContextType, UserProviderProps} from "../interfaces/interfaces
 import {createContext, useContext} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useAuthContext} from "./AuthContext";
-import {createUserAccountService} from "../service/service";
+import {createUserAccountService, updateUserAccountService} from "../service/service";
+import {Alert} from "react-native";
 
 const UserContext = createContext<UserContextType>({} as UserContextType)
 
@@ -27,9 +28,24 @@ export function UserProvider({children}: UserProviderProps) {
             })
     }
 
+    async function updateUserAccount(user: User) {
+        const user_jwt = await AsyncStorage.getItem('@user-jwt')
+        if (!user_jwt) return
+        await updateUserAccountService(user, user_jwt)
+            .then(() => {
+                setUser(user)
+                console.log('User updated')
+            })
+            .catch((e) => {
+                Alert.alert('Erro', e.response.data.message)
+                console.log(e)
+            })
+    }
+
     return (
         <UserContext.Provider value={{
             createUserAccount,
+            updateUserAccount
         }}>
             {children}
         </UserContext.Provider>

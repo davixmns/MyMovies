@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextInput, TextInputProps, TouchableOpacity} from 'react-native';
+import {TextInputProps, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import { FontAwesome6 } from '@expo/vector-icons';
 

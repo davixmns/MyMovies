@@ -140,11 +140,11 @@ const Container = styled.View`
 `
 
 const Content = styled.View`
-    flex: ${Platform.OS === 'ios' ? 0.95 : 0.97};
+    flex: ${Platform.OS === 'ios' ? 0.94 : 0.98};
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
-    width: 95%;
+    width: 100%;
 `;
 
 const TitleHome = styled.Text`
@@ -161,6 +161,7 @@ const SectionTitle = styled.Text`
     font-weight: bold;
     color: black;
     margin-bottom: 10px;
+    padding-left: 10px;
 `
 
 const SectionTitleContainer = styled.View`

@@ -144,12 +144,12 @@ export function SearchMovies() {
 const Container = styled.View`
     flex: 1;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     background-color: white;
 `
 
 const Content = styled.View`
-    flex: ${Platform.OS === 'ios' ? 0.89 : 0.95};
+    flex: ${Platform.OS === 'ios' ? 0.93 : 0.95};
     align-items: flex-start;
     justify-content: flex-start;
     width: 95%;

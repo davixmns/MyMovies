@@ -9,6 +9,7 @@ const router = Router();
 
 router.post('/login', AuthController.login)
 router.post('/user', UserController.createUserAccount)
+router.put('/user', middleware.verifyUserJWT, UserController.updateUserAccount)
 router.post('/verify-jwt', middleware.verifyUserJWT, AuthController.confirmJWT)
 router.post('/favorite-movie', middleware.verifyUserJWT, MovieController.favoriteMovie)
 router.delete(`/favorite-movie/:tmdb_movie_id`, middleware.verifyUserJWT, MovieController.unfavoriteMovie)

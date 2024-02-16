@@ -10,9 +10,9 @@ export function Favorites() {
         <Container>
             <Content>
                 <TitleContainer>
-                    <Title>Your Favorites ❤️</Title>
+                    <Title>Your Favorites</Title>
                 </TitleContainer>
-                <ScrollFavorites>
+                <ScrollMovies>
                     <MoviesContainer>
                         {myFavoriteMovies.map((movie, index) => (
                             <MovieCardWrapper key={index}>
@@ -26,8 +26,7 @@ export function Favorites() {
                             </MovieCardWrapper>
                         ))}
                     </MoviesContainer>
-                    <View style={{height: 100}}/>
-                </ScrollFavorites>
+                </ScrollMovies>
             </Content>
         </Container>
     );
@@ -48,10 +47,11 @@ const Content = styled.View`
     width: 95%;
 `;
 
-const ScrollFavorites = styled.ScrollView.attrs({
+const ScrollMovies = styled.ScrollView.attrs({
     contentContainerStyle: {
         alignItems: 'center',
         justifyContent: 'flex-start',
+        paddingBottom: 100,
     },
     showsVerticalScrollIndicator: false,
 })`
@@ -67,10 +67,10 @@ const MoviesContainer = styled.View`
 `;
 
 const MovieCardWrapper = styled.View`
-    margin-bottom: 10px;
     box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
-    width: 46%;
 `;
+
+
 
 const TitleContainer = styled.View`
     width: 100%;

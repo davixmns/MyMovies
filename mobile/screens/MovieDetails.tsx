@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {ActivityIndicator, Image, Platform, ScrollView, View} from 'react-native';
+import {Image, Platform, ScrollView, View} from 'react-native';
 import {AntDesign, FontAwesome6} from '@expo/vector-icons';
 import {useNavigation} from "@react-navigation/native";
 import {FavoritedMovie, Genre, Movie} from "../interfaces/interfaces";
@@ -26,6 +26,9 @@ export function MovieDetails({route}) {
     const parsedVoteAverage = movie.vote_average?.toFixed(2)
     const parsedReleaseDate = movie.release_date ? formatDate(movie.release_date) : ''
     const [movieGenres, setMovieGenres] = useState<Genre[]>([])
+    const bgColor = posterIsLoading ? 'lightgray' : 'transparent'
+    const imgWidth = 240
+    const imgHeight = 360
 
     const voteAverageEmoji = (voteAverage: number) => {
         if (voteAverage >= 9) return '🤩'
@@ -112,18 +115,17 @@ export function MovieDetails({route}) {
                     </FavoriteButton>
                 </HeaderContainer>
                 <ScrollView contentContainerStyle={{alignItems: 'center'}} showsVerticalScrollIndicator={false}>
-                    {posterIsLoading && (
-                        <LoadingContainer>
-                            <ActivityIndicator size="large" color='black'/>
-                        </LoadingContainer>
-                    )}
+
                     <MoviePosterContainer>
+                        {posterIsLoading && (
+                            <LoadingBackground bgColor={bgColor} height={imgHeight} width={imgWidth}/>
+                        )}
                         <MoviePoster
                             source={{uri: `https://image.tmdb.org/t/p/w1280${movie.poster_path}`}}
                             onLoad={() => setPosterIsLoading(false)}
                         />
-
                     </MoviePosterContainer>
+
                     <DescriptionContainer>
                         <MovieTitle>{movie.title}</MovieTitle>
 
@@ -131,10 +133,20 @@ export function MovieDetails({route}) {
                             <GenreContainer>
                                 <GenresCapsules genres={movieGenres}/>
                             </GenreContainer>
+
                             <MovieDurationContainer>
                                 <MovieDurationContent>
-                                    <FontAwesome6 name={'clock'} size={16} color={'black'}/>
-                                    <MovieDuration>{movieDuration}</MovieDuration>
+                                    {movieDuration !== '' ? (
+                                        <>
+                                            <FontAwesome6 name={'clock'} size={16} color={'black'}/>
+                                            <MovieDuration>{movieDuration}</MovieDuration>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FontAwesome6 name={'clock'} size={16} color={'black'}/>
+                                            <MovieDuration>???</MovieDuration>
+                                        </>
+                                    )}
                                 </MovieDurationContent>
                             </MovieDurationContainer>
                         </GenreAndDurationContainer>
@@ -143,13 +155,23 @@ export function MovieDetails({route}) {
                             <ReleaseAndRatingContent>
                                 <SectionTitle>Rating</SectionTitle>
                                 <VoteAverageContainer>
-                                    <VoteAverage>{parsedVoteAverage}</VoteAverage>
-                                    <VoteAverage>{voteAverageEmoji(movie.vote_average)}</VoteAverage>
+                                    {movie.vote_average ? (
+                                        <>
+                                            <VoteAverage>{parsedVoteAverage}</VoteAverage>
+                                            <VoteAverage>{voteAverageEmoji(movie.vote_average)}</VoteAverage>
+                                        </>
+                                    ) : (
+                                        <VoteAverage>???</VoteAverage>
+                                    )}
                                 </VoteAverageContainer>
                             </ReleaseAndRatingContent>
                             <ReleaseAndRatingContent>
                                 <SectionTitle>Release Date</SectionTitle>
-                                <ReleaseDateText>{parsedReleaseDate}</ReleaseDateText>
+                                {parsedReleaseDate !== '' ? (
+                                    <ReleaseDateText>{parsedReleaseDate}</ReleaseDateText>
+                                ) : (
+                                    <ReleaseDateText>???</ReleaseDateText>
+                                )}
                             </ReleaseAndRatingContent>
                         </ReleaseAndRatingContainer>
 
@@ -158,7 +180,7 @@ export function MovieDetails({route}) {
                             {movie.overview ? (
                                 <MovieDescription>{movie.overview}</MovieDescription>
                             ) : (
-                                <MovieDescription>No description available...</MovieDescription>
+                                <MovieDescription>???</MovieDescription>
                             )}
                         </OverviewContainer>
 
@@ -177,11 +199,12 @@ const Container = styled.View`
     flex: 1;
     align-items: center;
     justify-content: flex-end;
+    width: 100%;
 `;
 
 const Content = styled.View`
-    width: 90%;
-    flex: ${Platform.OS === 'ios' ? 0.93 : 0.99};
+    width: 95%;
+    flex: ${Platform.OS === 'ios' ? 0.96 : 0.99};
     align-items: center;
     justify-content: flex-start;
 `
@@ -201,7 +224,6 @@ const HeaderTitle = styled.Text`
     color: black;
     padding-right: 15px;
 `;
-
 
 export const FavoriteButton = styled.TouchableOpacity`
 `;
@@ -347,4 +369,12 @@ const ReleaseDateText = styled.Text`
     font-size: 30px;
     color: black;
     font-weight: bold;
+`
+
+const LoadingBackground = styled.View<{ bgColor: string, height: number, width: number }>`
+    position: absolute;
+    width: ${props => props.width}px;
+    height: ${props => props.height}px;
+    background-color: ${props => props.bgColor};
+    border-radius: 20px;
 `

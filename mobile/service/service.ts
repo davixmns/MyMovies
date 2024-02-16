@@ -17,6 +17,13 @@ export async function searchMovieService(query: string){
     return await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${query}&page=1`)
 }
 
+export async function updateUserAccountService(user: User, user_jwt: string){
+    return await axios.put(
+        `http://${MY_IP}/user`,
+        {user},
+        {headers: {Authorization: `Bearer ${user_jwt}`}}
+    )
+}
 
 export async function getMovieRecommendationService(user_jwt: string){
     return await axios.get(
