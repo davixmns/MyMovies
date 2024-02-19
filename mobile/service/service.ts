@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {MY_IP, TMDB_URL, TMDB_API_KEY} from "../config";
+import {MY_IP, TMDB_URL_MOVIE, TMDB_API_KEY, TMDB_URL_PERSON} from "../config";
 import {FavoritedMovie, User} from "../interfaces/interfaces";
 
 export async function loginService(email: string, password: string){
@@ -100,27 +100,38 @@ export async function checkIfMovieIsFavoritedService(tmdbMovieId: number, user_j
 }
 
 export async function getTopRatedMoviesService(){
-    const topRatedMovies = await axios.get(`${TMDB_URL}top_rated?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
+    const topRatedMovies = await axios.get(`${TMDB_URL_MOVIE}top_rated?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
     return topRatedMovies.data.results
 }
 
 export async function getPopularMoviesService(){
-    const popularMovies = await axios.get(`${TMDB_URL}popular?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
+    const popularMovies = await axios.get(`${TMDB_URL_MOVIE}popular?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
     return popularMovies.data.results
 }
 
 export async function getUpcomingMoviesService(){
-    const upcomingMovies = await axios.get(`${TMDB_URL}upcoming?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
+    const upcomingMovies = await axios.get(`${TMDB_URL_MOVIE}upcoming?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
     return upcomingMovies.data.results
 }
 
 export async function getNowPlayingMoviesService(){
-    const nowPlayingMovies = await axios.get(`${TMDB_URL}now_playing?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
+    const nowPlayingMovies = await axios.get(`${TMDB_URL_MOVIE}now_playing?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
     return nowPlayingMovies.data.results
 }
 
 export async function getMovieByIdService(id: string){
-    const movie = await axios.get(`${TMDB_URL}${id}?api_key=${TMDB_API_KEY}&language=en-US`)
+    const movie = await axios.get(`${TMDB_URL_MOVIE}${id}?api_key=${TMDB_API_KEY}&language=en-US`)
     return movie.data
 }
+
+export async function getActorsFromAMovieService(id: string){
+    const actors = await axios.get(`${TMDB_URL_MOVIE}${id}/credits?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
+    return actors.data.cast
+}
+
+export async function getActorMoviesService(id: string){
+    const actorMovies = await axios.get(`${TMDB_URL_PERSON}/${id}/movie_credits?api_key=${TMDB_API_KEY}&language=en-US&page=1&sort_by=popularity`)
+    return actorMovies.data.cast.slice(0, 15); // Retorna os 10 filmes mais populares
+}
+
 

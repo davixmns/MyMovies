@@ -66,7 +66,6 @@ export function Home() {
         <Container>
             <Content>
                 <MainScroll showsVerticalScrollIndicator={false}>
-
                     <HeaderContainer>
                         {user?.profile_picture === undefined ? (
                             <TouchableOpacity onPress={goToProfile}>
@@ -82,9 +81,9 @@ export function Home() {
                         <FontAwesome6 name="bell" size={30} color="black"/>
                     </HeaderContainer>
                     <GenresContainer>
-                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                        <GenresScroll>
                             <GenresCapsules genres={allGenres}/>
-                        </ScrollView>
+                        </GenresScroll>
                     </GenresContainer>
                     <View>
                         <SectionTitleContainer>
@@ -171,10 +170,11 @@ const SectionTitleContainer = styled.View`
 `
 
 const HeaderContainer = styled.View`
-    width: 100%;
+    width: 95%;
     flex-direction: row;
     margin-bottom: 10px;
     align-items: center;
+    align-self: center;
     justify-content: space-between
 `
 
@@ -185,17 +185,27 @@ const MainScroll = styled.ScrollView`
 
 const CardPadding = styled.View`
     padding-right: 10px;
+    padding-left: 10px;
     box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
 `
 
 const NowPlayingContainer = styled.View`
     padding-bottom: 20px;
+    padding-left: 10px;
     padding-right: 10px;
     box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
 `
 
 const GenresContainer = styled.View`
     margin-bottom: 20px;
+`
+
+const GenresScroll = styled.ScrollView.attrs({
+    horizontal: true,
+    showsHorizontalScrollIndicator: false,
+})`
+    width: 100%;
+    padding-left: 10px;
 `
 
 const TinyProfilePic = styled.Image`

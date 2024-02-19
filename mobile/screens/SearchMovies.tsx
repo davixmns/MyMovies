@@ -71,6 +71,17 @@ export function SearchMovies() {
                     />
                 </Header>
                 <SearchScroll>
+                    {!isSearching && !movieIsFinded && searchText !== '' && (
+                        <View style={{alignItems: 'flex-start', justifyContent: 'flex-start', marginTop: 10}}>
+                            <MovieNotFound>No movies found</MovieNotFound>
+                        </View>
+                    )}
+
+                    {isSearching && searchText !== '' && (
+                        <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
+                            <ActivityIndicator size="large" color="black"/>
+                        </View>
+                    )}
                     {findedMovies.length === 0 && searchText === '' && (
                         <>
                             <View style={{marginTop: 20}}>
@@ -124,17 +135,6 @@ export function SearchMovies() {
                             ))}
                         </MoviesContainer>
                     )}
-                    {!isSearching && !movieIsFinded && searchText !== '' && (
-                        <View style={{alignItems: 'flex-start', justifyContent: 'flex-start', marginTop: 10}}>
-                            <MovieNotFound>No movies found</MovieNotFound>
-                        </View>
-                    )}
-
-                    {isSearching && searchText !== '' && (
-                        <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
-                            <ActivityIndicator size="large" color="black"/>
-                        </View>
-                    )}
                 </SearchScroll>
             </Content>
         </Container>
@@ -149,7 +149,7 @@ const Container = styled.View`
 `
 
 const Content = styled.View`
-    flex: ${Platform.OS === 'ios' ? 0.93 : 0.95};
+    flex: ${Platform.OS === 'ios' ? 0.93 : 0.99};
     align-items: flex-start;
     justify-content: flex-start;
     width: 95%;

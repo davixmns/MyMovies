@@ -134,7 +134,7 @@ const UserNameText = styled.Text.attrs({
 
 const Content = styled.View`
     width: 92%;
-    flex: ${Platform.OS === 'ios' ? 0.93 : 0.95};
+    flex: ${Platform.OS === 'ios' ? 0.93 : 0.98};
     align-items: center;
     flex-direction: column;
     justify-content: flex-start;

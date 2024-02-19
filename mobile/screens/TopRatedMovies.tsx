@@ -1,5 +1,5 @@
 import {useMovieContext} from "../contexts/MovieContext";
-import {Image} from "react-native";
+import {Image, Platform} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
 import {MovieCard} from "../components/MovieCard";
 import styled from "styled-components/native";
@@ -58,7 +58,7 @@ const Container = styled.View`
 `;
 
 const Content = styled.View`
-    flex: 0.93;
+    flex: ${Platform.OS === 'ios' ? 0.93 : 0.97};
     align-items: center;
     justify-content: flex-start;
     width: 95%;
@@ -77,16 +77,15 @@ const ScrollMovies = styled.ScrollView.attrs({
 const MoviesContainer = styled.View`
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
     width: 100%;
     padding-top: 20px;
+    gap: 15px;
 `;
 
 const MovieCardWrapper = styled.View`
-    width: 48%;
     margin-bottom: 10px;
     box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
-
 `;
 
 const TitleContainer = styled.View`

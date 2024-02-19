@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react';
-import {Image, Platform, ScrollView, View} from 'react-native';
+import {Image, Platform, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {AntDesign, FontAwesome6} from '@expo/vector-icons';
 import {useNavigation} from "@react-navigation/native";
 import {FavoritedMovie, Genre, Movie} from "../interfaces/interfaces";
-import {getMovieByIdService} from "../service/service";
+import {getActorsFromAMovieService, getMovieByIdService} from "../service/service";
 import {useMovieContext} from "../contexts/MovieContext";
 import {WriteReviewButton} from "../components/WriteReviewButton";
 import * as Haptics from "expo-haptics";
@@ -14,6 +14,7 @@ import styled from "styled-components/native";
 export function MovieDetails({route}) {
     const navigation = useNavigation();
     const {tmdbMovieId} = route.params
+    const [actors, setActors] = useState([])
     const [wasFavorited, setWasFavorited] = useState<boolean>(false);
     const [isFavorited, setIsFavorited] = useState<boolean>(false);
     const [canClick, setCanClick] = useState<boolean>(true);
@@ -63,8 +64,9 @@ export function MovieDetails({route}) {
         }
 
         async function init() {
-            await handleCheckIfMovieIsFavorited()
             await loadMovie()
+            await handleCheckIfMovieIsFavorited()
+            await loadActors()
         }
 
         init()
@@ -74,6 +76,12 @@ export function MovieDetails({route}) {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
         saveFavoritedMovieOrNot()
     }, [isFavorited]);
+
+    async function loadActors() {
+        const response = await getActorsFromAMovieService(tmdbMovieId)
+        const actors = response.slice(0, 5)
+        setActors(actors)
+    }
 
     async function saveFavoritedMovieOrNot() {
         if (!canClick) return
@@ -96,6 +104,26 @@ export function MovieDetails({route}) {
         return `${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`
     }
 
+    function goToActorMovies(actor: any){
+        // @ts-ignore
+        navigation.navigate('ActorMovies', {
+            actorId: actor.id,
+            actorName: actor.name,
+            actorProfilePath: actor.profile_path,
+        })
+    }
+
+    function renderActor(actor: any, index: number) {
+        return (
+            <TouchableOpacity onPress={() => goToActorMovies(actor)} key={index} style={{flexDirection: 'column', alignItems: 'center'}}>
+                <Image
+                    source={{uri: `https://image.tmdb.org/t/p/w1280${actor.profile_path}`}}
+                    style={{width: 100, height: 100, borderRadius: 50}}
+                />
+                <Text style={{fontWeight: 'bold', maxWidth: 110}} numberOfLines={2}>{actor.name}</Text>
+            </TouchableOpacity>
+        )
+    }
 
     return (
         <Container>
@@ -184,7 +212,20 @@ export function MovieDetails({route}) {
                             )}
                         </OverviewContainer>
 
+                        <OverviewContainer>
+                            <SectionTitle>Actors:</SectionTitle>
+                            {actors.length > 0 ? (
+                                <ActorsScroll>
+                                    {actors.map((actor, index) => renderActor(actor, index))}
+                                </ActorsScroll>
+                            ) : (
+                                <Text>???</Text>
+                            )}
+                        </OverviewContainer>
+
                     </DescriptionContainer>
+
+
                     <View style={{height: 120}}/>
                 </ScrollView>
                 <WriteReviewContainer>
@@ -245,12 +286,15 @@ const MoviePosterContainer = styled.View`
     box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.40);
 `;
 
-const LoadingContainer = styled.View`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 100px;
-`;
+const ActorsScroll = styled.ScrollView.attrs({
+    contentContainerStyle: {
+        marginTop: 15,
+        gap: 20,
+        height: 120,
+    },
+    horizontal: true,
+    showsHorizontalScrollIndicator: false,
+})``
 
 const DescriptionContainer = styled.View`
     width: 100%;
