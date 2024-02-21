@@ -4,15 +4,17 @@ import {useEffect, useState} from "react";
 import {GenreCard} from "../components/GenreCard";
 import {ActivityIndicator, Platform, View} from "react-native";
 import {useMovieContext} from "../contexts/MovieContext";
-import {searchMovieService} from "../service/service";
+import {searchActorService, searchMovieService} from "../service/service";
 import {Movie} from "../interfaces/interfaces";
 import {MovieCard} from "../components/MovieCard";
+import {ActorsList} from "../components/ActorsList";
 
 
 export function SearchMovies() {
     const [prevSearchText, setPrevSearchText] = useState('');
     const [searchText, setSearchText] = useState('')
     const [findedMovies, setFindedMovies] = useState<Movie[]>([])
+    const [findedActors, setFindedActors] = useState<any[]>([])
     const {userFavoriteGenres, genreStylesForConsult} = useMovieContext()
     const [searchTimer, setSearchTimer] = useState<NodeJS.Timeout | null>(null);
     const [movieIsFinded, setMovieIsFinded] = useState<boolean>(false);
@@ -32,11 +34,14 @@ export function SearchMovies() {
     // Função para realizar a pesquisa
     async function performSearch(text: string) {
         if (text !== '' && text !== null) {
-            const results = await searchMovieService(text);
+            const moviesResults = await searchMovieService(text);
             setFindedMovies([])
-            setFindedMovies(results.data.results);
+            setFindedMovies(moviesResults.data.results);
+            const actorsResults = await searchActorService(text);
+            setFindedActors([])
+            setFindedActors(actorsResults);
             setIsSearching(false)
-            if (results.data.results.length === 0) {
+            if (moviesResults.data.results.length === 0) {
                 setMovieIsFinded(false)
             } else {
                 setMovieIsFinded(true)
@@ -120,7 +125,12 @@ export function SearchMovies() {
                             </View>
                         </>
                     )}
-                    {findedMovies.length > 0 && searchText !== '' && (
+                    {findedActors.length > 0 && searchText !== '' && !isSearching && (
+                        <>
+                            <ActorsList actors={findedActors} />
+                        </>
+                    )}
+                    {findedMovies.length > 0 && searchText !== '' && !isSearching && (
                         <MoviesContainer>
                             {findedMovies.map((movie, index) => (
                                 <MovieCardWrapper key={index}>

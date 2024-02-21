@@ -4,10 +4,11 @@ import {useNavigation} from "@react-navigation/native";
 import * as Animatable from 'react-native-animatable';
 import styled from "styled-components/native";
 import {useEffect, useState} from "react";
+import {StackNavigationProp} from "@react-navigation/stack";
 
 // @ts-ignore
 export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: string, tmdbMovieId: string }) {
-    const navigation = useNavigation()
+    const navigation = useNavigation<StackNavigationProp<any>>();
     const [movieTitle, setMovieTitle] = useState(movie.title)
     const [imgWidth, setImgWidth] = useState(0)
     const [imgHeight, setImgHeight] = useState(0)
@@ -18,7 +19,7 @@ export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: stri
 
     function goToMovieDetails() {
         // @ts-ignore
-        navigation.navigate('MovieDetails', {tmdbMovieId: tmdbMovieId})
+        navigation.push('MovieDetails', {tmdbMovieId: tmdbMovieId})
     }
 
     useEffect(() => {

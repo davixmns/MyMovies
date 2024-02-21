@@ -61,13 +61,13 @@ const ScrollMovies = styled.ScrollView.attrs({
 const MoviesContainer = styled.View`
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    gap: 15px;
+    justify-content: space-between;
+    width: 95%;
 `;
 
 const MovieCardWrapper = styled.View`
     box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
+    margin-bottom: 20px;
 `;
 
 

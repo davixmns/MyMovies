@@ -17,6 +17,20 @@ export async function searchMovieService(query: string){
     return await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${query}&page=1`)
 }
 
+export async function searchActorService(query: string) {
+    try {
+        const response = await axios.get(`https://api.themoviedb.org/3/search/person?api_key=${TMDB_API_KEY}&query=${query}&page=1`);
+        const actors = response.data.results;
+
+        const popularActors = actors.filter((actor: { popularity: number; }) => actor.popularity > 10);
+
+        return popularActors.slice(0, 4);
+    } catch (error) {
+        console.error("Erro ao buscar atores:", error);
+        return [];
+    }
+}
+
 export async function updateUserAccountService(user: User, user_jwt: string){
     return await axios.put(
         `http://${MY_IP}/user`,
@@ -126,7 +140,7 @@ export async function getMovieByIdService(id: string){
 
 export async function getActorsFromAMovieService(id: string){
     const actors = await axios.get(`${TMDB_URL_MOVIE}${id}/credits?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
-    return actors.data.cast
+    return actors.data.cast.slice(0, 5);
 }
 
 export async function getActorMoviesService(id: string){

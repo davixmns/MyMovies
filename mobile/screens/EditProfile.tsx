@@ -24,7 +24,7 @@ export function EditProfile() {
 
     useEffect(() => {
         // @ts-ignore
-        if(emailRegex.test(email as string) && name.length > 3) {
+        if (emailRegex.test(email as string) && name.length > 3) {
             setBtnDisabled(false)
         } else {
             setBtnDisabled(true)
@@ -63,7 +63,11 @@ export function EditProfile() {
                     text: "Cancel",
                     style: "cancel"
                 },
-                {text: "Save", onPress: () => {handleUpdateUserAccount()}}
+                {
+                    text: "Save", onPress: () => {
+                        handleUpdateUserAccount()
+                    }
+                }
             ]
         );
     }
@@ -98,7 +102,9 @@ export function EditProfile() {
                         <MyTextInput text={email} setText={setEmail} iconName={'envelope'}/>
                     </InputsContainer>
                 </FormContainer>
-                <MyButton onPress={confirmChanges} disabled={btnDisabled} title={'Save Changes'}/>
+                <ButtonContainer>
+                    <MyButton onPress={confirmChanges} disabled={btnDisabled} title={'Save Changes'}/>
+                </ButtonContainer>
             </Content>
         </Container>
     );
@@ -175,4 +181,11 @@ const InputsContainer = styled.View`
 
 const BackButton = styled.TouchableOpacity`
     border-radius: 16px;
+`;
+
+const ButtonContainer = styled.View`
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 25px;
 `;

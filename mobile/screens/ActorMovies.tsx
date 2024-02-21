@@ -6,10 +6,11 @@ import {Alert, Image, Platform} from "react-native";
 import {Movie} from "../interfaces/interfaces";
 import {AntDesign} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
+import {StackNavigationProp} from "@react-navigation/stack";
 
 // @ts-ignore
 export function ActorMovies({route}) {
-    const navigation = useNavigation();
+    const navigation = useNavigation<StackNavigationProp<any>>();
     const actorId = route.params.actorId;
     const actorName = route.params.actorName;
     const actorProfilePath = route.params.actorProfilePath;
@@ -113,10 +114,8 @@ const ScrollMovies = styled.ScrollView.attrs({
 const MoviesContainer = styled.View`
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    padding-top: 20px;
-    gap: 15px;
+    justify-content: space-between;
+    width: 95%;
 `;
 
 const MovieCardWrapper = styled.View`

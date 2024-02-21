@@ -9,6 +9,7 @@ import {WriteReviewButton} from "../components/WriteReviewButton";
 import * as Haptics from "expo-haptics";
 import GenresCapsules from "../components/GenresCapsules";
 import styled from "styled-components/native";
+import {ActorsList} from "../components/ActorsList";
 
 //@ts-ignore
 export function MovieDetails({route}) {
@@ -78,8 +79,7 @@ export function MovieDetails({route}) {
     }, [isFavorited]);
 
     async function loadActors() {
-        const response = await getActorsFromAMovieService(tmdbMovieId)
-        const actors = response.slice(0, 5)
+        const actors = await getActorsFromAMovieService(tmdbMovieId)
         setActors(actors)
     }
 
@@ -102,27 +102,6 @@ export function MovieDetails({route}) {
     function formatDate(date: string) {
         const dateArray = date.split('-')
         return `${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`
-    }
-
-    function goToActorMovies(actor: any){
-        // @ts-ignore
-        navigation.navigate('ActorMovies', {
-            actorId: actor.id,
-            actorName: actor.name,
-            actorProfilePath: actor.profile_path,
-        })
-    }
-
-    function renderActor(actor: any, index: number) {
-        return (
-            <TouchableOpacity onPress={() => goToActorMovies(actor)} key={index} style={{flexDirection: 'column', alignItems: 'center'}}>
-                <Image
-                    source={{uri: `https://image.tmdb.org/t/p/w1280${actor.profile_path}`}}
-                    style={{width: 100, height: 100, borderRadius: 50}}
-                />
-                <Text style={{fontWeight: 'bold', maxWidth: 110}} numberOfLines={2}>{actor.name}</Text>
-            </TouchableOpacity>
-        )
     }
 
     return (
@@ -215,9 +194,7 @@ export function MovieDetails({route}) {
                         <OverviewContainer>
                             <SectionTitle>Actors:</SectionTitle>
                             {actors.length > 0 ? (
-                                <ActorsScroll>
-                                    {actors.map((actor, index) => renderActor(actor, index))}
-                                </ActorsScroll>
+                                <ActorsList actors={actors}/>
                             ) : (
                                 <Text>???</Text>
                             )}
@@ -285,16 +262,6 @@ const MoviePosterContainer = styled.View`
     align-items: center;
     box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.40);
 `;
-
-const ActorsScroll = styled.ScrollView.attrs({
-    contentContainerStyle: {
-        marginTop: 15,
-        gap: 20,
-        height: 120,
-    },
-    horizontal: true,
-    showsHorizontalScrollIndicator: false,
-})``
 
 const DescriptionContainer = styled.View`
     width: 100%;
