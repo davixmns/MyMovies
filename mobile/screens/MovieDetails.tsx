@@ -205,13 +205,17 @@ export function MovieDetails({route}) {
 
                     <View style={{height: 120}}/>
                 </ScrollView>
-                <WriteReviewContainer>
-                    <WriteReviewButton isActive={isMovieReleased} placeholder={moviePlaceholder}/>
-                </WriteReviewContainer>
+                <CommentsButton>
+
+                </CommentsButton>
             </Content>
         </Container>
     );
 }
+
+const CommentsButton = styled.TouchableOpacity`
+    
+`
 
 const Container = styled.View`
     flex: 1;
@@ -222,7 +226,7 @@ const Container = styled.View`
 
 const Content = styled.View`
     width: 95%;
-    flex: ${Platform.OS === 'ios' ? 0.96 : 0.99};
+    flex: ${Platform.OS === 'ios' ? 0.96 : 1};
     align-items: center;
     justify-content: flex-start;
 `
@@ -332,17 +336,6 @@ const MovieDescription = styled.Text`
     color: black;
     padding-top: 10px;
 `;
-
-const WriteReviewContainer = styled.View`
-    //border-radius: 40px;
-    position: absolute;
-    width: 100%;
-    height: 50px;
-    bottom: 0;
-    margin-bottom: 30px;
-    //box-shadow: 20px 10px 20px rgba(0, 0, 0, 0.40);
-`;
-
 
 const VoteAverage = styled.Text`
     font-size: 30px;

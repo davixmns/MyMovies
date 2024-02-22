@@ -102,7 +102,6 @@ const MoviesContainer = styled.View`
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
-    padding-top: 20px;
     gap: 15px;
 `;
 
@@ -124,11 +123,12 @@ const Title = styled.Text`
 `;
 
 const HeaderContainer = styled.View`
-    width: 100%;
+    width: 95%;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     gap: 15px;
+    padding-bottom: 20px;
 `;
 
 const BackButton = styled.TouchableOpacity`

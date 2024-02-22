@@ -35,10 +35,9 @@ export function SearchMovies() {
     async function performSearch(text: string) {
         if (text !== '' && text !== null) {
             const moviesResults = await searchMovieService(text);
-            setFindedMovies([])
-            setFindedMovies(moviesResults.data.results);
+            const filteredMovies = moviesResults.data.results.filter((movie: Movie) => movie.poster_path !== null)
+            setFindedMovies(filteredMovies);
             const actorsResults = await searchActorService(text);
-            setFindedActors([])
             setFindedActors(actorsResults);
             setIsSearching(false)
             if (moviesResults.data.results.length === 0) {
@@ -71,7 +70,7 @@ export function SearchMovies() {
                     <MyTextInput
                         text={searchText}
                         setText={setSearchText}
-                        placeholder={'Search Movies'}
+                        placeholder={'Type here...'}
                         iconName={'magnifying-glass'}
                     />
                 </Header>
@@ -100,34 +99,37 @@ export function SearchMovies() {
                                     </GridContent>
                                 </GridContainer>
                             </View>
-                            <View style={{marginTop: 50}}>
-                                <GridContainer>
-                                    <SubTitle>Favorite Genres</SubTitle>
-                                    <GridContent>
-                                        <GenreCard
-                                            genreName={userFavoriteGenres[0].name}
-                                            iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[0].name)?.icon}
-                                        />
-                                        <GenreCard
-                                            genreName={userFavoriteGenres[1].name}
-                                            iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[1].name)?.icon}
-                                        />
-                                        <GenreCard
-                                            genreName={userFavoriteGenres[2].name}
-                                            iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[2].name)?.icon}
-                                        />
-                                        <GenreCard
-                                            genreName={userFavoriteGenres[3].name}
-                                            iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[3].name)?.icon}
-                                        />
-                                    </GridContent>
-                                </GridContainer>
-                            </View>
+                            {userFavoriteGenres.length > 3 && (
+                                <View style={{marginTop: 50}}>
+                                    <GridContainer>
+                                        <SubTitle>Favorite Genres</SubTitle>
+                                        <GridContent>
+                                            <GenreCard
+                                                genreName={userFavoriteGenres[0].name}
+                                                iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[0].name)?.icon}
+                                            />
+
+                                            <GenreCard
+                                                genreName={userFavoriteGenres[1].name}
+                                                iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[1].name)?.icon}
+                                            />
+                                            <GenreCard
+                                                genreName={userFavoriteGenres[2].name}
+                                                iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[2].name)?.icon}
+                                            />
+                                            <GenreCard
+                                                genreName={userFavoriteGenres[3].name}
+                                                iconName={genreStylesForConsult.find(genre => genre.name === userFavoriteGenres[3].name)?.icon}
+                                            />
+                                        </GridContent>
+                                    </GridContainer>
+                                </View>
+                            )}
                         </>
                     )}
                     {findedActors.length > 0 && searchText !== '' && !isSearching && (
                         <>
-                            <ActorsList actors={findedActors} />
+                            <ActorsList actors={findedActors}/>
                         </>
                     )}
                     {findedMovies.length > 0 && searchText !== '' && !isSearching && (

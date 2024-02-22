@@ -67,64 +67,71 @@ export function Home() {
             <Content>
                 <MainScroll showsVerticalScrollIndicator={false}>
                     <HeaderContainer>
-                        {user?.profile_picture === undefined ? (
+                        {user?.profile_picture === null ? (
                             <TouchableOpacity onPress={goToProfile}>
                                 <TinyProfilePic source={defaultPicture}/>
                             </TouchableOpacity>
                         ) : (
                             <TouchableOpacity onPress={goToProfile}>
                                 {/*@ts-ignore*/}
-                                <TinyProfilePic source={{uri: user?.profile_picture}}/>
+                                {/*<TinyProfilePic source={{uri: user?.profile_picture}}/>*/}
                             </TouchableOpacity>
                         )}
                         <TitleHome>MyMovies</TitleHome>
                         <FontAwesome6 name="bell" size={30} color="black"/>
                     </HeaderContainer>
-                    <GenresContainer>
-                        <GenresScroll>
-                            <GenresCapsules genres={allGenres}/>
-                        </GenresScroll>
-                    </GenresContainer>
-                    <View>
-                        <SectionTitleContainer>
-                            <SectionTitle>Now Playing Movies 🎬</SectionTitle>
-                        </SectionTitleContainer>
-                        <FlatList
-                            data={sortedNowPlayingMovies}
-                            renderItem={renderNowPlayingMovie}
-                            keyExtractor={item => item.id.toString()}
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            numColumns={1}
-                        />
-                    </View>
-                    <View>
-                        <SectionTitleContainer>
-                            <SectionTitle>Popular Movies 🌟</SectionTitle>
-                        </SectionTitleContainer>
-                        <FlatList
-                            data={popularMovies}
-                            renderItem={renderPopularMovie}
-                            keyExtractor={item => item.id.toString()}
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            numColumns={1}
-                        />
-                    </View>
-                    <View style={{marginTop: 15}}>
-                        <SectionTitleContainer>
-                            <SectionTitle>Upcoming Movies 🏃‍♂️</SectionTitle>
-                        </SectionTitleContainer>
-                        <FlatList
-                            data={upcomingMovies}
-                            renderItem={renderUpcomingMovie}
-                            keyExtractor={item => item.id.toString()}
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            numColumns={1}
-                        />
-                    </View>
-                    <View style={{height: 100}}></View>
+                    {allGenres?.length > 0 && (
+                        <GenresContainer>
+                            <GenresScroll>
+                                <GenresCapsules genres={allGenres}/>
+                            </GenresScroll>
+                        </GenresContainer>
+                    )}
+                    {sortedNowPlayingMovies?.length > 0 && (
+                        <SectionContainer>
+                            <SectionTitleContainer>
+                                <SectionTitle>Now Playing Movies 🎬</SectionTitle>
+                            </SectionTitleContainer>
+                            <FlatList
+                                data={sortedNowPlayingMovies}
+                                renderItem={renderNowPlayingMovie}
+                                keyExtractor={item => item.id.toString()}
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                                numColumns={1}
+                            />
+                        </SectionContainer>
+                    )}
+                    {sortedNowPlayingMovies?.length > 0 && (
+                        <SectionContainer2>
+                            <SectionTitleContainer>
+                                <SectionTitle>Popular Movies 🌟</SectionTitle>
+                            </SectionTitleContainer>
+                            <FlatList
+                                data={popularMovies}
+                                renderItem={renderPopularMovie}
+                                keyExtractor={item => item.id.toString()}
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                                numColumns={1}
+                            />
+                        </SectionContainer2>
+                    )}
+                    {upcomingMovies?.length > 0 && (
+                        <SectionContainer2>
+                            <SectionTitleContainer>
+                                <SectionTitle>Upcoming Movies 🏃‍♂️</SectionTitle>
+                            </SectionTitleContainer>
+                            <FlatList
+                                data={upcomingMovies}
+                                renderItem={renderUpcomingMovie}
+                                keyExtractor={item => item.id.toString()}
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                                numColumns={1}
+                            />
+                        </SectionContainer2>
+                    )}
                 </MainScroll>
             </Content>
         </Container>
@@ -178,9 +185,13 @@ const HeaderContainer = styled.View`
     justify-content: space-between
 `
 
-const MainScroll = styled.ScrollView`
-    height: 100%;
-    width: 100%;
+const MainScroll = styled.ScrollView.attrs({
+    showsVerticalScrollIndicator: false,
+    contentContainerStyle: {
+        width: '100%',
+        paddingBottom: 90,
+    }
+})`
 `
 
 const CardPadding = styled.View`
@@ -212,5 +223,12 @@ const TinyProfilePic = styled.Image`
     width: 50px;
     height: 50px;
     border-radius: 25px;
+`
+const SectionContainer = styled.View`
+    height: 37%;
+`
+
+const SectionContainer2 = styled.View`
+    height: 27%;
 `
 

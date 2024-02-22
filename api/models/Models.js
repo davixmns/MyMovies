@@ -22,7 +22,7 @@ export const User = database.define('user', {
         allowNull: false
     },
     profile_picture: {
-        type: Sequelize.STRING,
+        type: Sequelize.BLOB,
         allowNull: true
     },
 })

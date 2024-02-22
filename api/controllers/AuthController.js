@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import utils from "../utils/utils.js";
 import {User} from "../models/Models.js";
+import * as path from "path";
 
 export default {
     async login(req, res) {
@@ -13,9 +14,8 @@ export default {
             if (!passwordMatch) return res.status(401).json({message: 'Invalid password'});
             const user_jwt = utils.signJWT({user_id: userExists.user_id});
             const userDTO = {
-                user_id: userExists.user_id,
                 name: userExists.name,
-                email: userExists.email
+                email: userExists.email,
             }
             return res.status(200).json({user_jwt: user_jwt, user: userDTO, message: 'Login successful'});
         } catch (e) {
@@ -24,9 +24,18 @@ export default {
         }
     },
 
-    async confirmJWT(req, res) {
-        const userId = req.user_id;
-        const user = await User.findByPk(userId);
-        return res.status(200).json({user: user});
+    async getUser(req, res) {
+        try {
+            const userId = req.user_id;
+            const user = await User.findByPk(userId);
+            const userDTO = {
+                name: user.name,
+                email: user.email,
+            }
+            return res.status(200).json({user: userDTO});
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({message: 'Error getting user'})
+        }
     }
 }

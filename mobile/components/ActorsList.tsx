@@ -21,22 +21,23 @@ export function ActorsList({actors}: { actors: any[] }) {
 
     function renderActor(actor: any, index: number) {
         return (
-            <TouchableOpacity onPress={() => goToActorMovies(actor)} key={index} style={{flexDirection: 'column', alignItems: 'center'}}>
-                {!imgLoaded && (
+            <ActorButton onPress={() => goToActorMovies(actor)} key={index}>
+                {actor.profile_path === null ? (
                     <ActorContainer>
                         <Image source={default_picture} style={{width: 100, height: 100, borderRadius: 50}}/>
                         <Text style={{fontWeight: 'bold', maxWidth: 110}} numberOfLines={2}>{actor.name}</Text>
                     </ActorContainer>
+                ) : (
+                    <ActorContainer>
+                        <Image
+                            source={{uri: `https://image.tmdb.org/t/p/w200${actor.profile_path}`}}
+                            style={{width: 100, height: 100, borderRadius: 50}}
+                            onLoad={() => setImgLoaded(true)}
+                        />
+                        <Text style={{fontWeight: 'bold', maxWidth: 110}} numberOfLines={2}>{actor.name}</Text>
+                    </ActorContainer>
                 )}
-                <ActorContainer>
-                    <Image
-                        source={{uri: `https://image.tmdb.org/t/p/w200${actor.profile_path}`}}
-                        style={{width: 100, height: 100, borderRadius: 50}}
-                        onLoad={() => setImgLoaded(true)}
-                    />
-                    <Text style={{fontWeight: 'bold', maxWidth: 110}} numberOfLines={2}>{actor.name}</Text>
-                </ActorContainer>
-            </TouchableOpacity>
+            </ActorButton>
         )
     }
 
@@ -62,6 +63,12 @@ const ActorsScroll = styled.ScrollView.attrs({
 })``
 
 const ActorContainer = styled.View`
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+`
+
+const ActorButton = styled.TouchableOpacity`
     flex-direction: column;
     align-items: center;
     gap: 5px;

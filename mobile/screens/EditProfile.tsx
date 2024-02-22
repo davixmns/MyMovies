@@ -1,4 +1,11 @@
-import {Alert, Platform, TouchableOpacity, View} from "react-native";
+import {
+    Alert,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+} from "react-native";
 import styled from "styled-components/native";
 import {useAuthContext} from "../contexts/AuthContext";
 import * as ImagePicker from "expo-image-picker";//@ts-ignore
@@ -11,6 +18,9 @@ import {useNavigation} from "@react-navigation/native";
 import {emailRegex} from "../utils/utils";
 import {User} from "../interfaces/interfaces";
 import {useUserContext} from "../contexts/UserContext";
+import {saveProfilePictureService} from "../service/service";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 export function EditProfile() {
     const {user} = useAuthContext()
@@ -21,6 +31,7 @@ export function EditProfile() {
     const [email, setEmail] = useState(user?.email)
     const [btnDisabled, setBtnDisabled] = useState(true)
     const {updateUserAccount} = useUserContext()
+    const formData = new FormData()
 
     useEffect(() => {
         // @ts-ignore
@@ -38,16 +49,37 @@ export function EditProfile() {
             allowsEditing: true,
             base64: true,
             quality: 1
-        })
-        if (!response.canceled) {
+        });
+        // @ts-ignore
+        if (!response.cancelled) {
+            const user_jwt = await AsyncStorage.getItem('@user-jwt')
+            if (!user_jwt) return
+
+            // @ts-ignore
+            formData.append('file', {
+                name: `.jpeg`,
+                type: 'image/jpeg',
+                // @ts-ignore
+                uri: response.assets[0].uri
+            })
+
+            await saveProfilePictureService(formData, user_jwt)
+                .catch((error) => {
+                    console.log(error.toString())
+                    Alert.alert('Error', 'An error occurred while trying to update your profile picture')
+                })
+
+            // @ts-ignore
             setImage(response.assets[0].uri)
         }
     }
+
 
     async function handleUpdateUserAccount() {
         const user: User = {
             name: name as string,
             email: email as string,
+            // @ts-ignore
             profile_picture: image as string
         }
         await updateUserAccount(user)
@@ -74,38 +106,43 @@ export function EditProfile() {
 
     return (
         <Container>
-            <Content>
-                <HeaderContainer>
-                    <BackButton onPress={() => navigation.goBack()}>
-                        <AntDesign name="arrowleft" size={35} color="black" style={{padding: 5}}/>
-                    </BackButton>
-                    <HeaderTitle>Edit Profile</HeaderTitle>
-                    <FontAwesome6 name="gear" size={30} color="black"/>
-                </HeaderContainer>
-                <FormContainer>
-                    <TouchableOpacity onPress={updateProfilePicture}>
-                        <PictureContainer>
-                            <IconContainer>
-                                <FontAwesome6 name="image" size={20} color="white"/>
-                            </IconContainer>
-                            {image ? (
-                                <ProfileImage source={{uri: image}}/>
-                            ) : (
-                                <ProfileImage source={defaultPicture}/>
-                            )}
-                        </PictureContainer>
-                    </TouchableOpacity>
-                    <InputsContainer>
-                        {/* @ts-ignore */}
-                        <MyTextInput text={name} setText={setName} iconName={'user'}/>
-                        {/* @ts-ignore */}
-                        <MyTextInput text={email} setText={setEmail} iconName={'envelope'}/>
-                    </InputsContainer>
-                </FormContainer>
-                <ButtonContainer>
-                    <MyButton onPress={confirmChanges} disabled={btnDisabled} title={'Save Changes'}/>
-                </ButtonContainer>
-            </Content>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <Content>
+                    <HeaderContainer>
+                        <BackButton onPress={() => navigation.goBack()}>
+                            <AntDesign name="arrowleft" size={35} color="black" style={{padding: 5}}/>
+                        </BackButton>
+                        <HeaderTitle>Edit Profile</HeaderTitle>
+                        {/*@ts-ignore*/}
+                        <SettingsButton onPress={() => navigation.navigate('Settings')}>
+                            <FontAwesome6 name="gear" size={30} color="black"/>
+                        </SettingsButton>
+                    </HeaderContainer>
+                    <FormContainer>
+                        <TouchableOpacity onPress={updateProfilePicture}>
+                            <PictureContainer>
+                                <IconContainer>
+                                    <FontAwesome6 name="image" size={20} color="white"/>
+                                </IconContainer>
+                                {image ? (
+                                    <ProfileImage source={{uri: image}}/>
+                                ) : (
+                                    <ProfileImage source={defaultPicture}/>
+                                )}
+                            </PictureContainer>
+                        </TouchableOpacity>
+                        <InputsContainer>
+                            {/* @ts-ignore */}
+                            <MyTextInput text={name} setText={setName} iconName={'user'}/>
+                            {/* @ts-ignore */}
+                            <MyTextInput text={email} setText={setEmail} iconName={'envelope'}/>
+                        </InputsContainer>
+                    </FormContainer>
+                    <ButtonContainer>
+                        <MyButton onPress={confirmChanges} disabled={btnDisabled} title={'Save Changes'}/>
+                    </ButtonContainer>
+                </Content>
+            </TouchableWithoutFeedback>
         </Container>
     );
 }
@@ -189,3 +226,8 @@ const ButtonContainer = styled.View`
     justify-content: center;
     padding-bottom: 25px;
 `;
+
+const SettingsButton = styled.TouchableOpacity`
+    align-items: center;
+    justify-content: center;
+`

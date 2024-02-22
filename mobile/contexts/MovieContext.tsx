@@ -59,13 +59,13 @@ export function MovieProvider({children}: MovieProviderProps) {
             try {
                 await Promise.all([
                     // getMovieRecommendation(),
-                    loadTopRatedMovies(),
+                    loadAllGenres(),
+                    loadNowPlayingMovies(),
                     loadPopularMovies(),
                     loadUpcomingMovies(),
-                    loadNowPlayingMovies(),
                     loadAllMyFavoriteMovies(),
-                    loadAllGenres(),
                     loadUserFavoriteGenres(),
+                    loadTopRatedMovies(),
                 ])
             } catch (e) {
                 console.log(e)
@@ -85,16 +85,19 @@ export function MovieProvider({children}: MovieProviderProps) {
 
     async function loadPopularMovies() {
         const response = await getPopularMoviesService()
+        setPopularMovies([])
         setPopularMovies(response)
     }
 
     async function loadUpcomingMovies() {
         const response = await getUpcomingMoviesService()
+        setUpcomingMovies([])
         setUpcomingMovies(response)
     }
 
     async function loadNowPlayingMovies() {
         const response = await getNowPlayingMoviesService()
+        setNowPlayingMovies([])
         setNowPlayingMovies(response)
     }
 

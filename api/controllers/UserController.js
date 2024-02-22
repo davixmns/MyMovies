@@ -1,6 +1,8 @@
 import {User} from "../models/Models.js";
 import bcrypt from 'bcrypt';
 import utils, {emailRegex} from "../utils/utils.js";
+import multer from 'multer';
+import upload from "../multer.js";
 
 export default {
     async createUserAccount(req, res) {
@@ -27,22 +29,44 @@ export default {
 
     async updateUserAccount(req, res) {
         try {
-            const {name, email, profile_picture} = req.body.user;
+            const {name, email} = req.body.user;
             const userId = req.user_id;
-            if (!name || !email) return 'preencha todos os campos'
-            if (!emailRegex.test(email)) return 'email inválido'
+            if (!name || !email) return res.status(400).json({message: 'Preencha todos os campos'});
+            if (!emailRegex.test(email)) return res.status(400).json({message: 'Email inválido'});
             const userExists = await User.findByPk(userId);
             if (!userExists) return res.status(404).json({message: 'Usuário não encontrado'});
-
             if(email !== userExists.email){
                 const emailExists = await User.findOne({where: {email}});
                 if (emailExists) return res.status(409).json({message: 'Email já cadastrado'});
             }
-            await User.update({name, email, profile_picture}, {where: {user_id: userId}});
+            await User.update({name, email}, {where: {user_id: userId}});
             return res.status(200).json({message: 'Conta atualizada com sucesso'});
         } catch (e) {
             console.log("Erro ao atualizar usuario: ", e)
             return res.status(500).json({message: 'Erro ao atualizar conta'})
+        }
+    },
+
+    async uploadProfilePicture(req, res) {
+        try {
+            const filePath = req.file.path;
+            await User.update({profile_picture: filePath}, {where: {user_id: req.user_id}});
+            return res.status(200).json({message: 'Foto de perfil atualizada com sucesso'})
+        } catch (e) {
+            console.log("Erro ao atualizar foto de perfil: ", e)
+            return res.status(500).json({message: 'Erro ao atualizar foto de perfil'})
+        }
+    },
+
+    async getProfilePicture(req, res) {
+        try {
+            const user = await User.findByPk(req.user_id);
+            if (!user) return res.status(404).json({message: 'Usuário não encontrado'});
+            const filePath = user.profile_picture;
+            return res.sendFile(filePath);
+        } catch (e) {
+            console.log("Erro ao atualizar foto de perfil: ", e)
+            return res.status(500).json({message: 'Erro ao atualizar foto de perfil'})
         }
     }
 }

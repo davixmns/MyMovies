@@ -61,7 +61,7 @@ const Content = styled.View`
     flex: ${Platform.OS === 'ios' ? 0.93 : 0.97};
     align-items: center;
     justify-content: flex-start;
-    width: 95%;
+    width: 100%;
 `;
 
 const ScrollMovies = styled.ScrollView.attrs({
@@ -77,10 +77,8 @@ const ScrollMovies = styled.ScrollView.attrs({
 const MoviesContainer = styled.View`
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    padding-top: 20px;
-    gap: 15px;
+    justify-content: space-between;
+    width: 90%;
 `;
 
 const MovieCardWrapper = styled.View`
@@ -101,11 +99,12 @@ const Title = styled.Text`
 `;
 
 const HeaderContainer = styled.View`
-    width: 100%;
+    width: 95%;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     gap: 15px;
+    padding-bottom: 20px;
 `;
 
 const BackButton = styled.TouchableOpacity`
