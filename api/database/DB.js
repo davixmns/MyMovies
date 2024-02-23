@@ -15,8 +15,6 @@ const sequelize = new Sequelize(dbName, dbUser, dbPass, {
     port: port,
 })
 
-console.log("Conectando ao banco de dados: ", dbName, dbUser, dbPass, host, port)
-
 sequelize.authenticate()
     .then(() => {
         sequelize.sync({ force: false })

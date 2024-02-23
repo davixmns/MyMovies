@@ -29,18 +29,21 @@ export default {
 
     async updateUserAccount(req, res) {
         try {
-            const {name, email} = req.body.user;
+            const {name, email} = req.body.user
             const userId = req.user_id;
-            if (!name || !email) return res.status(400).json({message: 'Preencha todos os campos'});
-            if (!emailRegex.test(email)) return res.status(400).json({message: 'Email inválido'});
             const userExists = await User.findByPk(userId);
             if (!userExists) return res.status(404).json({message: 'Usuário não encontrado'});
             if(email !== userExists.email){
                 const emailExists = await User.findOne({where: {email}});
                 if (emailExists) return res.status(409).json({message: 'Email já cadastrado'});
             }
-            await User.update({name, email}, {where: {user_id: userId}});
-            return res.status(200).json({message: 'Conta atualizada com sucesso'});
+            await userExists.update({name, email});
+            const userDTO = {
+                user_id: userExists.user_id,
+                name: userExists.name,
+                email: userExists.email,
+            }
+            return res.status(200).json({message: 'Conta atualizada com sucesso', user: userDTO});
         } catch (e) {
             console.log("Erro ao atualizar usuario: ", e)
             return res.status(500).json({message: 'Erro ao atualizar conta'})
@@ -51,7 +54,7 @@ export default {
         try {
             const filePath = req.file.path;
             await User.update({profile_picture: filePath}, {where: {user_id: req.user_id}});
-            return res.status(200).json({message: 'Foto de perfil atualizada com sucesso'})
+            return res.status(200).json({message: 'Foto de perfil atualizada com sucesso', profile_picture: filePath});
         } catch (e) {
             console.log("Erro ao atualizar foto de perfil: ", e)
             return res.status(500).json({message: 'Erro ao atualizar foto de perfil'})

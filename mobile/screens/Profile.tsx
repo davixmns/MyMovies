@@ -33,8 +33,9 @@ export const Profile = () => {
     function renderProfileImage() {
         if (user?.profile_picture) {
             return <ProfileImage source={{uri: user?.profile_picture}}/>
+        } else {
+            return <ProfileImage source={defaultPicture}/>
         }
-        return <ProfileImage source={defaultPicture}/>
     }
 
     function goToEditProfile() {
@@ -51,7 +52,7 @@ export const Profile = () => {
                             {renderProfileImage()}
                         </ProfileImageShadow>
                         <UserDataContainer>
-                            <UserNameText>{user?.name.split(' ')[0] + ' ' + user?.name.split(' ')[1]}</UserNameText>
+                            <UserNameText>{user?.name}</UserNameText>
                             <UserEmailText>{user?.email}</UserEmailText>
                         </UserDataContainer>
                     </HeaderContent>

@@ -4,7 +4,8 @@ export interface User {
     name: string;
     email: string;
     password?: string;
-    profile_picture: string | null;
+    profile_picture?: string;
+    user_id?: number;
 }
 
 export interface Movie {
@@ -75,6 +76,7 @@ export interface MovieContextType {
 export interface UserContextType {
     createUserAccount: (user: User) => Promise<void>;
     updateUserAccount: (user: User) => Promise<void>;
+    updateProfilePicture: () => Promise<void>;
 }
 
 export interface AuthProviderProps {

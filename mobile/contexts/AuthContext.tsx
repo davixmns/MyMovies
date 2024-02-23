@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthContextType, AuthProviderProps, User} from "../interfaces/interfaces";
 import {Alert} from "react-native";
 import {deleteMyAccountService, loginService, verifyUserJwtService} from "../service/service";
+import {MY_IP} from "../config";
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
@@ -29,7 +30,8 @@ export function AuthProvider({children}: AuthProviderProps) {
                 const user: User = {
                     name: data.user.name,
                     email: data.user.email,
-                    profile_picture: data.user.profile_picture
+                    profile_picture: `http://${MY_IP}/${data.user.profile_picture}?timestamp=${Date.now()}`,
+                    user_id: data.user.user_id
                 }
                 setIsAuthenticated(true)
                 setUser(user)
@@ -46,7 +48,13 @@ export function AuthProvider({children}: AuthProviderProps) {
         await loginService(email, password)
             .then(async (response) => {
                 const data = response.data
-                setUser(data.user)
+                const user: User = {
+                    name: data.user.name,
+                    email: data.user.email,
+                    profile_picture: `http://${MY_IP}/${data.user.profile_picture}?timestamp=${Date.now()}`,
+                    user_id: data.user.user_id
+                }
+                setUser(user)
                 await AsyncStorage.setItem('@user-jwt', data.user_jwt)
                 setIsAuthenticated(true)
             }).catch((e) => {

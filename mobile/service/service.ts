@@ -140,7 +140,7 @@ export async function getMovieByIdService(id: string) {
 
 export async function getActorsFromAMovieService(id: string) {
     const actors = await axios.get(`${TMDB_URL}/movie/${id}/credits?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
-    return actors.data.cast.slice(0, 5);
+    return actors.data.cast.slice(0, 10);
 }
 
 export async function getActorMoviesService(id: string) {

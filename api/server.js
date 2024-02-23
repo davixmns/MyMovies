@@ -5,7 +5,7 @@ import {createMovieGenres} from "./seeds/seeds.js";
 const app = express();
 
 app.use(cors());
-app.use(express.urlencoded({ extended: true , parameterLimit: 10000000}))
+app.use(express.urlencoded({ extended: true , parameterLimit: 100000}))
 app.use(express.json());
 
 app.use(routes);

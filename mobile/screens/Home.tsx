@@ -9,6 +9,7 @@ import defaultPicture from '../assets/default_picture.jpg'
 import {FontAwesome6} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
 import styled from "styled-components/native";
+import {useEffect} from "react";
 
 export function Home() {
     const {user} = useAuthContext()
@@ -62,21 +63,23 @@ export function Home() {
         navigation.navigate('Profile')
     }
 
+    function renderProfilePicture() {
+        if (user?.profile_picture) {
+            return <TinyProfilePic source={{uri: user?.profile_picture}}/>
+        } else {
+            return <TinyProfilePic source={defaultPicture}/>
+        }
+    }
+
+
     return (
         <Container>
             <Content>
                 <MainScroll showsVerticalScrollIndicator={false}>
                     <HeaderContainer>
-                        {user?.profile_picture === null ? (
-                            <TouchableOpacity onPress={goToProfile}>
-                                <TinyProfilePic source={defaultPicture}/>
-                            </TouchableOpacity>
-                        ) : (
-                            <TouchableOpacity onPress={goToProfile}>
-                                {/*@ts-ignore*/}
-                                {/*<TinyProfilePic source={{uri: user?.profile_picture}}/>*/}
-                            </TouchableOpacity>
-                        )}
+                        <TouchableOpacity onPress={goToProfile}>
+                            {renderProfilePicture()}
+                        </TouchableOpacity>
                         <TitleHome>MyMovies</TitleHome>
                         <FontAwesome6 name="bell" size={30} color="black"/>
                     </HeaderContainer>

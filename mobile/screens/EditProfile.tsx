@@ -1,14 +1,14 @@
 import {
     Alert,
-    Keyboard,
-    KeyboardAvoidingView,
+    Keyboard, KeyboardAvoidingView,
     Platform,
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from "react-native";
 import styled from "styled-components/native";
 import {useAuthContext} from "../contexts/AuthContext";
-import * as ImagePicker from "expo-image-picker";//@ts-ignore
+import * as ImagePicker from "expo-image-picker";
+//@ts-ignore
 import defaultPicture from '../assets/default_picture.jpg'
 import {AntDesign, FontAwesome6} from "@expo/vector-icons";
 import {useEffect, useState} from "react";
@@ -18,20 +18,15 @@ import {useNavigation} from "@react-navigation/native";
 import {emailRegex} from "../utils/utils";
 import {User} from "../interfaces/interfaces";
 import {useUserContext} from "../contexts/UserContext";
-import {saveProfilePictureService} from "../service/service";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
 
 export function EditProfile() {
     const {user} = useAuthContext()
+    const {updateProfilePicture} = useUserContext()
     const navigation = useNavigation()
-    const [image, setImage] = useState(user?.profile_picture)
-    const [pastEmail, setPastEmail] = useState(user?.email)
     const [name, setName] = useState(user?.name)
     const [email, setEmail] = useState(user?.email)
     const [btnDisabled, setBtnDisabled] = useState(true)
     const {updateUserAccount} = useUserContext()
-    const formData = new FormData()
 
     useEffect(() => {
         // @ts-ignore
@@ -43,46 +38,21 @@ export function EditProfile() {
 
     }, [email, name]);
 
-    async function updateProfilePicture() {
-        const response = await ImagePicker.launchImageLibraryAsync({
-            aspect: [4, 4],
-            allowsEditing: true,
-            base64: true,
-            quality: 1
-        });
-        // @ts-ignore
-        if (!response.cancelled) {
-            const user_jwt = await AsyncStorage.getItem('@user-jwt')
-            if (!user_jwt) return
-
-            // @ts-ignore
-            formData.append('file', {
-                name: `.jpeg`,
-                type: 'image/jpeg',
-                // @ts-ignore
-                uri: response.assets[0].uri
-            })
-
-            await saveProfilePictureService(formData, user_jwt)
-                .catch((error) => {
-                    console.log(error.toString())
-                    Alert.alert('Error', 'An error occurred while trying to update your profile picture')
-                })
-
-            // @ts-ignore
-            setImage(response.assets[0].uri)
+    function renderProfilePicture() {
+        if (user?.profile_picture) {
+            return <ProfileImage source={{uri: user?.profile_picture}}/>
+        } else {
+            return <ProfileImage source={defaultPicture}/>
         }
     }
 
 
     async function handleUpdateUserAccount() {
-        const user: User = {
+        const updatedUser: User = {
             name: name as string,
-            email: email as string,
-            // @ts-ignore
-            profile_picture: image as string
+            email: email as string
         }
-        await updateUserAccount(user)
+        await updateUserAccount(updatedUser)
         navigation.goBack()
     }
 
@@ -124,11 +94,7 @@ export function EditProfile() {
                                 <IconContainer>
                                     <FontAwesome6 name="image" size={20} color="white"/>
                                 </IconContainer>
-                                {image ? (
-                                    <ProfileImage source={{uri: image}}/>
-                                ) : (
-                                    <ProfileImage source={defaultPicture}/>
-                                )}
+                                {renderProfilePicture()}
                             </PictureContainer>
                         </TouchableOpacity>
                         <InputsContainer>
@@ -156,7 +122,9 @@ const Container = styled.View`
     background-color: white;
 `
 
-const Content = styled.View`
+const Content = styled.KeyboardAvoidingView.attrs({
+    behavior: Platform.OS === 'ios' ? 'padding' : 'height',
+})`
     flex: ${Platform.OS === 'ios' ? 0.90 : 0.98};
     flex-direction: column;
     justify-content: space-between;

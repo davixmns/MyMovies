@@ -5,7 +5,6 @@ import {useNavigation} from "@react-navigation/native";
 import {FavoritedMovie, Genre, Movie} from "../interfaces/interfaces";
 import {getActorsFromAMovieService, getMovieByIdService} from "../service/service";
 import {useMovieContext} from "../contexts/MovieContext";
-import {WriteReviewButton} from "../components/WriteReviewButton";
 import * as Haptics from "expo-haptics";
 import GenresCapsules from "../components/GenresCapsules";
 import styled from "styled-components/native";

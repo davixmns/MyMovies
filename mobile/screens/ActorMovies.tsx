@@ -95,7 +95,7 @@ const Container = styled.View`
 `;
 
 const Content = styled.View`
-    flex: ${Platform.OS === 'ios' ? 0.93 : 0.97};
+    flex: ${Platform.OS === 'ios' ? 0.93 : 0.98};
     align-items: center;
     justify-content: flex-start;
     width: 95%;

@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 import jwt from 'jsonwebtoken'
+import {emailRegex} from "../utils/utils.js";
+import {User} from "../models/Models.js";
 
 dotenv.config();
 
@@ -17,5 +19,12 @@ export default {
         } catch (e) {
             return res.status(500).json({message: 'Erro ao verificar token'})
         }
+    },
+
+    async verifyUserUpdateForm(req, res, next) {
+        const {name, email} = req.body.user;
+        if (!name || !email) return res.status(400).json({message: 'Preencha todos os campos'});
+        if (!emailRegex.test(email)) return res.status(400).json({message: 'Email inválido'});
+        next()
     }
 }

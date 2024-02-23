@@ -9,6 +9,13 @@ const storage = multer.diskStorage({
     }
 })
 
+        // cb(null, `${req.user_id}-${Date.now()}${file.originalname}`)
+
 const upload = multer({storage})
 
 export default upload;
+
+export const deletePastProfilePicture = async () => {
+    // Code to delete past profile picture
+
+}

@@ -1,4 +1,3 @@
-
 import {Router} from 'express';
 import AuthController from "../controllers/AuthController.js";
 import UserController from "../controllers/UserController.js";
@@ -10,7 +9,7 @@ const router = Router();
 
 router.post('/login', AuthController.login)
 router.post('/user', UserController.createUserAccount)
-router.put('/user', middleware.verifyUserJWT, UserController.updateUserAccount)
+router.put('/user', middleware.verifyUserJWT, middleware.verifyUserUpdateForm, UserController.updateUserAccount)
 router.get('/uploads', middleware.verifyUserJWT, UserController.getProfilePicture)
 router.post('/profile-picture', middleware.verifyUserJWT, upload.single('file'), UserController.uploadProfilePicture)
 router.post('/verify-jwt', middleware.verifyUserJWT, AuthController.getUser)
