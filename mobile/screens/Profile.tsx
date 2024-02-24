@@ -38,36 +38,48 @@ export const Profile = () => {
         }
     }
 
-    function goToEditProfile() {
+    function goToScreen(screen: string) {
         // @ts-ignore
-        navigation.navigate('EditProfile')
+        navigation.navigate(screen)
     }
+
 
     return (
         <Container>
             <Content>
                 <HeaderContainer>
                     <HeaderContent>
-                        <ProfileImageShadow>
+                        <ImageContainerButton onPress={() => goToScreen('EditProfile')}>
                             {renderProfileImage()}
-                        </ProfileImageShadow>
+                        </ImageContainerButton>
                         <UserDataContainer>
                             <UserNameText>{user?.name}</UserNameText>
                             <UserEmailText>{user?.email}</UserEmailText>
                         </UserDataContainer>
                     </HeaderContent>
 
-                    {userFavoriteGenres.length > 0 && (
-                        <FavoriteGenresContainer>
-                            <FavoriteGenresTitle>Favorite Genres:</FavoriteGenresTitle>
+                    <FavoriteGenresContainer>
+                        <FavoriteGenresTitle>Favorite Genres</FavoriteGenresTitle>
+                        {userFavoriteGenres.length > 0 ? (
                             <GenresCapsules genres={userFavoriteGenres}/>
-                        </FavoriteGenresContainer>
-                    )}
+                        ) : (
+                            <FavoriteGenresTitle>No favorite genres</FavoriteGenresTitle>
+                        )}
+                    </FavoriteGenresContainer>
                 </HeaderContainer>
                 <OptionsContainer>
+                    <FavoriteGenresTitle>Options</FavoriteGenresTitle>
                     <ProfileItemContainer>
                         <TextButton
-                            onPress={goToEditProfile}
+                            onPress={() => goToScreen('Settings')}
+                            placeholder={'Settings'}
+                            iconName={'gear'}
+                            iconColor={'gray'}
+                        />
+                    </ProfileItemContainer>
+                    <ProfileItemContainer>
+                        <TextButton
+                            onPress={() => goToScreen('EditProfile')}
                             placeholder={'Edit profile'}
                             iconName={'pencil'}
                             iconColor={'lightblue'}
@@ -88,94 +100,94 @@ export const Profile = () => {
 };
 
 const Container = styled.View`
-    flex: 1;
-    background-color: white;
-    align-items: center;
-    justify-content: flex-end;
+  flex: 1;
+  background-color: white;
+  align-items: center;
+  justify-content: flex-end;
 `
 
 const UserNameText = styled.Text.attrs({
     numberOfLines: 1
 })`
-    font-size: 30px;
-    font-weight: bold;
-    color: #000;
+  font-size: 30px;
+  font-weight: bold;
+  color: #000;
 `
 
 const Content = styled.View`
-    width: 92%;
-    flex: ${Platform.OS === 'ios' ? 0.93 : 0.98};
-    align-items: center;
-    flex-direction: column;
-    justify-content: flex-start;
+  width: 92%;
+  flex: ${Platform.OS === 'ios' ? 0.93 : 0.98};
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
 `
 
 const HeaderContainer = styled.View`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    gap: 20px;
-    width: 100%;
+  gap: 20px;
+  width: 100%;
 `
 
 const HeaderContent = styled.View`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    gap: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
 `
 
-const ProfileImageShadow = styled.View`
-    //box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.20);
+const ImageContainerButton = styled.TouchableOpacity`
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
 `
 
 const ProfileImage = styled.Image`
-    width: 100px;
-    height: 100px;
-    border-radius: 100px;
-    background-color: black;
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+  background-color: black;
 `
 
 const UserDataContainer = styled.View`
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 `
 
 const UserEmailText = styled.Text`
-    font-size: 20px;
-    color: #000;
+  font-size: 20px;
+  color: #000;
 `
 
 const OptionsContainer = styled.View`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 70%;
-    gap: 30px;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 70%;
+  gap: 30px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 25px;
 `
 
 const ProfileItemContainer = styled.View`
-    display: flex;
-    align-items: flex-start;
-    width: 100%;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
 `
 
 const FavoriteGenresContainer = styled.View`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 10px;
-    align-items: flex-start;
-    justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: flex-start;
 `
 
 const FavoriteGenresTitle = styled.Text`
-    font-size: 20px;
-    font-weight: bold;
-    color: #000;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
 `

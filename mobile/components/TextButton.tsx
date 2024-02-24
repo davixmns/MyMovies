@@ -42,6 +42,5 @@ const IconContainer = styled.View`
 const ButtonText = styled.Text`
     font-size: 20px;
     color: #000;
-    font-weight: bold;
 `
 

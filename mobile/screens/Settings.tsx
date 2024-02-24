@@ -37,8 +37,7 @@ export function Settings() {
                 <OptionsContainer>
                     <SettingItemContainer>
                         <TextButton
-                            onPress={() => {
-                            }}
+                            onPress={() => {}}
                             placeholder={'Change password'}
                             iconName={'key'}
                             iconColor={'gold'}
@@ -59,46 +58,46 @@ export function Settings() {
 }
 
 const Container = styled.View`
-    display: flex;
-    background-color: white;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  background-color: white;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
 `
 
 const Content = styled.View`
-    display: flex;
-    width: 90%;
-    flex: ${Platform.OS === 'ios' ? 0.93 : 0.98};
+  display: flex;
+  width: 90%;
+  flex: ${Platform.OS === 'ios' ? 0.93 : 0.98};
 `
 
 const SettingItemContainer = styled.View`
-    display: flex;
-    align-items: flex-start;
-    width: 100%;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
 `
 
 const OptionsContainer = styled.View`
-    display: flex;
-    gap: 20px;
-    width: 100%;
-    margin-top: 40px;
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  margin-top: 30px;
 `
 
 const HeaderContainer = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 `
 
 const HeaderTitle = styled.Text`
-    font-size: 22px;
-    font-weight: bold;
-    color: black;
-    padding-right: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  color: black;
+  padding-right: 15px;
 `;
 
 const BackButton = styled.TouchableOpacity`
-    border-radius: 16px;
+  border-radius: 16px;
 `;

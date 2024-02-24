@@ -1,13 +1,12 @@
 import {
     Alert,
-    Keyboard, KeyboardAvoidingView,
+    Keyboard,
     Platform,
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from "react-native";
 import styled from "styled-components/native";
 import {useAuthContext} from "../contexts/AuthContext";
-import * as ImagePicker from "expo-image-picker";
 //@ts-ignore
 import defaultPicture from '../assets/default_picture.jpg'
 import {AntDesign, FontAwesome6} from "@expo/vector-icons";
@@ -84,9 +83,7 @@ export function EditProfile() {
                         </BackButton>
                         <HeaderTitle>Edit Profile</HeaderTitle>
                         {/*@ts-ignore*/}
-                        <SettingsButton onPress={() => navigation.navigate('Settings')}>
-                            <FontAwesome6 name="gear" size={30} color="black"/>
-                        </SettingsButton>
+                        <FontAwesome6 name="gear" size={30} color="transparent"/>
                     </HeaderContainer>
                     <FormContainer>
                         <TouchableOpacity onPress={updateProfilePicture}>
@@ -114,88 +111,87 @@ export function EditProfile() {
 }
 
 const Container = styled.View`
-    flex: 1;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
 `
 
 const Content = styled.KeyboardAvoidingView.attrs({
     behavior: Platform.OS === 'ios' ? 'padding' : 'height',
 })`
-    flex: ${Platform.OS === 'ios' ? 0.90 : 0.98};
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 90%;
+  flex: ${Platform.OS === 'ios' ? 0.87 : 0.98};
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
 `;
 
 const HeaderContainer = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 `
 
 const HeaderTitle = styled.Text`
-    font-size: 22px;
-    font-weight: bold;
-    color: black;
-    padding-right: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  color: black;
+  padding-right: 15px;
 `;
 
 const PictureContainer = styled.View`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.20);
-    width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.20);
+  width: 180px;
 `
 
 const IconContainer = styled.View`
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: lightgray;
-    border-radius: 100px;
-    z-index: 1;
-    padding: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: lightgray;
+  border-radius: 100px;
+  z-index: 1;
+  padding: 10px;
 `
 
 const ProfileImage = styled.Image`
-    width: 180px;
-    height: 180px;
-    border-radius: 100px;
-    background-color: black;
+  width: 180px;
+  height: 180px;
+  border-radius: 100px;
+  background-color: black;
 `;
 
 const FormContainer = styled.View`
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    height: 45%;
-    margin-bottom: 20%;
-    align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 45%;
+  margin-bottom: 20%;
+  align-items: center;
 `
 
 const InputsContainer = styled.View`
-    gap: 20px
+  gap: 20px
 `
 
 const BackButton = styled.TouchableOpacity`
-    border-radius: 16px;
+  border-radius: 16px;
 `;
 
 const ButtonContainer = styled.View`
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 25px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 `;
 
 const SettingsButton = styled.TouchableOpacity`
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 `

@@ -3,7 +3,7 @@
 # dependencies
 mobile/node_modules/
 api/node_modules/
-api/uploads/profile_pictures/
+
 # Expo
 mobile/.expo/
 dist/

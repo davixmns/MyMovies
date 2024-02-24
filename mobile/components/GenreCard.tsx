@@ -1,6 +1,6 @@
 import {FontAwesome6} from "@expo/vector-icons";
 import {LinearGradient} from "expo-linear-gradient";
-import {StyleSheet} from "react-native";
+import {StyleSheet, TouchableOpacity} from "react-native";
 import styled from "styled-components/native";
 import {useNavigation} from "@react-navigation/native";
 import {useMovieContext} from "../contexts/MovieContext";
@@ -25,46 +25,54 @@ export function GenreCard({genreName, iconName}: {
     }
 
     return (
-        // @ts-ignore
-        <LinearGradient colors={genreStylesForConsult.find(genre => genre.name === genreName)?.colors}
-                        style={styles.boxLinearGradient}>
-            <IconContainer>
-
-                <FontAwesome6 name={iconName} size={80} color="white"/>
-            </IconContainer>
-            <ColorBoxContent onPress={goToGenreMovies}>
-                <BoxTitle>{genreName}</BoxTitle>
-            </ColorBoxContent>
-        </LinearGradient>
+        <Container onPress={goToGenreMovies}>
+            <LinearGradient colors={genreStylesForConsult.find(genre => genre.name === genreName)?.colors}
+                            style={styles.boxLinearGradient}>
+                <IconContainer>
+                    <FontAwesome6 name={iconName} size={80} color="white"/>
+                </IconContainer>
+                {/*@ts-ignore*/}
+                <ColorBoxContent onPress={goToGenreMovies}>
+                    <BoxTitle>{genreName}</BoxTitle>
+                </ColorBoxContent>
+            </LinearGradient>
+        </Container>
     );
 }
 
 const styles = StyleSheet.create({
     boxLinearGradient: {
-        width: '48%',
-        height: '55%',
-        maxHeight: 130,
-        minHeight: 130,
+        width: '100%',
+        height: '100%',
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
     }
 })
 
-const BoxTitle = styled.Text`
-    font-size: 22px;
-    font-weight: bold;
-    color: white;
+const Container = styled.TouchableOpacity`
+  width: 48%;
+  height: 55%;
+  max-height: 130px;
+  min-height: 130px;
+  justify-content: center;
+  align-items: center;
 `
 
-const ColorBoxContent = styled.TouchableOpacity`
-    width: 80%;
-    height: 80%;
-    gap: 5px
+const BoxTitle = styled.Text`
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+`
+
+const ColorBoxContent = styled.View`
+  width: 80%;
+  height: 80%;
+  gap: 5px
 `
 
 const IconContainer = styled.View`
-    position: absolute;
-    bottom: -5px;
-    right: 12px;
+  position: absolute;
+  bottom: -5px;
+  right: 12px;
 `

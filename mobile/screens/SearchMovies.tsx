@@ -20,6 +20,17 @@ export function SearchMovies() {
     const [movieIsFinded, setMovieIsFinded] = useState<boolean>(false);
     const [isSearching, setIsSearching] = useState<boolean>(false);
 
+    useEffect(() => {
+        if (searchText !== prevSearchText) {
+            if (searchTimer) {
+                clearTimeout(searchTimer);
+            }
+            setIsSearching(true)
+            startSearchTimer(searchText);
+            setPrevSearchText(searchText);
+        }
+    }, [searchText, prevSearchText, searchTimer]);
+
     // Função para iniciar o timer de pesquisa
     function startSearchTimer(text: string) {
         setSearchTimer(setTimeout(() => {
@@ -50,17 +61,6 @@ export function SearchMovies() {
         }
     }
 
-    // Efeito que é acionado quando o texto de pesquisa é alterado
-    useEffect(() => {
-        if (searchText !== prevSearchText) {
-            if (searchTimer) {
-                clearTimeout(searchTimer);
-            }
-            setIsSearching(true)
-            startSearchTimer(searchText);
-            setPrevSearchText(searchText);
-        }
-    }, [searchText, prevSearchText, searchTimer]);
 
     return (
         <Container>

@@ -14,7 +14,7 @@ export async function getAllGenresService() {
 }
 
 export async function searchMovieService(query: string) {
-    return await axios.get(`${TMDB_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${query}&page=1`)
+    return await axios.get(`${TMDB_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${query}&page=`)
 }
 
 export async function searchActorService(query: string) {
@@ -46,8 +46,9 @@ export async function getMovieRecommendationService(user_jwt: string) {
     )
 }
 
-export async function getMoviesByGenreService(genreId: number) {
-    return await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}`)
+export async function getMoviesByGenreService(genreId: number, page: number) {
+    const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}&page=${page}`)
+    return response.data.results
 }
 
 export async function deleteMyAccountService(user_jwt: string) {
@@ -144,8 +145,8 @@ export async function getActorsFromAMovieService(id: string) {
 }
 
 export async function getActorMoviesService(id: string) {
-    const actorMovies = await axios.get(`${TMDB_URL}/person/${id}/movie_credits?api_key=${TMDB_API_KEY}&language=en-US&page=1&sort_by=popularity`)
-    return actorMovies.data.cast.slice(0, 15); // Retorna os 10 filmes mais populares
+    const response = await axios.get(`${TMDB_URL}/person/${id}/movie_credits?api_key=${TMDB_API_KEY}&language=en-US`)
+    return response.data.cast
 }
 
 export async function saveProfilePictureService(formData: FormData, user_jwt: string) {
