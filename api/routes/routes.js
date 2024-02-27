@@ -18,7 +18,8 @@ router.delete(`/favorite-movie/:tmdb_movie_id`, middleware.verifyUserJWT, MovieC
 router.get(`/favorite-movie/:tmdb_movie_id`, middleware.verifyUserJWT, MovieController.checkIfMovieIsFavorited)
 router.get(`/favorite-movies`, middleware.verifyUserJWT, MovieController.getAllFavoriteMovies)
 router.get(`/favorite-genres`, middleware.verifyUserJWT, MovieController.getFavoriteGenres)
-router.get(`/movie-recommendation`, middleware.verifyUserJWT, MovieController.getMovieRecommendation)
+router.post(`/comment`, middleware.verifyUserJWT, MovieController.createMovieComment)
+router.get(`/comments/:tmdb_movie_id`, middleware.verifyUserJWT, MovieController.getMovieComments)
 
 //ver fotos com multer
 

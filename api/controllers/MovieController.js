@@ -1,4 +1,4 @@
-import {FavoriteMovie, FavoriteMovieGenre, Genre} from "../models/Models.js";
+import {FavoriteMovie, FavoriteMovieGenre, Genre, User} from "../models/Models.js";
 import axios from "axios";
 
 export default {
@@ -104,38 +104,30 @@ export default {
         }
     },
 
-    async getMovieRecommendation(req, res) {
-        try {
-            const favoriteMovies = await FavoriteMovie.findAll({where: {user_id: req.user_id}})
-            if (favoriteMovies.length === 0) return res.status(400).json({message: 'Nenhum filme favoritado'})
-            const favoriteGenres = []
-            for (const favoriteMovie of favoriteMovies) {
-                const genres = await FavoriteMovieGenre.findAll({where: {favorite_movie_id: favoriteMovie.favorite_movie_id}})
-                for (const genre of genres) {
-                    const genreOnDatabase = await Genre.findOne({where: {genre_id: genre.genre_id}})
-                    favoriteGenres.push({id: genreOnDatabase.tmdb_genre_id, name: genreOnDatabase.name})
-                }
-            }
-            const genresCounter = []
-            for (const genre of favoriteGenres) {
-                const index = genresCounter.findIndex(g => g.id === genre.id)
-                if (index !== -1) {
-                    genresCounter[index].count++
-                } else {
-                    genresCounter.push({...genre, count: 1})
-                }
-            }
-            genresCounter.sort((a, b) => b.count - a.count)
-            const top1Genre = genresCounter[0]
-            const movies = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=${top1Genre.id}`)
-            const moviesData = movies.data.results
-            const filteredMovies = moviesData.filter(movie => movie.vote_average >= 7)
-            const randomMovieIndex = Math.floor(Math.random() * filteredMovies.length)
-
-            return res.status(200).json(filteredMovies[randomMovieIndex])
-        } catch (e) {
+    async createMovieComment(req, res) {
+        try{
+            const userId = req.params.user_id
+            const {comment, tmdb_movie_id, rating} = req.body
+            if(!comment || !tmdb_movie_id || !rating) return res.status(400).json({message: 'Preencha todos os campos'})
+            const userExists = await User.findByPk(userId)
+            if(!userExists) return res.status(400).json({message: 'Usuário não existe'})
+            await Comment.create({user_id: userId, comment, tmdb_movie_id, rating})
+            return res.status(201).json({message: 'Comentário salvo com sucesso!'})
+        }catch (e) {
             console.log(e)
-            return res.status(500).json({message: 'Erro ao buscar recomendação de filme'})
+            return res.status(500).json({message: 'Erro ao salvar comentário'})
+        }
+    },
+
+    async getMovieComments(req, res) {
+        try{
+            const {tmdb_movie_id} = req.params
+            if(!tmdb_movie_id) return res.status(400).json({message: 'Preencha todos os campos'})
+            const comments = await Comment.findAll({where: {tmdb_movie_id: tmdb_movie_id}})
+            return res.status(200).json(comments)
+        }catch (e) {
+            console.log(e)
+            return res.status(500).json({message: 'Erro ao buscar comentários'})
         }
     }
 }

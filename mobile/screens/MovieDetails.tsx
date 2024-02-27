@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Image, Platform, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Platform, ScrollView, Text, View, StyleSheet} from 'react-native';
 import {AntDesign, FontAwesome6} from '@expo/vector-icons';
 import {useNavigation} from "@react-navigation/native";
 import {FavoritedMovie, Genre, Movie} from "../interfaces/interfaces";
@@ -9,6 +9,7 @@ import * as Haptics from "expo-haptics";
 import GenresCapsules from "../components/GenresCapsules";
 import styled from "styled-components/native";
 import {ActorsList} from "../components/ActorsList";
+import {BlurView} from "expo-blur";
 
 //@ts-ignore
 export function MovieDetails({route}) {
@@ -30,7 +31,6 @@ export function MovieDetails({route}) {
     const bgColor = posterIsLoading ? 'lightgray' : 'transparent'
     const imgWidth = 240
     const imgHeight = 360
-
     const voteAverageEmoji = (voteAverage: number) => {
         if (voteAverage >= 9) return '🤩'
         if (voteAverage >= 8) return '😍'
@@ -42,13 +42,6 @@ export function MovieDetails({route}) {
         if (voteAverage >= 2) return '😡'
         if (voteAverage >= 1) return '🤢'
         return '🤮'
-    }
-
-    const favoritedMovie: FavoritedMovie = {
-        id: movie.id,
-        title: movie.title,
-        poster_path: movie.poster_path,
-        genres: movieGenres,
     }
 
     useEffect(() => {
@@ -85,6 +78,12 @@ export function MovieDetails({route}) {
     async function saveFavoritedMovieOrNot() {
         if (!canClick) return
         if (isFavorited && !wasFavorited) {
+            const favoritedMovie: FavoritedMovie = {
+                id: movie.id,
+                title: movie.title,
+                poster_path: movie.poster_path,
+                genres: movieGenres,
+            }
             await saveFavoriteMovie(favoritedMovie)
             setWasFavorited(true)
         } else if (!isFavorited && wasFavorited) {
@@ -193,57 +192,85 @@ export function MovieDetails({route}) {
                         <OverviewContainer>
                             <SectionTitle>Actors:</SectionTitle>
                             {actors.length > 0 ? (
-                                <ActorsList actors={actors}/>
+                                <View style={{maxHeight: 150}}>
+                                    <ActorsList actors={actors}/>
+                                </View>
                             ) : (
                                 <Text>???</Text>
                             )}
                         </OverviewContainer>
 
+
+                        <CommentsContainerButton>
+                            <BlurView intensity={100} style={styles.blur}>
+                                <CommentsContent>
+                                    <SectionTitle color={'black'}>Comments:</SectionTitle>
+                                </CommentsContent>
+                            </BlurView>
+                        </CommentsContainerButton>
                     </DescriptionContainer>
 
-
-                    <View style={{height: 120}}/>
+                    <View style={{height: 100}}/>
                 </ScrollView>
-                <CommentsButton>
-
-                </CommentsButton>
             </Content>
         </Container>
     );
 }
 
-const CommentsButton = styled.TouchableOpacity`
-    
+const styles = StyleSheet.create({
+    blur: {
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
+})
+
+const CommentsContainerButton = styled.TouchableOpacity`
+  border-radius: 20px;
+  width: 100%;
+  height: 100px;
+  margin-top: 30px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+`
+
+const CommentsContent = styled.View`
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: 80%;
 `
 
 const Container = styled.View`
-    flex: 1;
-    align-items: center;
-    justify-content: flex-end;
-    width: 100%;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
 `;
 
 const Content = styled.View`
-    width: 95%;
-    flex: ${Platform.OS === 'ios' ? 0.96 : 1};
-    align-items: center;
-    justify-content: flex-start;
+  width: 95%;
+  flex: ${Platform.OS === 'ios' ? 0.96 : 1};
+  align-items: center;
+  justify-content: flex-start;
 `
 
 const HeaderContainer = styled.View`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 70px;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 70px;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const HeaderTitle = styled.Text`
-    font-size: 22px;
-    font-weight: bold;
-    color: black;
-    padding-right: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  color: black;
+  padding-right: 15px;
 `;
 
 export const FavoriteButton = styled.TouchableOpacity`
@@ -251,133 +278,139 @@ export const FavoriteButton = styled.TouchableOpacity`
 
 
 const BackButton = styled.TouchableOpacity`
-    border-radius: 16px;
+  border-radius: 16px;
 `;
 
 const MoviePoster = styled.Image`
-    width: 240px;
-    height: 360px;
-    border-radius: 20px;
+  width: 240px;
+  height: 360px;
+  border-radius: 20px;
 `;
 
 const MoviePosterContainer = styled.View`
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.40);
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.40);
 `;
 
 const DescriptionContainer = styled.View`
-    width: 100%;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-top: 20px;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 20px;
 `;
 
 const MovieTitle = styled.Text`
-    font-size: 25px;
-    font-weight: bold;
-    color: black;
+  font-size: 25px;
+  font-weight: bold;
+  color: black;
 `;
 
-const SectionTitle = styled.Text`
-    font-size: 20px;
-    font-weight: bold;
-    color: black;
+const SectionTitle = styled.Text<{
+    color?: string
+}>`
+  font-size: 20px;
+  font-weight: bold;
+  color: ${props => props.color || 'black'};
 `;
 
 const GenreAndDurationContainer = styled.View`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
 `;
 
 const GenreContainer = styled.View`
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    gap: 10px;
-    margin-bottom: 10px;
-    width: 73%;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 10px;
+  width: 73%;
+  align-items: center;
 `
 
 const MovieDurationContainer = styled.View`
-    display: flex;
-    align-self: flex-start;
-    margin-top: 5px;
-    width: 100%;
+  display: flex;
+  align-self: flex-start;
+  margin-top: 5px;
+  width: 100%;
 `;
 
 const MovieDurationContent = styled.View`
-    background-color: #fafafa;
-    display: flex;
-    flex-direction: row;
-    border-radius: 10px;
-    align-items: center;
-    justify-content: center;
-    width: 90px;
-    height: 30px;
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: row;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 30px;
 `;
 
 const MovieDuration = styled.Text`
-    font-size: 13px;
-    color: black;
-    font-weight: bold;
-    padding-left: 5px;
-    padding-right: 5px;
+  font-size: 13px;
+  color: black;
+  font-weight: bold;
+  padding-left: 5px;
+  padding-right: 5px;
 `;
 
 const MovieDescription = styled.Text`
-    font-size: 16px;
-    color: black;
-    padding-top: 10px;
+  font-size: 16px;
+  color: black;
+  padding-top: 10px;
 `;
 
 const VoteAverage = styled.Text`
-    font-size: 30px;
-    color: #ffc83a;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.40);
-    font-weight: bold;
+  font-size: 30px;
+  color: #ffc83a;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.40);
+  font-weight: bold;
 `;
 
 const ReleaseAndRatingContainer = styled.View`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    max-width: 100%;
-    justify-content: space-between;
-    margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 100%;
+  justify-content: space-between;
+  margin-top: 15px;
 `
 
 const ReleaseAndRatingContent = styled.View`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 
 const VoteAverageContainer = styled.View`
-    display: flex;
-    flex-direction: row;
-    gap: 5px
+  display: flex;
+  flex-direction: row;
+  gap: 5px
 `
 
 const OverviewContainer = styled.View`
-    margin-top: 30px;
+  margin-top: 30px;
 `
 
 const ReleaseDateText = styled.Text`
-    font-size: 30px;
-    color: black;
-    font-weight: bold;
+  font-size: 30px;
+  color: black;
+  font-weight: bold;
 `
 
-const LoadingBackground = styled.View<{ bgColor: string, height: number, width: number }>`
-    position: absolute;
-    width: ${props => props.width}px;
-    height: ${props => props.height}px;
-    background-color: ${props => props.bgColor};
-    border-radius: 20px;
+const LoadingBackground = styled.View<{
+    bgColor: string,
+    height: number,
+    width: number
+}>`
+  position: absolute;
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
+  background-color: ${props => props.bgColor};
+  border-radius: 20px;
 `

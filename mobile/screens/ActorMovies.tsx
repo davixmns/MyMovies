@@ -15,8 +15,7 @@ export function ActorMovies({route}) {
     const actorName = route.params.actorName;
     const actorProfilePath = route.params.actorProfilePath;
     const [moviesByActor, setMoviesByActor] = useState<Movie[]>([]);
-    const randomIndex = Math.floor(Math.random() * moviesByActor?.length);
-    const posterBackground = moviesByActor[randomIndex]?.backdrop_path;
+    const posterBackground = moviesByActor[0]?.backdrop_path;
 
     useEffect(() => {
         loadMoviesByActor()

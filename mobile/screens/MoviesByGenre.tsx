@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 import { MovieCard } from "../components/MovieCard";
 import { useEffect, useState } from "react";
 import { getMoviesByGenreService } from "../service/service";
-import {ActivityIndicator, Alert, FlatList, Platform, StyleSheet} from "react-native";
+import {ActivityIndicator, Alert, FlatList, Image, ImageBackground, Platform, StyleSheet} from "react-native";
 import { Movie } from "../interfaces/interfaces";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -13,6 +13,7 @@ export function MoviesByGenre({ route }) {
     const movieGenreName = route.params.movieGenreName;
     const [page, setPage] = useState(1);
     const [moviesByGenre, setMoviesByGenre] = useState<Movie[]>([]);
+    const posterBackground = moviesByGenre[0]?.backdrop_path;
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -36,6 +37,11 @@ export function MoviesByGenre({ route }) {
 
     return (
         <Container>
+            <Image
+                source={{uri: `https://image.tmdb.org/t/p/w500${posterBackground}`}}
+                style={{width: '100%', height: '100%', position: 'absolute', opacity: 0.7}}
+                blurRadius={40}
+            />
             <Content>
                 <HeaderContainer>
                     <BackButton onPress={() => navigation.goBack()}>

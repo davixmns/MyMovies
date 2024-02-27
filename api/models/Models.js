@@ -92,8 +92,8 @@ export const FavoriteMovieGenre = database.define('favorite_movie_genre', {
     timestamps: false
 });
 
-export const ReviewedMovie = database.define("reviewed_movie", {
-    reviewed_movie_id: {
+export const Comment = database.define("comment", {
+    comment_id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
@@ -107,15 +107,7 @@ export const ReviewedMovie = database.define("reviewed_movie", {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    title: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    poster_path: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    review: {
+    comment: {
         type: Sequelize.STRING,
         allowNull: false
     },
@@ -125,7 +117,7 @@ export const ReviewedMovie = database.define("reviewed_movie", {
     },
 })
 
-ReviewedMovie.belongsTo(User, {
+Comment.belongsTo(User, {
     foreignKey: "user_id"
 })
 
