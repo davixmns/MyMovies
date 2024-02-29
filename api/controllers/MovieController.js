@@ -1,5 +1,4 @@
-import {FavoriteMovie, FavoriteMovieGenre, Genre, User} from "../models/Models.js";
-import axios from "axios";
+import {FavoriteMovie, FavoriteMovieGenre, Genre, User, Comment} from "../models/Models.js";
 
 export default {
     async favoriteMovie(req, res) {

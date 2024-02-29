@@ -19,7 +19,7 @@ router.get(`/favorite-movie/:tmdb_movie_id`, middleware.verifyUserJWT, MovieCont
 router.get(`/favorite-movies`, middleware.verifyUserJWT, MovieController.getAllFavoriteMovies)
 router.get(`/favorite-genres`, middleware.verifyUserJWT, MovieController.getFavoriteGenres)
 router.post(`/comment`, middleware.verifyUserJWT, MovieController.createMovieComment)
-router.get(`/comments/:tmdb_movie_id`, middleware.verifyUserJWT, MovieController.getMovieComments)
+router.get(`/comments/:tmdb_movie_id`, MovieController.getMovieComments)
 
 //ver fotos com multer
 

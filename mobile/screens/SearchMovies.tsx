@@ -18,6 +18,7 @@ export function SearchMovies() {
     const {userFavoriteGenres, genreStylesForConsult} = useMovieContext()
     const [searchTimer, setSearchTimer] = useState<NodeJS.Timeout | null>(null);
     const [movieIsFinded, setMovieIsFinded] = useState<boolean>(false);
+    const [actorIsFinded, setActorIsFinded] = useState<boolean>(false);
     const [isSearching, setIsSearching] = useState<boolean>(false);
 
     useEffect(() => {
@@ -56,6 +57,11 @@ export function SearchMovies() {
             } else {
                 setMovieIsFinded(true)
             }
+            if (actorsResults.length === 0) {
+                setActorIsFinded(false)
+            } else {
+                setActorIsFinded(true)
+            }
         } else {
             setFindedMovies([]);
         }
@@ -75,12 +81,6 @@ export function SearchMovies() {
                     />
                 </Header>
                 <SearchScroll>
-                    {!isSearching && !movieIsFinded && searchText !== '' && (
-                        <View style={{alignItems: 'flex-start', justifyContent: 'flex-start', marginTop: 10}}>
-                            <MovieNotFound>No movies found</MovieNotFound>
-                        </View>
-                    )}
-
                     {isSearching && searchText !== '' && (
                         <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
                             <ActivityIndicator size="large" color="black"/>
@@ -131,6 +131,16 @@ export function SearchMovies() {
                         <>
                             <ActorsList actors={findedActors}/>
                         </>
+                    )}
+                    {!isSearching && !movieIsFinded && !actorIsFinded && searchText !== '' && (
+                        <View style={{alignItems: 'flex-start', justifyContent: 'flex-start', marginTop: 10}}>
+                            <MovieNotFound>Nothing found</MovieNotFound>
+                        </View>
+                    )}
+                    {!isSearching && !movieIsFinded && searchText !== '' && actorIsFinded && (
+                        <View style={{alignItems: 'flex-start', justifyContent: 'flex-start', marginTop: 10}}>
+                            <MovieNotFound>No movies found</MovieNotFound>
+                        </View>
                     )}
                     {findedMovies.length > 0 && searchText !== '' && !isSearching && (
                         <MoviesContainer>

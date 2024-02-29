@@ -17,15 +17,17 @@ import {useNavigation} from "@react-navigation/native";
 import {emailRegex} from "../utils/utils";
 import {User} from "../interfaces/interfaces";
 import {useUserContext} from "../contexts/UserContext";
+import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
 
 export function EditProfile() {
     const {user} = useAuthContext()
-    const {updateProfilePicture} = useUserContext()
     const navigation = useNavigation()
     const [name, setName] = useState(user?.name)
     const [email, setEmail] = useState(user?.email)
     const [btnDisabled, setBtnDisabled] = useState(true)
     const {updateUserAccount} = useUserContext()
+    const [compressedProfilePicture, setCompressedProfilePicture] = useState(user?.profile_picture)
 
     useEffect(() => {
         // @ts-ignore
@@ -37,22 +39,40 @@ export function EditProfile() {
 
     }, [email, name]);
 
-    function renderProfilePicture() {
-        if (user?.profile_picture) {
-            return <ProfileImage source={{uri: user?.profile_picture}}/>
-        } else {
-            return <ProfileImage source={defaultPicture}/>
-        }
-    }
-
-
     async function handleUpdateUserAccount() {
+        const imageFormData = new FormData()
         const updatedUser: User = {
             name: name as string,
             email: email as string
         }
-        await updateUserAccount(updatedUser)
+        // @ts-ignore
+        imageFormData.append('file', {
+            name: `.jpeg`,
+            type: 'image/jpeg',
+            uri: compressedProfilePicture
+        })
+        await updateUserAccount(updatedUser, imageFormData)
         navigation.goBack()
+    }
+
+    async function compressImage(uri: string) {
+        return await ImageManipulator.manipulateAsync(uri,
+            [{resize: {width: 800, height: 800}}],
+            {compress: 0.5}
+        )
+    }
+
+    async function chooseProfilePicture() {
+        const response = await ImagePicker.launchImageLibraryAsync({
+            aspect: [4, 4],
+            allowsEditing: true,
+            base64: true,
+            quality: 1
+        });
+        if (!response.canceled) {
+            const compressedImage = await compressImage(response.assets[0].uri)
+            setCompressedProfilePicture(compressedImage.uri)
+        }
     }
 
     async function confirmChanges() {
@@ -86,12 +106,16 @@ export function EditProfile() {
                         <FontAwesome6 name="gear" size={30} color="transparent"/>
                     </HeaderContainer>
                     <FormContainer>
-                        <TouchableOpacity onPress={updateProfilePicture}>
+                        <TouchableOpacity onPress={chooseProfilePicture}>
                             <PictureContainer>
                                 <IconContainer>
                                     <FontAwesome6 name="image" size={20} color="white"/>
                                 </IconContainer>
-                                {renderProfilePicture()}
+                                {compressedProfilePicture ? (
+                                    <ProfileImage source={{uri: compressedProfilePicture}}/>
+                                ) : (
+                                    <ProfileImage source={defaultPicture}/>
+                                )}
                             </PictureContainer>
                         </TouchableOpacity>
                         <InputsContainer>
@@ -186,12 +210,7 @@ const BackButton = styled.TouchableOpacity`
 `;
 
 const ButtonContainer = styled.View`
-  width: 100%;
-  align-items: center;
-  justify-content: center;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
 `;
-
-const SettingsButton = styled.TouchableOpacity`
-  align-items: center;
-  justify-content: center;
-`

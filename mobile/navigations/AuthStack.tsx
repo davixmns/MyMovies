@@ -77,7 +77,7 @@ export function AuthStack() {
                         component={ActorMovies}
                         options={{
                             headerShown: false,
-                            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS
+                            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                         }}
                     />
 

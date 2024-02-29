@@ -2,8 +2,8 @@ import styled from "styled-components/native";
 import {FontAwesome6} from "@expo/vector-icons";
 
 export function TextButton(
-    {onPress, placeholder, iconName, iconColor}
-        : { onPress: () => void, placeholder: string, iconName: string, iconColor: string}) {
+    {onPress, placeholder, iconName, iconColor, arrowIcon}
+        : { onPress: () => void, placeholder: string, iconName: string, iconColor: string, arrowIcon?: boolean }) {
     return (
         <Container onPress={onPress}>
             <Content>
@@ -12,7 +12,9 @@ export function TextButton(
                 </IconContainer>
                 <ButtonText>{placeholder}</ButtonText>
             </Content>
-            <FontAwesome6 name={'chevron-right'} size={20} color="black"/>
+            {arrowIcon && (
+                <FontAwesome6 name={'chevron-right'} size={20} color="black"/>
+            )}
         </Container>
     );
 }

@@ -73,10 +73,19 @@ export interface MovieContextType {
     genreStylesForConsult: any[];
 }
 
+export interface Comment {
+    comment_id: number;
+    user_id: number;
+    tmdb_movie_id: number;
+    comment: string;
+    created_at: string;
+    updated_at: string;
+    user: User;
+}
+
 export interface UserContextType {
     createUserAccount: (user: User) => Promise<void>;
-    updateUserAccount: (user: User) => Promise<void>;
-    updateProfilePicture: () => Promise<void>;
+    updateUserAccount: (user: User, imageFormData: FormData) => Promise<void>;
 }
 
 export interface AuthProviderProps {

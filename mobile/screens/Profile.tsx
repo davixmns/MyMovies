@@ -7,7 +7,7 @@ import {useMovieContext} from "../contexts/MovieContext";
 import GenresCapsules from "../components/GenresCapsules";
 import styled from "styled-components/native";
 import {useNavigation} from "@react-navigation/native";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 
 export const Profile = () => {
@@ -30,14 +30,6 @@ export const Profile = () => {
         );
     }
 
-    function renderProfileImage() {
-        if (user?.profile_picture) {
-            return <ProfileImage source={{uri: user?.profile_picture}}/>
-        } else {
-            return <ProfileImage source={defaultPicture}/>
-        }
-    }
-
     function goToScreen(screen: string) {
         // @ts-ignore
         navigation.navigate(screen)
@@ -48,10 +40,14 @@ export const Profile = () => {
         <Container>
             <Content>
                 <HeaderContainer>
-                    <HeaderContent>
-                        <ImageContainerButton onPress={() => goToScreen('EditProfile')}>
-                            {renderProfileImage()}
-                        </ImageContainerButton>
+                    <HeaderContent onPress={() => goToScreen('EditProfile')}>
+                        <ImageContainer>
+                            {user?.profile_picture ? (
+                                <ProfileImage source={{uri: user?.profile_picture}}/>
+                            ) : (
+                                <ProfileImage source={defaultPicture}/>
+                            )}
+                        </ImageContainer>
                         <UserDataContainer>
                             <UserNameText>{user?.name}</UserNameText>
                             <UserEmailText>{user?.email}</UserEmailText>
@@ -75,6 +71,7 @@ export const Profile = () => {
                             placeholder={'Settings'}
                             iconName={'gear'}
                             iconColor={'gray'}
+                            arrowIcon={true}
                         />
                     </ProfileItemContainer>
                     <ProfileItemContainer>
@@ -83,6 +80,7 @@ export const Profile = () => {
                             placeholder={'Edit profile'}
                             iconName={'pencil'}
                             iconColor={'lightblue'}
+                            arrowIcon={true}
                         />
                     </ProfileItemContainer>
                     <ProfileItemContainer>
@@ -106,13 +104,6 @@ const Container = styled.View`
   justify-content: flex-end;
 `
 
-const UserNameText = styled.Text.attrs({
-    numberOfLines: 1
-})`
-  font-size: 30px;
-  font-weight: bold;
-  color: #000;
-`
 
 const Content = styled.View`
   width: 92%;
@@ -123,22 +114,26 @@ const Content = styled.View`
 `
 
 const HeaderContainer = styled.View`
-  display: flex;
-  flex-direction: column;
-
-  gap: 20px;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    background-color: #e8e8e8;
+    padding: 20px;
+    border-radius: 15px;
 `
 
-const HeaderContent = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  gap: 20px;
+const HeaderContent = styled.TouchableOpacity`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
 `
 
-const ImageContainerButton = styled.TouchableOpacity`
+const ImageContainer = styled.View`
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
 `
 
@@ -150,14 +145,26 @@ const ProfileImage = styled.Image`
 `
 
 const UserDataContainer = styled.View`
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 60%;
 `
 
-const UserEmailText = styled.Text`
-  font-size: 20px;
-  color: #000;
+const UserNameText = styled.Text.attrs({
+    numberOfLines: 2,
+})`
+    font-size: 30px;
+    font-weight: bold;
+    color: #000;
+`
+
+const UserEmailText = styled.Text.attrs({
+    numberOfLines: 1,
+})`
+    width: 100%;
+    font-size: 20px;
+    color: #000;
 `
 
 const OptionsContainer = styled.View`

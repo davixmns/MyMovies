@@ -139,6 +139,11 @@ export async function getMovieByIdService(id: string) {
     return movie.data
 }
 
+export async function getCommentsFromAMovieService(tmdb_movie_id: string) {
+    const response = await axios.get(`http://${MY_IP}/comments/${tmdb_movie_id}`)
+    return response.data
+}
+
 export async function getActorsFromAMovieService(id: string) {
     const actors = await axios.get(`${TMDB_URL}/movie/${id}/credits?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
     return actors.data.cast.slice(0, 10);
