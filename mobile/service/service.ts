@@ -31,6 +31,14 @@ export async function searchActorService(query: string) {
     }
 }
 
+export async function saveCommentService(user_jwt: string, tmdb_movie_id: string, comment: string) {
+    return await axios.post(
+        `http://${MY_IP}/comment`,
+        {tmdb_movie_id, comment},
+        {headers: {Authorization: `Bearer ${user_jwt}`}}
+    )
+}
+
 export async function updateUserAccountService(user: User, user_jwt: string) {
     return await axios.put(
         `http://${MY_IP}/user`,

@@ -105,12 +105,12 @@ export default {
 
     async createMovieComment(req, res) {
         try{
-            const userId = req.params.user_id
-            const {comment, tmdb_movie_id, rating} = req.body
-            if(!comment || !tmdb_movie_id || !rating) return res.status(400).json({message: 'Preencha todos os campos'})
+            const userId = req.user_id
+            const {comment, tmdb_movie_id} = req.body
+            if(!comment || !tmdb_movie_id) return res.status(400).json({message: 'Preencha todos os campos'})
             const userExists = await User.findByPk(userId)
             if(!userExists) return res.status(400).json({message: 'Usuário não existe'})
-            await Comment.create({user_id: userId, comment, tmdb_movie_id, rating})
+            await Comment.create({user_id: userId, comment, tmdb_movie_id})
             return res.status(201).json({message: 'Comentário salvo com sucesso!'})
         }catch (e) {
             console.log(e)
@@ -119,14 +119,21 @@ export default {
     },
 
     async getMovieComments(req, res) {
-        try{
-            const {tmdb_movie_id} = req.params
-            if(!tmdb_movie_id) return res.status(400).json({message: 'Preencha todos os campos'})
-            const comments = await Comment.findAll({where: {tmdb_movie_id: tmdb_movie_id}})
-            return res.status(200).json(comments)
-        }catch (e) {
-            console.log(e)
-            return res.status(500).json({message: 'Erro ao buscar comentários'})
+        try {
+            const {tmdb_movie_id} = req.params;
+            if (!tmdb_movie_id) return res.status(400).json({message: 'Preencha todos os campos'});
+
+            const comments = await Comment.findAll({
+                where: {tmdb_movie_id: tmdb_movie_id},
+                include: [{ model: User, attributes: ['user_id', 'name', 'profile_picture'] }]
+            });
+
+
+            return res.status(200).json(comments.reverse());
+        } catch (e) {
+            console.log(e);
+            return res.status(500).json({message: 'Erro ao buscar comentários'});
         }
     }
+
 }

@@ -111,10 +111,6 @@ export const Comment = database.define("comment", {
         type: Sequelize.STRING,
         allowNull: false
     },
-    rating: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
 })
 
 Comment.belongsTo(User, {

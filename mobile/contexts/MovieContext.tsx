@@ -170,17 +170,6 @@ export function MovieProvider({children}: MovieProviderProps) {
         }
     }
 
-    async function getMovieRecommendation() {
-        try {
-            const user_jwt = await AsyncStorage.getItem('@user-jwt')
-            if (!user_jwt) return
-            const response = await getMovieRecommendationService(user_jwt)
-            setRecommendedMovie(response.data)
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
     return (
         <MovieContext.Provider
             value={{
