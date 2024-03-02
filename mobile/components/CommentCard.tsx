@@ -1,8 +1,9 @@
 import styled from "styled-components/native";
-import axios from "axios";
 import {Comment} from "../interfaces/interfaces";
-import {View, Text} from "react-native";
+import {View, Text, Image} from "react-native";
 import {MY_IP} from "../config";
+//@ts-ignore
+import defaultPicture from "../assets/default_picture.jpg";
 
 
 export default function CommentCard({commentData}: { commentData?: Comment }) {
@@ -11,8 +12,11 @@ export default function CommentCard({commentData}: { commentData?: Comment }) {
         <Container>
             <Content>
                 <View>
-                    {/* @ts-ignore */}
-                    <ProfileImage source={{uri: profileImage}}/>
+                    {commentData?.user.profile_picture ? (
+                        <ProfileImage source={{uri: profileImage}}/>
+                    ) : (
+                        <Image source={defaultPicture} style={{width: 35, height: 35, borderRadius: 25}}/>
+                    )}
                 </View>
                 <CommentData>
                     <Name>{commentData?.user.name}</Name>
@@ -24,31 +28,31 @@ export default function CommentCard({commentData}: { commentData?: Comment }) {
 }
 
 const ProfileImage = styled.Image`
-    width: 35px;
-    height: 35px;
-    border-radius: 25px;
+  width: 35px;
+  height: 35px;
+  border-radius: 25px;
 `
 
 const Name = styled.Text`
-    font-weight: bold;
-    font-size: 16px;
+  font-weight: bold;
+  font-size: 16px;
 `
 
 const CommentData = styled.View`
-    flex: 1;
-    flex-direction: column;
+  flex: 1;
+  flex-direction: column;
 `
 
 const Container = styled.View`
-    width: 100%;
-    margin-bottom: 20px;
-    min-height: 50px;
+  width: 100%;
+  margin-bottom: 20px;
+  min-height: 50px;
 `
 
 const Content = styled.View`
-    flex: 1;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
+  flex: 1;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
 `

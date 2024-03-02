@@ -30,16 +30,17 @@ export function AuthProvider({children}: AuthProviderProps) {
                 const user: User = {
                     name: data.user.name,
                     email: data.user.email,
-                    profile_picture: `http://${MY_IP}/${data.user.profile_picture}?timestamp=${Date.now()}`,
+                    profile_picture: data.user.profile_picture ? `http://${MY_IP}/${data.user.profile_picture}?timestamp=${Date.now()}` : null,
                     user_id: data.user.user_id
                 }
                 setIsAuthenticated(true)
                 setUser(user)
             })
             .catch(() => {
-
             })
-            .finally(() => {
+            .finally(async () => {
+                //esperar 2 segundos
+                await new Promise(resolve => setTimeout(resolve, 1500))
                 setIsLoading(false)
             })
     }

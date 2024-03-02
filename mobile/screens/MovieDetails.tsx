@@ -6,9 +6,8 @@ import {
     Text,
     View,
     StyleSheet,
-    ImageBackground,
     Alert,
-    KeyboardAvoidingView
+    KeyboardAvoidingView, Keyboard
 } from 'react-native';
 import {AntDesign, FontAwesome6} from '@expo/vector-icons';
 import {useNavigation} from "@react-navigation/native";
@@ -26,12 +25,13 @@ import styled from "styled-components/native";
 import {ActorsList} from "../components/ActorsList";
 import {BlurView} from "expo-blur";
 import {useAuthContext} from "../contexts/AuthContext";
-import BottomSheet, {BottomSheetFlatList, BottomSheetScrollView} from "@gorhom/bottom-sheet";
+import BottomSheet, {BottomSheetFlatList} from "@gorhom/bottom-sheet";
 import CommentCard from "../components/CommentCard";
 import * as Animatable from 'react-native-animatable';
-import {MyTextInput} from "../components/MyTextInput";
 import {CommentInput} from "../components/CommentInput";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+//@ts-ignore
+import defaultPicture from "../assets/default_picture.jpg";
 
 //@ts-ignore
 export function MovieDetails({route}) {
@@ -74,6 +74,14 @@ export function MovieDetails({route}) {
 
         init()
     }, []);
+
+    useEffect(() => {
+        if (comment === '\n') {
+            setComment('')
+            bottomSheetRef.current?.snapToIndex(0)
+            Keyboard.dismiss()
+        }
+    }, [comment]);
 
     async function loadMovie() {
         const movie = await getMovieByIdService(tmdbMovieId)
@@ -137,7 +145,11 @@ export function MovieDetails({route}) {
     }
 
     function openComments() {
-        bottomSheetRef.current?.snapToIndex(3);
+        if (comments.length === 0) {
+            bottomSheetRef.current?.snapToIndex(0);
+        } else {
+            bottomSheetRef.current?.snapToIndex(3);
+        }
         setCommentsIsVisible(true)
     }
 
@@ -169,7 +181,7 @@ export function MovieDetails({route}) {
             comment: formatedText,
             user: {
                 name: firstComment.user.name,
-                profile_picture: `uploads/profile_pictures/${firstComment.user.user_id}.jpeg`
+                profile_picture: firstComment ? `uploads/profile_pictures/${firstComment.user.user_id}.jpeg` : null
             }
         }
         return formatedComment as Comment
@@ -288,7 +300,12 @@ export function MovieDetails({route}) {
                                             {comments.length === 0 ? (
                                                 <FakeInputContainer>
                                                     <View>
-                                                        <UserImageComment source={{uri: user?.profile_picture}}/>
+                                                        {user?.profile_picture ? (
+                                                            <UserImageComment source={{uri: user?.profile_picture}}/>
+                                                        ) : (
+                                                            <Image source={defaultPicture}
+                                                                   style={{width: 35, height: 35, borderRadius: 25}}/>
+                                                        )}
                                                     </View>
                                                     <FakeInput>
                                                         <Text style={{color: 'gray'}}>Add a comment...</Text>
@@ -323,7 +340,6 @@ export function MovieDetails({route}) {
                     )}
                 >
                     <Container>
-
                         <CommentsContent>
                             <CommentsHeader>
                                 <CommentsTitle>Comments</CommentsTitle>
@@ -331,15 +347,19 @@ export function MovieDetails({route}) {
                                     <FontAwesome6 name={'x'} size={25} color={'black'}/>
                                 </CloseCommentsButton>
                             </CommentsHeader>
-                            <CommentListContainer>
-                                <BottomSheetFlatList
-                                    data={comments}
-                                    keyExtractor={(item) => item.comment_id.toString()}
-                                    renderItem={({item}) => (
-                                        <CommentCard commentData={item}/>
-                                    )}
-                                />
-                            </CommentListContainer>
+                            {comments.length === 0 ? (
+                                <Text style={styles.noComments}>No comments yet</Text>
+                            ) : (
+                                <CommentListContainer>
+                                    <BottomSheetFlatList
+                                        data={comments}
+                                        keyExtractor={(item) => item.comment_id.toString()}
+                                        renderItem={({item}) => (
+                                            <CommentCard commentData={item}/>
+                                        )}
+                                    />
+                                </CommentListContainer>
+                            )}
                         </CommentsContent>
                     </Container>
                 </BottomSheet>
@@ -348,8 +368,10 @@ export function MovieDetails({route}) {
                         <CommentInput
                             comment={comment}
                             setComment={setComment}
+                            // @ts-ignore
                             profileImage={user?.profile_picture}
                             onPress={saveComment}
+                            onFocus={() => bottomSheetRef.current?.snapToIndex(3)}
                         />
                     </Animatable.View>
                 )}
@@ -380,126 +402,131 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         alignItems: 'center',
+    },
+    noComments: {
+        fontSize: 20,
+        color: 'black',
+        marginTop: 10
     }
 })
 
 const CommentListContainer = styled.View`
-    margin-top: 25px;
-    width: 100%;
-    height: 100%;
+  margin-top: 25px;
+  width: 100%;
+  height: 100%;
 `
 
 const CloseCommentsButton = styled.TouchableOpacity`
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
 `
 
 const CommentsHeader = styled.View`
-    width: 100%;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-direction: row;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: row;
 `
 
 const CommentsTitle = styled.Text`
-    font-size: 25px;
-    font-weight: bold;
-    color: black;
+  font-size: 25px;
+  font-weight: bold;
+  color: black;
 `
 
 const CommentsContent = styled.View`
-    align-items: center;
-    justify-content: flex-start;
-    width: 90%;
-    flex: 1;
+  align-items: center;
+  justify-content: flex-start;
+  width: 90%;
+  flex: 1;
 `;
 
 const CommentButtonContent = styled.View`
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
 `
 
 const CommentsLenght = styled.Text`
-    font-size: 15px;
+  font-size: 15px;
 `
 
 const FakeInputContainer = styled.View`
-    width: 100%;
-    border-radius: 20px;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
+  width: 100%;
+  border-radius: 20px;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 `
 
 const FirstComment = styled.View`
-    align-items: center;
-    margin-bottom: 30px;
+  align-items: center;
+  margin-bottom: 30px;
 `
 
 const FakeInput = styled.View`
-    width: 85%;
-    height: 30px;
-    border-radius: 20px;
-    justify-content: center;
-    padding-left: 15px;
-    background-color: #fafafa;
-    opacity: 0.7;
+  width: 85%;
+  height: 30px;
+  border-radius: 20px;
+  justify-content: center;
+  padding-left: 15px;
+  background-color: #fafafa;
+  opacity: 0.7;
 `
 
 const UserImageComment = styled.Image`
-    width: 35px;
-    height: 35px;
-    border-radius: 20px;
+  width: 35px;
+  height: 35px;
+  border-radius: 20px;
 `
 
 const CommentsContainerButton = styled.TouchableOpacity`
-    border-radius: 20px;
-    width: 100%;
-    height: 110px;
-    margin-top: 30px;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+  border-radius: 20px;
+  width: 100%;
+  height: 110px;
+  margin-top: 30px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 `
 
 const CommentsButtonContent = styled.View`
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    height: 80%;
-    gap: 10px
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: 80%;
+  gap: 10px
 `
 
 const Container = styled.View`
-    flex: 1;
-    align-items: center;
-    justify-content: flex-end;
-    width: 100%;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
 `;
 
 const Content = styled.View`
-    width: 95%;
-    flex: 1;
-    align-items: center;
-    justify-content: flex-start;
+  width: 95%;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-start;
 `
 
 const HeaderContainer = styled.View`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 70px;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 70px;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const HeaderTitle = styled.Text`
-    font-size: 22px;
-    font-weight: bold;
-    color: black;
-    padding-right: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  color: black;
+  padding-right: 15px;
 `;
 
 export const FavoriteButton = styled.TouchableOpacity`
@@ -507,129 +534,129 @@ export const FavoriteButton = styled.TouchableOpacity`
 
 
 const BackButton = styled.TouchableOpacity`
-    border-radius: 16px;
+  border-radius: 16px;
 `;
 
 const MoviePoster = styled.Image`
-    width: 240px;
-    height: 360px;
-    border-radius: 20px;
+  width: 240px;
+  height: 360px;
+  border-radius: 20px;
 `;
 
 const MoviePosterContainer = styled.View`
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.40);
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.40);
 `;
 
 const DescriptionContainer = styled.View`
-    width: 100%;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-top: 20px;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 20px;
 `;
 
 const MovieTitle = styled.Text`
-    font-size: 25px;
-    font-weight: bold;
-    color: black;
+  font-size: 25px;
+  font-weight: bold;
+  color: black;
 `;
 
 const SectionTitle = styled.Text<{
     color?: string
 }>`
-    font-size: 20px;
-    font-weight: bold;
-    color: ${props => props.color || 'black'};
+  font-size: 20px;
+  font-weight: bold;
+  color: ${props => props.color || 'black'};
 `;
 
 const GenreAndDurationContainer = styled.View`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
 `;
 
 const GenreContainer = styled.View`
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    gap: 10px;
-    margin-bottom: 10px;
-    width: 73%;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 10px;
+  width: 73%;
+  align-items: center;
 `
 
 const MovieDurationContainer = styled.View`
-    display: flex;
-    align-self: flex-start;
-    margin-top: 5px;
-    width: 100%;
+  display: flex;
+  align-self: flex-start;
+  margin-top: 5px;
+  width: 100%;
 `;
 
 const MovieDurationContent = styled.View`
-    background-color: #fafafa;
-    display: flex;
-    flex-direction: row;
-    border-radius: 10px;
-    align-items: center;
-    justify-content: center;
-    width: 90px;
-    height: 30px;
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: row;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 30px;
 `;
 
 const MovieDuration = styled.Text`
-    font-size: 13px;
-    color: black;
-    font-weight: bold;
-    padding-left: 5px;
-    padding-right: 5px;
+  font-size: 13px;
+  color: black;
+  font-weight: bold;
+  padding-left: 5px;
+  padding-right: 5px;
 `;
 
 const MovieDescription = styled.Text`
-    font-size: 16px;
-    color: black;
-    padding-top: 10px;
+  font-size: 16px;
+  color: black;
+  padding-top: 10px;
 `;
 
 const VoteAverage = styled.Text`
-    font-size: 30px;
-    color: #ffc83a;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.40);
-    font-weight: bold;
+  font-size: 30px;
+  color: #ffc83a;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.40);
+  font-weight: bold;
 `;
 
 const ReleaseAndRatingContainer = styled.View`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    max-width: 100%;
-    justify-content: space-between;
-    margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 100%;
+  justify-content: space-between;
+  margin-top: 15px;
 `
 
 const ReleaseAndRatingContent = styled.View`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 
 const VoteAverageContainer = styled.View`
-    display: flex;
-    flex-direction: row;
-    gap: 5px
+  display: flex;
+  flex-direction: row;
+  gap: 5px
 `
 
 const OverviewContainer = styled.View`
-    margin-top: 30px;
+  margin-top: 30px;
 `
 
 const ReleaseDateText = styled.Text`
-    font-size: 30px;
-    color: black;
-    font-weight: bold;
+  font-size: 30px;
+  color: black;
+  font-weight: bold;
 `
 
 const LoadingBackground = styled.View<{
@@ -637,9 +664,9 @@ const LoadingBackground = styled.View<{
     height: number,
     width: number
 }>`
-    position: absolute;
-    width: ${props => props.width}px;
-    height: ${props => props.height}px;
-    background-color: ${props => props.bgColor};
-    border-radius: 20px;
+  position: absolute;
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
+  background-color: ${props => props.bgColor};
+  border-radius: 20px;
 `

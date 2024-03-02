@@ -1,14 +1,24 @@
-import {ActivityIndicator, View, Image, StyleSheet} from "react-native";
+import {ActivityIndicator, View, StyleSheet, ImageBackground} from "react-native";
+import * as Animatable from "react-native-animatable";
 
 // @ts-ignore
-import icon from "../assets/icon.png"
+import icon from "../assets/circleIcon.png"
+// @ts-ignore
+import blurBg from "../assets/blurbg.jpg"
 
 export function SplashScreen() {
     return (
-        <View style={styles.container}>
-            <Image source={icon} style={styles.image}/>
-            <ActivityIndicator size={'large'} color='black' />
-        </View>
+        <ImageBackground source={blurBg} style={styles.container}>
+            {/*girar icone*/}
+            <Animatable.Image
+                animation="rotate"
+                iterationCount="infinite"
+                easing="linear"
+                duration={2500}
+                source={icon}
+                style={styles.image}
+            />
+        </ImageBackground>
     );
 }
 
@@ -21,10 +31,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
     },
     image: {
-        marginTop: '15%',
-        width: 150,
-        height: 150,
-        borderRadius: 18,
-        marginBottom: 20,
+        width: 100,
+        height: 100,
     }
 });

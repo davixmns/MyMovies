@@ -15,6 +15,8 @@ export const Profile = () => {
     const {user, logout} = useAuthContext()
     const {userFavoriteGenres} = useMovieContext()
 
+    console.log(user)
+
     function handleLogout() {
         if (!logout) return
         Alert.alert(
