@@ -228,7 +228,8 @@ const TinyProfilePic = styled.Image`
     border-radius: 25px;
 `
 const SectionContainer = styled.View`
-    height: 37%;
+  height: 37%;
+  min-height: 37%;
 `
 
 const SectionContainer2 = styled.View`

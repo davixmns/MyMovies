@@ -32,7 +32,7 @@ export function AuthStack() {
                         component={BottomBar}
                         options={{
                             headerShown: false,
-                            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS
+                            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter
                         }}
                     />
 

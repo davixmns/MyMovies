@@ -1,21 +1,20 @@
 import {useAuthContext} from "../contexts/AuthContext";
 //@ts-ignore
 import defaultPicture from '../assets/default_picture.jpg'
-import {Alert, Platform} from "react-native";
+import {Alert, Platform, StyleSheet} from "react-native";
 import {TextButton} from "../components/TextButton";
 import {useMovieContext} from "../contexts/MovieContext";
 import GenresCapsules from "../components/GenresCapsules";
 import styled from "styled-components/native";
 import {useNavigation} from "@react-navigation/native";
 import {useEffect, useState} from "react";
+import {LinearGradient} from "expo-linear-gradient";
 
 
 export const Profile = () => {
     const navigation = useNavigation()
     const {user, logout} = useAuthContext()
-    const {userFavoriteGenres} = useMovieContext()
-
-    console.log(user)
+    const {userFavoriteGenres, genreStylesForConsult} = useMovieContext()
 
     function handleLogout() {
         if (!logout) return
@@ -38,10 +37,12 @@ export const Profile = () => {
     }
 
 
+
+
     return (
         <Container>
             <Content>
-                <HeaderContainer>
+                <LinearGradient style={styles.header} colors={genreStylesForConsult[Math.floor(Math.random() * genreStylesForConsult.length)].colors}>
                     <HeaderContent onPress={() => goToScreen('EditProfile')}>
                         <ImageContainer>
                             {user?.profile_picture ? (
@@ -56,15 +57,13 @@ export const Profile = () => {
                         </UserDataContainer>
                     </HeaderContent>
 
-                    <FavoriteGenresContainer>
-                        <FavoriteGenresTitle>Favorite Genres</FavoriteGenresTitle>
-                        {userFavoriteGenres.length > 0 ? (
+                    {userFavoriteGenres.length > 0 && (
+                        <FavoriteGenresContainer>
+                            <FavoriteGenresTitle>Favorite Genres</FavoriteGenresTitle>
                             <GenresCapsules genres={userFavoriteGenres}/>
-                        ) : (
-                            <FavoriteGenresTitle>No favorite genres</FavoriteGenresTitle>
-                        )}
-                    </FavoriteGenresContainer>
-                </HeaderContainer>
+                        </FavoriteGenresContainer>
+                    )}
+                </LinearGradient>
                 <OptionsContainer>
                     <FavoriteGenresTitle>Options</FavoriteGenresTitle>
                     <ProfileItemContainer>
@@ -115,24 +114,33 @@ const Content = styled.View`
   justify-content: flex-start;
 `
 
-const HeaderContainer = styled.View`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    width: 100%;
-    background-color: #e8e8e8;
-    padding: 20px;
-    border-radius: 15px;
-`
+const styles = StyleSheet.create({
+    header: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 20,
+        width: '100%',
+        padding: 20,
+        borderRadius: 15,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        elevation: 10,
+    }
+})
 
 const HeaderContent = styled.TouchableOpacity`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    gap: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
 `
 
 const ImageContainer = styled.View`
@@ -147,26 +155,26 @@ const ProfileImage = styled.Image`
 `
 
 const UserDataContainer = styled.View`
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    width: 60%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 60%;
 `
 
 const UserNameText = styled.Text.attrs({
     numberOfLines: 2,
 })`
-    font-size: 30px;
-    font-weight: bold;
-    color: #000;
+  font-size: 30px;
+  font-weight: bold;
+  color: #000;
 `
 
 const UserEmailText = styled.Text.attrs({
     numberOfLines: 1,
 })`
-    width: 100%;
-    font-size: 20px;
-    color: #000;
+  width: 100%;
+  font-size: 20px;
+  color: #000;
 `
 
 const OptionsContainer = styled.View`
@@ -194,6 +202,7 @@ const FavoriteGenresContainer = styled.View`
   align-items: flex-start;
   justify-content: flex-start;
 `
+
 
 const FavoriteGenresTitle = styled.Text`
   font-size: 20px;

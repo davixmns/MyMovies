@@ -278,7 +278,7 @@ export function MovieDetails({route}) {
                             <OverviewContainer>
                                 <SectionTitle>Actors</SectionTitle>
                                 {actors.length > 0 ? (
-                                    <View style={{maxHeight: 150}}>
+                                    <View style={{maxHeight: 150, minHeight: 150}}>
                                         <ActorsList actors={actors}/>
                                     </View>
                                 ) : (

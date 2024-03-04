@@ -39,7 +39,6 @@ export function AuthProvider({children}: AuthProviderProps) {
             .catch(() => {
             })
             .finally(async () => {
-                //esperar 2 segundos
                 await new Promise(resolve => setTimeout(resolve, 1500))
                 setIsLoading(false)
             })
@@ -59,7 +58,8 @@ export function AuthProvider({children}: AuthProviderProps) {
                 await AsyncStorage.setItem('@user-jwt', data.user_jwt)
                 setIsAuthenticated(true)
             }).catch((e) => {
-                Alert.alert('Erro', e.response.data.message)
+                Alert.alert('Ops!', e.response.data.message)
+                console.log('Error logging in ->', e)
             })
     }
 

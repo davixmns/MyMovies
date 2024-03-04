@@ -1,26 +1,37 @@
-import {Alert, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from "react-native";
-import {useState} from "react";
+import {Keyboard, TouchableOpacity, TouchableWithoutFeedback} from "react-native";
+import {useEffect, useState} from "react";
 import {useAuthContext} from "../contexts/AuthContext";
 import {verifyLoginForm} from "../utils/utils";
 import {MyTextInput} from "../components/MyTextInput";
 import {MyButton} from "../components/MyButton";
 import {useNavigation} from "@react-navigation/native";
 import styled from "styled-components/native";
+import {RotativeIcon} from "../components/RotativeIcon";
+
 
 export function Login() {
     const navigation = useNavigation()
     const {login} = useAuthContext()
-    const [email, setEmail] = useState<string>('daviximenes@unifor.br')
-    const [password, setPassword] = useState<string>('asdasdasd')
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [buttonDisabled, setButtonDisabled] = useState<boolean>(true)
+    const [iconRotating, setIconRotating] = useState<boolean>(false)
+
+    useEffect(() => {
+        const validationResponse = verifyLoginForm(email, password)
+        if (validationResponse !== true) {
+            setButtonDisabled(true)
+        } else {
+            setButtonDisabled(false)
+        }
+    }, [email, password]);
 
     async function handleLogin() {
         if (!login) return
-        const validationResponse = verifyLoginForm(email, password)
-        if (validationResponse !== true) {
-            Alert.alert("Erro", validationResponse)
-            return
-        }
+        setIconRotating(true)
+        await new Promise(resolve => setTimeout(resolve, 1000))
         await login(email, password)
+        setIconRotating(false)
     }
 
     async function handleGoToSignUp() {
@@ -32,6 +43,7 @@ export function Login() {
         <Container>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <Content>
+                    <RotativeIcon iconRotating={iconRotating}/>
                     <Title>My Movies</Title>
                     <FormContainer>
                         <MyTextInput
@@ -53,7 +65,11 @@ export function Login() {
                         />
                     </FormContainer>
                     <ButtonContainer>
-                        <MyButton onPress={handleLogin}>Log in</MyButton>
+                        <MyButton
+                            title={'Enter'}
+                            onPress={handleLogin}
+                            disabled={buttonDisabled}
+                        />
                     </ButtonContainer>
                     <ButtonContainer>
                         <TextRegisterBlack>Don't have an account?</TextRegisterBlack>
@@ -67,31 +83,30 @@ export function Login() {
     )
 }
 
-const ButtonContainer = styled.View`
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    margin-top: 70px;
-    flex-direction: row;
-`
-
-const Title = styled.Text`
-  font-size: 36px;
-  color: black;
-  font-weight: 500;
-`
-
 const Container = styled.View`
   flex: 1;
-  background-color: #fafafa;
   align-items: center;
   justify-content: center;
+  background-color: white;
 `
 
 const Content = styled.View`
   width: 85%;
-  height: 40%;
   align-items: center;
+`
+
+const ButtonContainer = styled.View`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-top: 70px;
+  flex-direction: row;
+`
+
+const Title = styled.Text`
+  font-size: 36px;
+  font-weight: 500;
+  color: black;
 `
 
 const FormContainer = styled.View`
@@ -103,11 +118,12 @@ const FormContainer = styled.View`
 `
 
 const TextRegisterBlack = styled.Text`
-    font-size: 18px;
-    color: #000;
+  font-size: 18px;
+  color: #000;
 `
 
 const TextRegisterBlue = styled.Text`
-    font-size: 18px;
-    color: #3797EF;
+  font-size: 18px;
+  color: #3797EF;
+  font-weight: bold;
 `

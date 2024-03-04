@@ -33,8 +33,6 @@ export const MyTextInput: React.FC<MyTextInputProps> = ({text, setText, iconName
 const InputContainer = styled.View`
     width: 100%;
     height: 50px;
-    border-width: 0.5px;
-    border-color: black;
     border-radius: 7px;
     background-color: #F2F2F2;
     padding-left: 15px;

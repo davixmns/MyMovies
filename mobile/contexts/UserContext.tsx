@@ -14,7 +14,7 @@ export function useUserContext() {
 
 export function UserProvider({children}: UserProviderProps) {
     const {setIsAuthenticated} = useAuthContext()
-    const {user, setUser} = useAuthContext()
+    const {setUser} = useAuthContext()
 
     async function createUserAccount(newUser: User) {
         await createUserAccountService(newUser)
@@ -25,7 +25,8 @@ export function UserProvider({children}: UserProviderProps) {
                 setIsAuthenticated(true)
             })
             .catch((e) => {
-                console.log(e)
+                Alert.alert('Ops!', e.response.data.message)
+                console.log('Error creating user account ->', e)
             })
     }
 

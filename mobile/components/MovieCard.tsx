@@ -51,7 +51,7 @@ export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: stri
                         <LoadingBackground bgColor={bgColor} height={imgHeight}/>
                         <Image
                             source={{uri: `https://image.tmdb.org/t/p/${imgResolution}${movie.poster_path}`}}
-                            style={{width: imgWidth, height: imgHeight, borderRadius: 10}}
+                            style={{width: imgWidth, minWidth: imgWidth, height: imgHeight, minHeight: imgHeight, borderRadius: 10}}
                             onLoad={() => setPosterIsLoading(false)}
                         />
                         <MovieTitleContainer>
