@@ -19,6 +19,7 @@ import {User} from "../interfaces/interfaces";
 import {useUserContext} from "../contexts/UserContext";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
+import CircularImage from "../components/CircularImage";
 
 export function EditProfile() {
     const {user} = useAuthContext()
@@ -26,8 +27,10 @@ export function EditProfile() {
     const [name, setName] = useState(user?.name)
     const [email, setEmail] = useState(user?.email)
     const [btnDisabled, setBtnDisabled] = useState(true)
-    const {updateUserAccount} = useUserContext()
-    const [compressedProfilePicture, setCompressedProfilePicture] = useState(user?.profile_picture)
+    const {updateUserProfilePicture, updateUserNameOrEmail} = useUserContext()
+    const [compressedProfilePicture, setCompressedProfilePicture] = useState(null)
+    const [pastName, setPastName] = useState(user?.name)
+    const [pastEmail, setPastEmail] = useState(user?.email)
 
     useEffect(() => {
         // @ts-ignore
@@ -51,7 +54,16 @@ export function EditProfile() {
             type: 'image/jpeg',
             uri: compressedProfilePicture
         })
-        await updateUserAccount(updatedUser, imageFormData)
+        if(compressedProfilePicture && (email !== pastEmail || name !== pastName)) {
+            await updateUserNameOrEmail(updatedUser)
+            await updateUserProfilePicture(updatedUser, imageFormData)
+        }
+        if(!compressedProfilePicture && (email !== pastEmail || name !== pastName)) {
+            await updateUserNameOrEmail(updatedUser)
+        }
+        if(compressedProfilePicture && (email === pastEmail && name === pastName)) {
+            await updateUserProfilePicture(updatedUser, imageFormData)
+        }
         navigation.goBack()
     }
 
@@ -71,6 +83,7 @@ export function EditProfile() {
         });
         if (!response.canceled) {
             const compressedImage = await compressImage(response.assets[0].uri)
+            // @ts-ignore
             setCompressedProfilePicture(compressedImage.uri)
         }
     }
@@ -111,11 +124,13 @@ export function EditProfile() {
                                 <IconContainer>
                                     <FontAwesome6 name="image" size={20} color="white"/>
                                 </IconContainer>
-                                {compressedProfilePicture ? (
-                                    <ProfileImage source={{uri: compressedProfilePicture}}/>
-                                ) : (
-                                    <ProfileImage source={defaultPicture}/>
+                                {!compressedProfilePicture && user?.profile_picture && (
+                                    <CircularImage profilePicture={user?.profile_picture} width={150}/>
                                 )}
+                                {compressedProfilePicture && (
+                                    <ProfileImage source={{uri: compressedProfilePicture}}/>
+                                )}
+
                             </PictureContainer>
                         </TouchableOpacity>
                         <InputsContainer>
@@ -186,8 +201,8 @@ const IconContainer = styled.View`
 `
 
 const ProfileImage = styled.Image`
-  width: 180px;
-  height: 180px;
+  width: 150px;
+  height: 150px;
   border-radius: 100px;
   background-color: black;
 `;
@@ -210,7 +225,7 @@ const BackButton = styled.TouchableOpacity`
 `;
 
 const ButtonContainer = styled.View`
-    width: 100%;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 `;

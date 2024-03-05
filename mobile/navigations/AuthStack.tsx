@@ -106,7 +106,7 @@ export function AuthStack() {
                         component={Register}
                         options={{
                             headerShown: false,
-                            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter
+                            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                         }}
                     />
                 </>

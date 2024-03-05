@@ -1,15 +1,12 @@
-import {FlatList, Platform, ScrollView, TouchableOpacity, View} from 'react-native';
+import {FlatList, Platform, TouchableOpacity} from 'react-native';
 import {useMovieContext} from "../contexts/MovieContext";
 import {MovieCard} from "../components/MovieCard";
 import {useAuthContext} from "../contexts/AuthContext";
 import GenresCapsules from "../components/GenresCapsules";
-
-// @ts-ignore
-import defaultPicture from '../assets/default_picture.jpg'
 import {FontAwesome6} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
 import styled from "styled-components/native";
-import {useEffect} from "react";
+import CircularImage from "../components/CircularImage";
 
 export function Home() {
     const {user} = useAuthContext()
@@ -63,22 +60,14 @@ export function Home() {
         navigation.navigate('Profile')
     }
 
-    function renderProfilePicture() {
-        if (user?.profile_picture) {
-            return <TinyProfilePic source={{uri: user?.profile_picture}}/>
-        } else {
-            return <TinyProfilePic source={defaultPicture}/>
-        }
-    }
-
-
     return (
         <Container>
             <Content>
                 <MainScroll showsVerticalScrollIndicator={false}>
                     <HeaderContainer>
                         <TouchableOpacity onPress={goToProfile}>
-                            {renderProfilePicture()}
+                            {/* @ts-ignore */}
+                            <CircularImage profilePicture={user?.profile_picture} width={50}/>
                         </TouchableOpacity>
                         <TitleHome>MyMovies</TitleHome>
                         <FontAwesome6 name="bell" size={30} color="black"/>

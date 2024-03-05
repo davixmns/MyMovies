@@ -33,7 +33,7 @@ export function MovieProvider({children}: MovieProviderProps) {
         { name: 'Top Rated', colors: ['#fceabb', '#f8b500'], icon: 'star' },
         { name: 'Music', colors: ['#fbc7d4', '#9796f0'], icon: 'music' },
         { name: 'TV Movie', colors: ['#ff512f', '#f09819'], icon: 'tv' },
-        { name: 'Documentary', colors: ['#2ecc71', '#27ae60'], icon: 'file' },
+        { name: 'Documentary', colors: ['#2ecc71', 'green'], icon: 'file' },
         { name: 'Science Fiction', colors: ['#7f8c8d', '#95a5a6'], icon: 'flask' },
         { name: 'Action', colors: ['#e74c3c', '#c0392b'], icon: 'fire' },
         { name: 'Animation', colors: ['#2ecc71', '#27ae60'], icon: 'smile' },
@@ -59,13 +59,13 @@ export function MovieProvider({children}: MovieProviderProps) {
             try {
                 await Promise.all([
                     // getMovieRecommendation(),
+                    loadUserFavoriteGenres(),
                     loadAllGenres(),
                     loadNowPlayingMovies(),
                     loadPopularMovies(),
                     loadUpcomingMovies(),
-                    loadAllMyFavoriteMovies(),
-                    loadUserFavoriteGenres(),
                     loadTopRatedMovies(),
+                    loadAllMyFavoriteMovies(),
                 ])
             } catch (e) {
                 console.log(e)

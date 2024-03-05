@@ -14,7 +14,6 @@ export function Favorites() {
                 </TitleContainer>
                 {myFavoriteMovies.length === 0 ? (
                     <NothingHereContainer>
-
                         <NothingHereText style={{fontSize: 50}}> 🤷‍♂️</NothingHereText>
                         <NothingHereText>You don't have any favorite movies yet</NothingHereText>
                     </NothingHereContainer>

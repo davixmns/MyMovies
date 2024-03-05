@@ -125,9 +125,8 @@ export default {
 
             const comments = await Comment.findAll({
                 where: {tmdb_movie_id: tmdb_movie_id},
-                include: [{ model: User, attributes: ['user_id', 'name', 'profile_picture'] }]
+                include: [{ model: User, attributes: ['user_id', 'name', 'email', 'profile_picture'] }]
             });
-
 
             return res.status(200).json(comments.reverse());
         } catch (e) {

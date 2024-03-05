@@ -1,23 +1,9 @@
+import {getActorsFromAMovieService, getCommentsFromAMovieService, getMovieByIdService, saveCommentService} from "../service/service";
+import {Image, Platform, ScrollView, Text, View, StyleSheet, Alert, KeyboardAvoidingView, Keyboard} from 'react-native';
 import {useEffect, useMemo, useRef, useState} from 'react';
-import {
-    Image,
-    Platform,
-    ScrollView,
-    Text,
-    View,
-    StyleSheet,
-    Alert,
-    KeyboardAvoidingView, Keyboard
-} from 'react-native';
 import {AntDesign, FontAwesome6} from '@expo/vector-icons';
 import {useNavigation} from "@react-navigation/native";
 import {Comment, FavoritedMovie, Genre, Movie} from "../interfaces/interfaces";
-import {
-    getActorsFromAMovieService,
-    getCommentsFromAMovieService,
-    getMovieByIdService,
-    saveCommentService
-} from "../service/service";
 import {useMovieContext} from "../contexts/MovieContext";
 import * as Haptics from "expo-haptics";
 import GenresCapsules from "../components/GenresCapsules";
@@ -30,12 +16,11 @@ import CommentCard from "../components/CommentCard";
 import * as Animatable from 'react-native-animatable';
 import {CommentInput} from "../components/CommentInput";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-//@ts-ignore
-import defaultPicture from "../assets/default_picture.jpg";
+import CircularImage from "../components/CircularImage";
 
 //@ts-ignore
 export function MovieDetails({route}) {
-    const {saveFavoriteMovie, deleteFavoriteMovie, checkIfMovieIsFavorited,} = useMovieContext()
+    const {saveFavoriteMovie, deleteFavoriteMovie, checkIfMovieIsFavorited} = useMovieContext()
     const {user} = useAuthContext()
     const navigation = useNavigation();
     const {tmdbMovieId} = route.params
@@ -181,7 +166,8 @@ export function MovieDetails({route}) {
             comment: formatedText,
             user: {
                 name: firstComment.user.name,
-                profile_picture: firstComment ? `uploads/profile_pictures/${firstComment.user.user_id}.jpeg` : null
+                email: firstComment.user.email,
+                profile_picture: firstComment.user.profile_picture
             }
         }
         return formatedComment as Comment
@@ -299,14 +285,8 @@ export function MovieDetails({route}) {
                                         <>
                                             {comments.length === 0 ? (
                                                 <FakeInputContainer>
-                                                    <View>
-                                                        {user?.profile_picture ? (
-                                                            <UserImageComment source={{uri: user?.profile_picture}}/>
-                                                        ) : (
-                                                            <Image source={defaultPicture}
-                                                                   style={{width: 35, height: 35, borderRadius: 25}}/>
-                                                        )}
-                                                    </View>
+                                                    {/*@ts-ignore*/}
+                                                    <CircularImage uri={user?.profile_picture} width={40}/>
                                                     <FakeInput>
                                                         <Text style={{color: 'gray'}}>Add a comment...</Text>
                                                     </FakeInput>
@@ -355,7 +335,9 @@ export function MovieDetails({route}) {
                                         data={comments}
                                         keyExtractor={(item) => item.comment_id.toString()}
                                         renderItem={({item}) => (
-                                            <CommentCard commentData={item}/>
+                                            <View style={{paddingVertical: 10}}>
+                                                <CommentCard commentData={item}/>
+                                            </View>
                                         )}
                                     />
                                 </CommentListContainer>
@@ -411,7 +393,7 @@ const styles = StyleSheet.create({
 })
 
 const CommentListContainer = styled.View`
-  margin-top: 25px;
+  margin-top: 10px;
   width: 100%;
   height: 100%;
 `
@@ -472,13 +454,6 @@ const FakeInput = styled.View`
   justify-content: center;
   padding-left: 15px;
   background-color: #fafafa;
-  opacity: 0.7;
-`
-
-const UserImageComment = styled.Image`
-  width: 35px;
-  height: 35px;
-  border-radius: 20px;
 `
 
 const CommentsContainerButton = styled.TouchableOpacity`

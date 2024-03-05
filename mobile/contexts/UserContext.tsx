@@ -19,9 +19,8 @@ export function UserProvider({children}: UserProviderProps) {
     async function createUserAccount(newUser: User) {
         await createUserAccountService(newUser)
             .then(async (response) => {
-                const data = response.data
-                setUser(data.user)
-                await AsyncStorage.setItem('@user-jwt', data.user_jwt)
+                setUser(response.data.user)
+                await AsyncStorage.setItem('@user-jwt', response.data.user_jwt)
                 setIsAuthenticated(true)
             })
             .catch((e) => {
@@ -30,33 +29,40 @@ export function UserProvider({children}: UserProviderProps) {
             })
     }
 
-    async function updateUserAccount(userToUpdate: User, imageFormData: FormData) {
+    async function updateUserProfilePicture(user: User, imageFormData: FormData) {
+        const user_jwt = await AsyncStorage.getItem('@user-jwt')
+        if (!user_jwt) return
+        await saveProfilePictureService(imageFormData, user_jwt)
+            .then((response) => {
+                const newProfilePicture = response.data.profile_picture
+                setUser({...user, profile_picture: newProfilePicture})
+                console.log(response.data.message)
+            })
+            .catch((error) => {
+                Alert.alert('Error', 'An error occurred while trying to update your profile picture')
+                console.log(error)
+            })
+    }
+
+    async function updateUserNameOrEmail(userToUpdate: User) {
         const user_jwt = await AsyncStorage.getItem('@user-jwt')
         if (!user_jwt) return
         await updateUserAccountService(userToUpdate, user_jwt)
-            .then(async (response1) => {
-                await saveProfilePictureService(imageFormData, user_jwt)
-                    .then((response2) => {
-                        const imgPath = `http://${MY_IP}/${response2.data.profile_picture}?timestamp=${Date.now()}`
-                        // @ts-ignore
-                        setUser({...response1.data.user, profile_picture: imgPath})
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                        Alert.alert('Error', 'An error occurred while trying to update your profile picture')
-                    })
+            .then(async (response) => {
+                setUser(response.data.user)
+                console.log(response.data.message)
             })
             .catch((e) => {
                 Alert.alert('Error', 'An error occurred while trying to update your account')
                 console.log('Error updating user account ->', e)
             })
-
     }
 
     return (
         <UserContext.Provider value={{
             createUserAccount,
-            updateUserAccount,
+            updateUserNameOrEmail,
+            updateUserProfilePicture,
         }}>
             {children}
         </UserContext.Provider>

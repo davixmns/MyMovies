@@ -30,7 +30,7 @@ export function AuthProvider({children}: AuthProviderProps) {
                 const user: User = {
                     name: data.user.name,
                     email: data.user.email,
-                    profile_picture: data.user.profile_picture ? `http://${MY_IP}/${data.user.profile_picture}?timestamp=${Date.now()}` : null,
+                    profile_picture: data.user.profile_picture,
                     user_id: data.user.user_id
                 }
                 setIsAuthenticated(true)
@@ -51,7 +51,7 @@ export function AuthProvider({children}: AuthProviderProps) {
                 const user: User = {
                     name: data.user.name,
                     email: data.user.email,
-                    profile_picture: `http://${MY_IP}/${data.user.profile_picture}?timestamp=${Date.now()}`,
+                    profile_picture: data.user.profile_picture,
                     user_id: data.user.user_id
                 }
                 setUser(user)

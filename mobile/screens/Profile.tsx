@@ -9,6 +9,7 @@ import styled from "styled-components/native";
 import {useNavigation} from "@react-navigation/native";
 import {useEffect, useState} from "react";
 import {LinearGradient} from "expo-linear-gradient";
+import CircularImage from "../components/CircularImage";
 
 
 export const Profile = () => {
@@ -44,13 +45,10 @@ export const Profile = () => {
             <Content>
                 <LinearGradient style={styles.header} colors={genreStylesForConsult[Math.floor(Math.random() * genreStylesForConsult.length)].colors}>
                     <HeaderContent onPress={() => goToScreen('EditProfile')}>
-                        <ImageContainer>
-                            {user?.profile_picture ? (
-                                <ProfileImage source={{uri: user?.profile_picture}}/>
-                            ) : (
-                                <ProfileImage source={defaultPicture}/>
-                            )}
-                        </ImageContainer>
+                        <ImageShadow>
+                            {/*@ts-ignore*/}
+                            <CircularImage profilePicture={user?.profile_picture} width={100}/>
+                        </ImageShadow>
                         <UserDataContainer>
                             <UserNameText>{user?.name}</UserNameText>
                             <UserEmailText>{user?.email}</UserEmailText>
@@ -143,7 +141,7 @@ const HeaderContent = styled.TouchableOpacity`
   gap: 20px;
 `
 
-const ImageContainer = styled.View`
+const ImageShadow = styled.View`
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
 `
 

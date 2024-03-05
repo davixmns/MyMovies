@@ -1,37 +1,25 @@
 import styled from "styled-components/native";
 import {Comment} from "../interfaces/interfaces";
-import {View, Text, Image} from "react-native";
-import {MY_IP} from "../config";
-//@ts-ignore
-import defaultPicture from "../assets/default_picture.jpg";
+import {Text} from "react-native";
+import CircularImage from "./CircularImage";
 
 
 export default function CommentCard({commentData}: { commentData?: Comment }) {
-    const profileImage = `http://${MY_IP}/${commentData?.user?.profile_picture}`
+    const formattedEmail = commentData?.user?.email?.split('@')[0]
+
     return (
         <Container>
             <Content>
-                <View>
-                    {commentData?.user.profile_picture ? (
-                        <ProfileImage source={{uri: profileImage}}/>
-                    ) : (
-                        <Image source={defaultPicture} style={{width: 35, height: 35, borderRadius: 25}}/>
-                    )}
-                </View>
+                {/*@ts-ignore*/}
+                <CircularImage profilePicture={commentData?.user?.profile_picture} width={40}/>
                 <CommentData>
-                    <Name>{commentData?.user.name}</Name>
+                    <Name>{formattedEmail}</Name>
                     <Text>{commentData?.comment}</Text>
                 </CommentData>
             </Content>
         </Container>
     );
 }
-
-const ProfileImage = styled.Image`
-  width: 35px;
-  height: 35px;
-  border-radius: 25px;
-`
 
 const Name = styled.Text`
   font-weight: bold;
@@ -46,7 +34,7 @@ const CommentData = styled.View`
 const Container = styled.View`
   width: 100%;
   margin-bottom: 20px;
-  min-height: 50px;
+  min-height: 45px;
 `
 
 const Content = styled.View`

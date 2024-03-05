@@ -85,7 +85,8 @@ export interface Comment {
 
 export interface UserContextType {
     createUserAccount: (user: User) => Promise<void>;
-    updateUserAccount: (user: User, imageFormData: FormData) => Promise<void>;
+    updateUserNameOrEmail: (user: User) => Promise<void>;
+    updateUserProfilePicture: (user: User, img: FormData) => Promise<void>;
 }
 
 export interface AuthProviderProps {
