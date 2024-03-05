@@ -12,7 +12,7 @@ export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: stri
     const [movieTitle, setMovieTitle] = useState(movie.title)
     const [imgWidth, setImgWidth] = useState(0)
     const [imgHeight, setImgHeight] = useState(0)
-    const [imgResolution, setImgResolution] = useState('w500')
+    const [imgResolution, setImgResolution] = useState('500')
     const [cardAnimation, setCardAnimation] = useState('fadeIn')
     const [posterIsLoading, setPosterIsLoading] = useState(true)
     const bgColor = posterIsLoading ? 'lightgray' : 'transparent'
@@ -26,21 +26,21 @@ export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: stri
         if (size === 'big') {
             setImgWidth(230)
             setImgHeight(345)
-            setImgResolution('original')
+            setImgResolution('500')
             setCardAnimation('fadeInLeft')
 
         } else if (size === 'medium') {
             setImgWidth(170)
             setImgHeight(260)
+            setImgResolution('342')
             setCardAnimation('fadeIn')
 
         } else if (size === 'small') {
             setImgWidth(150)
             setImgHeight(220)
+            setImgResolution('185')
             setCardAnimation('fadeInRight')
-
         }
-
     }, [])
 
     return (
@@ -50,7 +50,7 @@ export function MovieCard({movie, size, tmdbMovieId}: { movie: Movie, size: stri
                     <View style={{width: imgWidth}}>
                         <LoadingBackground bgColor={bgColor} height={imgHeight}/>
                         <Image
-                            source={{uri: `https://image.tmdb.org/t/p/${imgResolution}${movie.poster_path}`}}
+                            source={{uri: `https://image.tmdb.org/t/p/w${imgResolution}${movie.poster_path}`}}
                             style={{width: imgWidth, minWidth: imgWidth, height: imgHeight, minHeight: imgHeight, borderRadius: 10}}
                             onLoad={() => setPosterIsLoading(false)}
                         />

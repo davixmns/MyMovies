@@ -7,57 +7,24 @@ import {FontAwesome6} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
 import styled from "styled-components/native";
 import CircularImage from "../components/CircularImage";
+import {AuthStack} from "../navigations/AuthStack";
+import {Movie} from "../interfaces/interfaces";
 
 export function Home() {
     const {user} = useAuthContext()
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
     const {upcomingMovies, nowPlayingMovies, allGenres, popularMovies} = useMovieContext();
-    const sortedNowPlayingMovies = nowPlayingMovies.sort((a, b) => {
-        return b.vote_average - a.vote_average
-    })
 
-    // @ts-ignore
-    function renderNowPlayingMovie({item: movie}) {
-        return (
-            <NowPlayingContainer>
-                <MovieCard
-                    movie={movie}
-                    size={'big'}
-                    tmdbMovieId={movie.id.toString()}
-                />
-            </NowPlayingContainer>
-        );
-    }
-
-    // @ts-ignore
-    function renderUpcomingMovie({item: movie}) {
+    function renderMovie({item: movie}: { item: Movie }, size: string) {
         return (
             <CardPadding>
                 <MovieCard
                     movie={movie}
-                    size={'small'}
+                    size={size}
                     tmdbMovieId={movie.id.toString()}
                 />
             </CardPadding>
         )
-    }
-
-    // @ts-ignore
-    function renderPopularMovie({item: movie}) {
-        return (
-            <CardPadding>
-                <MovieCard
-                    movie={movie}
-                    size={'small'}
-                    tmdbMovieId={movie.id.toString()}
-                />
-            </CardPadding>
-        )
-    }
-
-    function goToProfile() {
-        // @ts-ignore
-        navigation.navigate('Profile')
     }
 
     return (
@@ -65,8 +32,7 @@ export function Home() {
             <Content>
                 <MainScroll showsVerticalScrollIndicator={false}>
                     <HeaderContainer>
-                        <TouchableOpacity onPress={goToProfile}>
-                            {/* @ts-ignore */}
+                        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                             <CircularImage profilePicture={user?.profile_picture} width={50}/>
                         </TouchableOpacity>
                         <TitleHome>MyMovies</TitleHome>
@@ -79,50 +45,50 @@ export function Home() {
                             </GenresScroll>
                         </GenresContainer>
                     )}
-                    {sortedNowPlayingMovies?.length > 0 && (
-                        <SectionContainer>
+                    {nowPlayingMovies?.length > 0 && (
+                        <ListContainer>
                             <SectionTitleContainer>
                                 <SectionTitle>Now Playing Movies 🎬</SectionTitle>
                             </SectionTitleContainer>
                             <FlatList
-                                data={sortedNowPlayingMovies}
-                                renderItem={renderNowPlayingMovie}
+                                data={nowPlayingMovies}
+                                renderItem={({item}) => renderMovie({item}, 'big')}
                                 keyExtractor={item => item.id.toString()}
                                 horizontal={true}
                                 showsHorizontalScrollIndicator={false}
                                 numColumns={1}
                             />
-                        </SectionContainer>
+                        </ListContainer>
                     )}
-                    {sortedNowPlayingMovies?.length > 0 && (
-                        <SectionContainer2>
+                    {popularMovies?.length > 0 && (
+                        <ListContainer2>
                             <SectionTitleContainer>
                                 <SectionTitle>Popular Movies 🌟</SectionTitle>
                             </SectionTitleContainer>
                             <FlatList
                                 data={popularMovies}
-                                renderItem={renderPopularMovie}
+                                renderItem={({item}) => renderMovie({item}, 'medium')}
                                 keyExtractor={item => item.id.toString()}
                                 horizontal={true}
                                 showsHorizontalScrollIndicator={false}
                                 numColumns={1}
                             />
-                        </SectionContainer2>
+                        </ListContainer2>
                     )}
                     {upcomingMovies?.length > 0 && (
-                        <SectionContainer2>
+                        <ListContainer2>
                             <SectionTitleContainer>
                                 <SectionTitle>Upcoming Movies 🏃‍♂️</SectionTitle>
                             </SectionTitleContainer>
                             <FlatList
                                 data={upcomingMovies}
-                                renderItem={renderUpcomingMovie}
+                                renderItem={({item}) => renderMovie({item}, 'small')}
                                 keyExtractor={item => item.id.toString()}
                                 horizontal={true}
                                 showsHorizontalScrollIndicator={false}
                                 numColumns={1}
                             />
-                        </SectionContainer2>
+                        </ListContainer2>
                     )}
                 </MainScroll>
             </Content>
@@ -187,16 +153,9 @@ const MainScroll = styled.ScrollView.attrs({
 `
 
 const CardPadding = styled.View`
-    padding-right: 10px;
-    padding-left: 10px;
-    box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
-`
-
-const NowPlayingContainer = styled.View`
-    padding-bottom: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
-    box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
+  padding-right: 10px;
+  padding-left: 10px;
+  box-shadow: -10px 10px 5px rgba(0, 0, 0, 0.20);
 `
 
 const GenresContainer = styled.View`
@@ -211,17 +170,12 @@ const GenresScroll = styled.ScrollView.attrs({
     padding-left: 10px;
 `
 
-const TinyProfilePic = styled.Image`
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-`
-const SectionContainer = styled.View`
-  height: 37%;
-  min-height: 37%;
+const ListContainer = styled.View`
+  min-height: 34%;
 `
 
-const SectionContainer2 = styled.View`
-    height: 27%;
+const ListContainer2 = styled.View`
+  margin-top: 15px;
+  min-height: 27%;
 `
 

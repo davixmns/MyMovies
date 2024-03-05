@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 import defaultPicture from '../assets/default_picture.jpg'
 import {MY_IP} from "../config";
 
-export default function CircularImage({profilePicture, width}: { profilePicture: string, width: number }) {
+export default function CircularImage({profilePicture, width}: { profilePicture: any, width: number }) {
 
     const formattedUri = profilePicture ? `http://${MY_IP}/${profilePicture}?${Date.now()}` : null;
 

@@ -177,7 +177,7 @@ export function MovieDetails({route}) {
         <Container>
             <Image
                 style={{width: '100%', height: '100%', position: 'absolute', opacity: 0.7}}
-                source={{uri: `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`}}
+                source={{uri: `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}}
                 blurRadius={40}
             />
             <KeyboardAvoidingView style={styles.kav} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -198,7 +198,7 @@ export function MovieDetails({route}) {
                                 <LoadingBackground bgColor={bgColor} height={imgHeight} width={imgWidth}/>
                             )}
                             <MoviePoster
-                                source={{uri: `https://image.tmdb.org/t/p/w1280${movie.poster_path}`}}
+                                source={{uri: `https://image.tmdb.org/t/p/w342${movie.poster_path}`}}
                                 onLoad={() => setPosterIsLoading(false)}
                             />
                         </MoviePosterContainer>
