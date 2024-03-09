@@ -7,7 +7,6 @@ import {FontAwesome6} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
 import styled from "styled-components/native";
 import CircularImage from "../components/CircularImage";
-import {AuthStack} from "../navigations/AuthStack";
 import {Movie} from "../interfaces/interfaces";
 
 export function Home() {

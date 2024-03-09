@@ -159,7 +159,7 @@ const Container = styled.View`
 `
 
 const Content = styled.KeyboardAvoidingView.attrs({
-    behavior: Platform.OS === 'ios' ? 'padding' : 'height',
+    behavior: 'padding',
 })`
   flex: ${Platform.OS === 'ios' ? 0.87 : 0.98};
   flex-direction: column;
@@ -188,6 +188,7 @@ const PictureContainer = styled.View`
   justify-content: center;
   box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.20);
   width: 180px;
+  padding-bottom: 30px;
 `
 
 const IconContainer = styled.View`

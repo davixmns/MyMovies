@@ -38,15 +38,13 @@ export const Profile = () => {
     }
 
 
-
-
     return (
         <Container>
             <Content>
-                <LinearGradient style={styles.header} colors={genreStylesForConsult[Math.floor(Math.random() * genreStylesForConsult.length)].colors}>
+                <LinearGradient style={styles.header}
+                                colors={genreStylesForConsult[Math.floor(Math.random() * genreStylesForConsult.length)].colors}>
                     <HeaderContent onPress={() => goToScreen('EditProfile')}>
                         <ImageShadow>
-                            {/*@ts-ignore*/}
                             <CircularImage profilePicture={user?.profile_picture} width={100}/>
                         </ImageShadow>
                         <UserDataContainer>
@@ -55,12 +53,14 @@ export const Profile = () => {
                         </UserDataContainer>
                     </HeaderContent>
 
-                    {userFavoriteGenres.length > 0 && (
-                        <FavoriteGenresContainer>
-                            <FavoriteGenresTitle>Favorite Genres</FavoriteGenresTitle>
+                    <FavoriteGenresContainer>
+                        <FavoriteGenresTitle>Favorite Genres</FavoriteGenresTitle>
+                        {userFavoriteGenres.length > 0 ? (
                             <GenresCapsules genres={userFavoriteGenres}/>
-                        </FavoriteGenresContainer>
-                    )}
+                        ) : (
+                            <UserEmailText>You don't have favorite genres yet</UserEmailText>
+                        )}
+                    </FavoriteGenresContainer>
                 </LinearGradient>
                 <OptionsContainer>
                     <FavoriteGenresTitle>Options</FavoriteGenresTitle>
@@ -145,13 +145,6 @@ const ImageShadow = styled.View`
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.20);
 `
 
-const ProfileImage = styled.Image`
-  width: 100px;
-  height: 100px;
-  border-radius: 100px;
-  background-color: black;
-`
-
 const UserDataContainer = styled.View`
   display: flex;
   align-items: flex-start;
@@ -162,7 +155,7 @@ const UserDataContainer = styled.View`
 const UserNameText = styled.Text.attrs({
     numberOfLines: 2,
 })`
-  font-size: 30px;
+  font-size: 25px;
   font-weight: bold;
   color: #000;
 `

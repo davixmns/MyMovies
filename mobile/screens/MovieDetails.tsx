@@ -1,5 +1,16 @@
 import {getActorsFromAMovieService, getCommentsFromAMovieService, getMovieByIdService, saveCommentService} from "../service/service";
-import {Image, Platform, ScrollView, Text, View, StyleSheet, Alert, KeyboardAvoidingView, Keyboard} from 'react-native';
+import {
+    Image,
+    Platform,
+    ScrollView,
+    Text,
+    View,
+    StyleSheet,
+    Alert,
+    KeyboardAvoidingView,
+    Keyboard,
+    ImageBackground
+} from 'react-native';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {AntDesign, FontAwesome6} from '@expo/vector-icons';
 import {useNavigation} from "@react-navigation/native";
@@ -39,7 +50,7 @@ export function MovieDetails({route}) {
     const imgWidth = 240
     const imgHeight = 360
     const bottomSheetRef = useRef<BottomSheet>(null);
-    const snapPoints = useMemo(() => ['25%', '50%', '75%', '85%'], []);
+    const snapPoints = useMemo(() => ['30%', '50%', '75%', '85%'], []);
     const bottomSheetColor = Platform.OS === 'ios' ? 'transparent' : '#fff'
     const [comment, setComment] = useState<string>('')
     const [commentsIsVisible, setCommentsIsVisible] = useState<boolean>(false)
@@ -175,9 +186,9 @@ export function MovieDetails({route}) {
 
     return (
         <Container>
-            <Image
+            <ImageBackground
                 style={{width: '100%', height: '100%', position: 'absolute', opacity: 0.7}}
-                source={{uri: `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}}
+                source={{uri: `https://image.tmdb.org/t/p/w342${movie.backdrop_path}`}}
                 blurRadius={40}
             />
             <KeyboardAvoidingView style={styles.kav} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -198,7 +209,7 @@ export function MovieDetails({route}) {
                                 <LoadingBackground bgColor={bgColor} height={imgHeight} width={imgWidth}/>
                             )}
                             <MoviePoster
-                                source={{uri: `https://image.tmdb.org/t/p/w342${movie.poster_path}`}}
+                                source={{uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`}}
                                 onLoad={() => setPosterIsLoading(false)}
                             />
                         </MoviePosterContainer>
@@ -285,8 +296,7 @@ export function MovieDetails({route}) {
                                         <>
                                             {comments.length === 0 ? (
                                                 <FakeInputContainer>
-                                                    {/*@ts-ignore*/}
-                                                    <CircularImage uri={user?.profile_picture} width={40}/>
+                                                    <CircularImage profilePicture={user?.profile_picture} width={40}/>
                                                     <FakeInput>
                                                         <Text style={{color: 'gray'}}>Add a comment...</Text>
                                                     </FakeInput>

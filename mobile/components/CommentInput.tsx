@@ -2,9 +2,9 @@ import {useEffect, useState} from "react";
 import {FontAwesome6} from "@expo/vector-icons";
 import styled from "styled-components/native";
 import {BlurView} from "expo-blur";
-import {Image, Keyboard, StyleSheet} from "react-native";
+import {Image, Keyboard, StyleSheet, View} from "react-native";
 //@ts-ignore
-import defaultPicture from "../assets/default_picture.jpg";
+import CircularImage from "./CircularImage";
 
 export function CommentInput(
     {
@@ -29,15 +29,9 @@ export function CommentInput(
     return (
         <Container>
             <BlurView intensity={100} style={styles.blur}>
-                {profileImage ? (
-                    <ProfileImage source={{uri: profileImage}}/>
-                ) : (
-                    <Image
-                        source={defaultPicture}
-                        style={{width: 40, height: 40, borderRadius: 20, marginRight: 10}}
-                    />
-                )}
-
+                <View style={{paddingHorizontal: 5}}>
+                    <CircularImage profilePicture={profileImage} width={40}/>
+                </View>
                 <Content>
                     <Input
                         multiline
@@ -76,23 +70,17 @@ const Content = styled.View`
   flex: 1;
   flex-direction: row;
   align-items: center;
-`;
-
-const ProfileImage = styled.Image`
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  margin-right: 10px;
+  justify-content: center;
 `;
 
 const Input = styled.TextInput`
-  flex: 1;
   background-color: #e8e8e8;
   min-height: 40px;
   max-height: 100px;
   border-radius: 5px;
   padding: 10px;
   font-size: 16px;
+  width: 95%;
 `;
 
 const IconContainer = styled.TouchableOpacity`

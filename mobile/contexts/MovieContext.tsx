@@ -30,26 +30,26 @@ export function MovieProvider({children}: MovieProviderProps) {
     const [recommendedMovie, setRecommendedMovie] = useState<Movie>({} as Movie)
 
     const genreStylesForConsult = [
-        { name: 'Top Rated', colors: ['#fceabb', '#f8b500'], icon: 'star' },
-        { name: 'Music', colors: ['#fbc7d4', '#9796f0'], icon: 'music' },
-        { name: 'TV Movie', colors: ['#ff512f', '#f09819'], icon: 'tv' },
-        { name: 'Documentary', colors: ['#2ecc71', 'green'], icon: 'file' },
-        { name: 'Science Fiction', colors: ['#7f8c8d', '#95a5a6'], icon: 'flask' },
-        { name: 'Action', colors: ['#e74c3c', '#c0392b'], icon: 'fire' },
-        { name: 'Animation', colors: ['#2ecc71', '#27ae60'], icon: 'smile' },
-        { name: 'Adventure', colors: ['#f39c12', '#e67e22'], icon: 'compass' },
-        { name: 'Comedy', colors: ['#f1c40f', '#f39c12'], icon: 'laugh' },
-        { name: 'Fantasy', colors: ['#9b59b6', '#8e44ad'], icon: 'hat-wizard' },
-        { name: 'Romance', colors: ['#e08283', '#e74c3c'], icon: 'heart' },
-        { name: 'Drama', colors: ['#8d6e63', '#7f8c8d'], icon: 'masks-theater' },
-        { name: 'Family', colors: ['#3498db', '#2980b9'], icon: 'home' },
-        { name: 'War', colors: ['#34495e', '#2c3e50'], icon: 'helicopter' },
-        { name: 'History', colors: ['#e67e22', '#d35400'], icon: 'landmark' },
-        { name: 'Mystery', colors: ['#8e44ad', '#9b59b6'], icon: 'search' },
-        { name: 'Crime', colors: ['gray', '#95a5a6'], icon: 'user-secret' },
-        { name: 'Thriller', colors: ['black', '#34495e'], icon: 'mask' },
-        { name: 'Horror', colors: ['#95a5a6', '#7f8c8d'], icon: 'ghost' },
-        { name: 'Western', colors: ['#c0392b', '#e74c3c'], icon: 'horse' },
+        {name: 'Top Rated', colors: ['#fceabb', '#f8b500'], icon: 'star'},
+        {name: 'Music', colors: ['#fbc7d4', '#9796f0'], icon: 'music'},
+        {name: 'TV Movie', colors: ['#ff512f', '#f09819'], icon: 'tv'},
+        {name: 'Documentary', colors: ['#2ecc71', 'green'], icon: 'file'},
+        {name: 'Science Fiction', colors: ['#7f8c8d', '#95a5a6'], icon: 'flask'},
+        {name: 'Action', colors: ['#e74c3c', '#c0392b'], icon: 'fire'},
+        {name: 'Animation', colors: ['#2ecc71', '#27ae60'], icon: 'smile'},
+        {name: 'Adventure', colors: ['#f39c12', '#e67e22'], icon: 'compass'},
+        {name: 'Comedy', colors: ['#f1c40f', '#f39c12'], icon: 'laugh'},
+        {name: 'Fantasy', colors: ['#9b59b6', '#8e44ad'], icon: 'hat-wizard'},
+        {name: 'Romance', colors: ['#e08283', '#e74c3c'], icon: 'heart'},
+        {name: 'Drama', colors: ['#8d6e63', '#7f8c8d'], icon: 'masks-theater'},
+        {name: 'Family', colors: ['#3498db', '#2980b9'], icon: 'home'},
+        {name: 'War', colors: ['#34495e', '#2c3e50'], icon: 'helicopter'},
+        {name: 'History', colors: ['#e67e22', '#d35400'], icon: 'landmark'},
+        {name: 'Mystery', colors: ['#8e44ad', '#9b59b6'], icon: 'search'},
+        {name: 'Crime', colors: ['gray', '#95a5a6'], icon: 'user-secret'},
+        {name: 'Thriller', colors: ['black', '#34495e'], icon: 'mask'},
+        {name: 'Horror', colors: ['#95a5a6', '#7f8c8d'], icon: 'ghost'},
+        {name: 'Western', colors: ['#c0392b', '#e74c3c'], icon: 'horse'},
     ];
 
 
@@ -58,7 +58,6 @@ export function MovieProvider({children}: MovieProviderProps) {
             console.log('MovieContext init')
             try {
                 await Promise.all([
-                    // getMovieRecommendation(),
                     loadUserFavoriteGenres(),
                     loadAllGenres(),
                     loadNowPlayingMovies(),
@@ -105,13 +104,14 @@ export function MovieProvider({children}: MovieProviderProps) {
         const user_jwt = await AsyncStorage.getItem('@user-jwt')
         if (!user_jwt) return
         await saveFavoritedMovieService(movie, user_jwt)
-            .then(() => {
+            .then(async () => {
                 console.log('Movie saved to favorites')
+                await loadAllMyFavoriteMovies()
+                await loadUserFavoriteGenres()
             })
             .catch((e) => {
                 // console.log("Error saving the movie ->",e)
             })
-        await loadAllMyFavoriteMovies()
     }
 
     async function deleteFavoriteMovie(tmdb_movie_id: number) {
@@ -134,7 +134,7 @@ export function MovieProvider({children}: MovieProviderProps) {
             const response = await checkIfMovieIsFavoritedService(tmdb_movie_id, user_jwt)
             return response.data
         } catch (e) {
-            console.log(e)
+            console.log("Error checking if movie is favorited ->", e)
         }
     }
 
@@ -146,7 +146,7 @@ export function MovieProvider({children}: MovieProviderProps) {
             setMyFavoriteMovies([])
             setMyFavoriteMovies(response.data.reverse())
         } catch (e) {
-            console.log(e)
+            console.log("Error loading all my favorite movies ->", e)
         }
     }
 
@@ -155,7 +155,7 @@ export function MovieProvider({children}: MovieProviderProps) {
             const response = await getAllGenresService()
             setAllGenres(response.data.genres)
         } catch (e) {
-            console.log(e)
+            console.log("Error loading all genres ->", e)
         }
     }
 
@@ -166,7 +166,7 @@ export function MovieProvider({children}: MovieProviderProps) {
             const favoriteGenres = await getUserFavoriteGenresService(user_jwt)
             setUserFavoriteGenres(favoriteGenres.data)
         } catch (e) {
-            console.log(e)
+            console.log("Error loading user favorite genres ->", e)
         }
     }
 

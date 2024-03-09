@@ -4,7 +4,7 @@
     "slug": "MyMovies",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/iconApp.jpg",
     "userInterfaceStyle": "light",
     "splash": {
       "resizeMode": "contain",
@@ -24,14 +24,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      [
-        "expo-font",
-        {
-          "fonts": ["node_modules/@expo-google-fonts/inter/Inter_100Thin.ttf"]
-        }
-      ]
-    ]
+    }
   }
 }

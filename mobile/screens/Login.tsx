@@ -1,4 +1,4 @@
-import {Keyboard, TouchableOpacity, TouchableWithoutFeedback} from "react-native";
+import {Keyboard, KeyboardAvoidingView, TouchableOpacity, TouchableWithoutFeedback, Text} from "react-native";
 import {useEffect, useState} from "react";
 import {useAuthContext} from "../contexts/AuthContext";
 import {verifyLoginForm} from "../utils/utils";
@@ -28,6 +28,7 @@ export function Login() {
 
     async function handleLogin() {
         if (!login) return
+        Keyboard.dismiss()
         setIconRotating(true)
         await new Promise(resolve => setTimeout(resolve, 1000))
         await login(email, password)
@@ -40,11 +41,12 @@ export function Login() {
     }
 
     return (
-        <Container>
+        <Container behavior={'padding'}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <Content>
                     <RotativeIcon iconRotating={iconRotating}/>
                     <Title>My Movies</Title>
+                    <Text>Developed by github.com/davixmns</Text>
                     <FormContainer>
                         <MyTextInput
                             text={email}
@@ -83,7 +85,7 @@ export function Login() {
     )
 }
 
-const Container = styled.View`
+const Container = styled.KeyboardAvoidingView`
   flex: 1;
   align-items: center;
   justify-content: center;
@@ -93,6 +95,7 @@ const Container = styled.View`
 const Content = styled.View`
   width: 85%;
   align-items: center;
+  justify-content: center;
 `
 
 const ButtonContainer = styled.View`
