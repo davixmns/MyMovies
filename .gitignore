@@ -5,6 +5,8 @@ mobile/node_modules/
 api/node_modules/
 api/database/volumes/
 
+.idea
+
 # Expo
 mobile/.expo/
 dist/
