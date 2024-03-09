@@ -1,13 +1,10 @@
 import {useAuthContext} from "../contexts/AuthContext";
-//@ts-ignore
-import defaultPicture from '../assets/default_picture.jpg'
 import {Alert, Platform, StyleSheet} from "react-native";
 import {TextButton} from "../components/TextButton";
 import {useMovieContext} from "../contexts/MovieContext";
 import GenresCapsules from "../components/GenresCapsules";
 import styled from "styled-components/native";
 import {useNavigation} from "@react-navigation/native";
-import {useEffect, useState} from "react";
 import {LinearGradient} from "expo-linear-gradient";
 import CircularImage from "../components/CircularImage";
 

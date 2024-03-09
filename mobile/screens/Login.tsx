@@ -1,4 +1,4 @@
-import {Keyboard, KeyboardAvoidingView, TouchableOpacity, TouchableWithoutFeedback, Text} from "react-native";
+import {Keyboard, TouchableOpacity, TouchableWithoutFeedback, Text} from "react-native";
 import {useEffect, useState} from "react";
 import {useAuthContext} from "../contexts/AuthContext";
 import {verifyLoginForm} from "../utils/utils";

@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 import { MovieCard } from "../components/MovieCard";
 import { useEffect, useState } from "react";
 import { getMoviesByGenreService } from "../service/service";
-import {ActivityIndicator, Alert, FlatList, Image, ImageBackground, Platform, StyleSheet} from "react-native";
+import {ActivityIndicator, Alert, FlatList, Image, Platform} from "react-native";
 import { Movie } from "../interfaces/interfaces";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";

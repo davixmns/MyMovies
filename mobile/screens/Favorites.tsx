@@ -1,7 +1,7 @@
 import {useMovieContext} from "../contexts/MovieContext";
 import {MovieCard} from "../components/MovieCard";
 import styled from "styled-components/native";
-import {Platform, Text, View} from "react-native";
+import {Platform} from "react-native";
 
 export function Favorites() {
     const {myFavoriteMovies} = useMovieContext();

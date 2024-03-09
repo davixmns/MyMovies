@@ -7,7 +7,6 @@ import {Keyboard, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWit
 import {User} from "../interfaces/interfaces";
 import {useNavigation} from "@react-navigation/native";
 import styled from "styled-components/native";
-// @ts-ignore
 import {RotativeIcon} from "../components/RotativeIcon";
 
 
