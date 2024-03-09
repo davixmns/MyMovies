@@ -44,7 +44,7 @@ Execute o comando "docker-compose up --build" no terminal em ./api
 
 ## 🛠️ Construído com
 
-* [JavaScript](https://www.javascript.com/) - Linguagem de programação escolhida.
+* [TypeScript](https://www.typescript.com/) - Linguagem de programação escolhida.
 * [Expo](https://expo.dev/) - Plataforma de desenvolvimento.
 * [React Native](https://reactnative.dev/) - Framework para o front-end.
 * [NodeJs](https://nodejs.org/en) - Plataforma de desenvolvimento da API.
