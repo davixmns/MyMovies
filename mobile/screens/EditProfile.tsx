@@ -130,7 +130,9 @@ export function EditProfile() {
                                 {compressedProfilePicture && (
                                     <ProfileImage source={{uri: compressedProfilePicture}}/>
                                 )}
-
+                                {!compressedProfilePicture && user?.profile_picture === null && (
+                                    <ProfileImage source={defaultPicture}/>
+                                )}
                             </PictureContainer>
                         </TouchableOpacity>
                         <InputsContainer>

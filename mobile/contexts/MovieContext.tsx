@@ -13,12 +13,14 @@ import {
     getUpcomingMoviesService, getUserFavoriteGenresService,
     saveFavoritedMovieService
 } from "../service/service";
+import {useAuthContext} from "./AuthContext";
 
 export const useMovieContext = () => {
     return useContext(MovieContext)
 }
 
 export function MovieProvider({children}: MovieProviderProps) {
+    const {isAuthenticated} = useAuthContext()
     const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([])
     const [popularMovies, setPopularMovies] = useState<Movie[]>([])
     const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>([])
@@ -58,13 +60,13 @@ export function MovieProvider({children}: MovieProviderProps) {
             console.log('MovieContext init')
             try {
                 await Promise.all([
-                    loadUserFavoriteGenres(),
                     loadAllGenres(),
+                    loadAllMyFavoriteMovies(),
+                    loadUserFavoriteGenres(),
                     loadNowPlayingMovies(),
                     loadPopularMovies(),
                     loadUpcomingMovies(),
                     loadTopRatedMovies(),
-                    loadAllMyFavoriteMovies(),
                 ])
             } catch (e) {
                 console.log(e)
@@ -73,9 +75,11 @@ export function MovieProvider({children}: MovieProviderProps) {
             }
         }
 
-        init()
+        if (isAuthenticated) {
+            init()
+        }
         return
-    }, [])
+    }, [isAuthenticated])
 
     async function loadTopRatedMovies() {
         const response = await getTopRatedMoviesService()

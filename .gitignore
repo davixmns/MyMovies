@@ -3,6 +3,7 @@
 # dependencies
 mobile/node_modules/
 api/node_modules/
+api/database/volumes/
 
 # Expo
 mobile/.expo/

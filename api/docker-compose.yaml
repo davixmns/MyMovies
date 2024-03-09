@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+  database:
+    build: ./database
+    container_name: "mymovies-database"
+    restart: always
+    environment:
+      MYSQL_DATABASE: mymovies
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./database/volumes/db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - mymovies-network
+
+  api:
+    container_name: "mymovies-api"
+    build: .
+    restart: always
+    volumes:
+      - ./database/volumes/db-data:/var/lib/mysql
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    networks:
+      - mymovies-network
+
+networks:
+  mymovies-network:
+    driver: bridge
+    external: false
+    name: mymovies-network
+
+
+
+
