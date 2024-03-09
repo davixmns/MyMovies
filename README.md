@@ -9,7 +9,11 @@ O MyMovies é um aplicativo desenvolvido para amantes de filmes, permitindo que 
 
 <div>
 
-![0308-3-2](https://github.com/davixmns/MyMovies/assets/82062555/79b017f6-7bb8-4658-9cff-38820c16f919)
+
+
+https://github.com/davixmns/MyMovies/assets/82062555/6e377ff7-d3ac-4227-ae97-6afb327af404
+
+
 
 </div>
 
