@@ -1,5 +1,5 @@
 import {useAuthContext} from "../contexts/AuthContext";
-import {Alert, Platform, StyleSheet} from "react-native";
+import {Alert, Platform, Pressable, StyleSheet, TouchableOpacity, View} from "react-native";
 import {TextButton} from "../components/TextButton";
 import {useMovieContext} from "../contexts/MovieContext";
 import GenresCapsules from "../components/GenresCapsules";
@@ -7,12 +7,30 @@ import styled from "styled-components/native";
 import {useNavigation} from "@react-navigation/native";
 import {LinearGradient} from "expo-linear-gradient";
 import CircularImage from "../components/CircularImage";
+import {useEffect, useState} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export const Profile = () => {
     const navigation = useNavigation()
     const {user, logout} = useAuthContext()
     const {userFavoriteGenres, genreStylesForConsult} = useMovieContext()
+    const [cardColorIndex, setCardColorIndex] = useState(0)
+
+    useEffect(() => {
+        async function loadProfileCardColors() {
+            const colorIndex = await AsyncStorage.getItem('@profile-color')
+            if (colorIndex) setCardColorIndex(parseInt(colorIndex))
+        }
+
+        loadProfileCardColors()
+    }, []);
+
+    async function changeProfileCardColor() {
+        const newColorIndex = cardColorIndex === genreStylesForConsult.length - 1 ? 0 : cardColorIndex + 1
+        setCardColorIndex(newColorIndex)
+        await AsyncStorage.setItem('@profile-color', newColorIndex.toString())
+    }
 
     function handleLogout() {
         if (!logout) return
@@ -38,27 +56,28 @@ export const Profile = () => {
     return (
         <Container>
             <Content>
-                <LinearGradient style={styles.header}
-                                colors={genreStylesForConsult[Math.floor(Math.random() * genreStylesForConsult.length)].colors}>
-                    <HeaderContent onPress={() => goToScreen('EditProfile')}>
-                        <ImageShadow>
-                            <CircularImage profilePicture={user?.profile_picture} width={100}/>
-                        </ImageShadow>
-                        <UserDataContainer>
-                            <UserNameText>{user?.name}</UserNameText>
-                            <UserEmailText>{user?.email}</UserEmailText>
-                        </UserDataContainer>
-                    </HeaderContent>
+                <Pressable onPress={changeProfileCardColor}>
+                    <LinearGradient style={styles.header} colors={genreStylesForConsult[cardColorIndex].colors}>
+                        <HeaderContent onPress={() => goToScreen('EditProfile')}>
+                            <ImageShadow>
+                                <CircularImage profilePicture={user?.profile_picture} width={100}/>
+                            </ImageShadow>
+                            <UserDataContainer>
+                                <UserNameText>{user?.name}</UserNameText>
+                                <UserEmailText>{user?.email}</UserEmailText>
+                            </UserDataContainer>
+                        </HeaderContent>
 
-                    <FavoriteGenresContainer>
-                        <FavoriteGenresTitle>Favorite Genres</FavoriteGenresTitle>
-                        {userFavoriteGenres.length > 0 ? (
-                            <GenresCapsules genres={userFavoriteGenres}/>
-                        ) : (
-                            <UserEmailText>You don't have favorite genres yet</UserEmailText>
-                        )}
-                    </FavoriteGenresContainer>
-                </LinearGradient>
+                        <FavoriteGenresContainer>
+                            <FavoriteGenresTitle>Favorite Genres</FavoriteGenresTitle>
+                            {userFavoriteGenres.length > 0 ? (
+                                <GenresCapsules genres={userFavoriteGenres}/>
+                            ) : (
+                                <UserEmailText>You don't have favorite genres yet</UserEmailText>
+                            )}
+                        </FavoriteGenresContainer>
+                    </LinearGradient>
+                </Pressable>
                 <OptionsContainer>
                     <FavoriteGenresTitle>Options</FavoriteGenresTitle>
                     <ProfileItemContainer>
