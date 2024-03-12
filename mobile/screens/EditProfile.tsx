@@ -69,8 +69,8 @@ export function EditProfile() {
 
     async function compressImage(uri: string) {
         return await ImageManipulator.manipulateAsync(uri,
-            [{resize: {width: 800, height: 800}}],
-            {compress: 0.5}
+            [{resize: {width: 400, height: 400}}],
+            {compress: 0}
         )
     }
 

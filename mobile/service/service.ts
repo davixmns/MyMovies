@@ -14,13 +14,15 @@ export async function getAllGenresService() {
 }
 
 export async function searchMovieService(query: string) {
-    return await axios.get(`${TMDB_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${query}&page=`)
+    return await axios.get(`${TMDB_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${query}&page=1`)
 }
 
 export async function searchActorService(query: string) {
     try {
+        console.log(`https://api.themoviedb.org/3/search/person?api_key=${TMDB_API_KEY}&query=${query}&page=1`)
         const response = await axios.get(`https://api.themoviedb.org/3/search/person?api_key=${TMDB_API_KEY}&query=${query}&page=1`);
         const actors = response.data.results;
+
 
         const popularActors = actors.filter((actor: { popularity: number; }) => actor.popularity > 10);
 
