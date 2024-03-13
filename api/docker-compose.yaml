@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   database:
+    image: mymovies-database-image:latest
     build: ./database
     container_name: "mymovies-database"
     restart: always
@@ -17,6 +18,7 @@ services:
 
   api:
     container_name: "mymovies-api"
+    image: mymovies-api-image:latest
     build: .
     restart: always
     volumes:

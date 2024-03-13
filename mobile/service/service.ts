@@ -19,13 +19,9 @@ export async function searchMovieService(query: string) {
 
 export async function searchActorService(query: string) {
     try {
-        console.log(`https://api.themoviedb.org/3/search/person?api_key=${TMDB_API_KEY}&query=${query}&page=1`)
         const response = await axios.get(`https://api.themoviedb.org/3/search/person?api_key=${TMDB_API_KEY}&query=${query}&page=1`);
         const actors = response.data.results;
-
-
         const popularActors = actors.filter((actor: { popularity: number; }) => actor.popularity > 10);
-
         return popularActors.slice(0, 5);
     } catch (error) {
         console.error("Erro ao buscar atores:", error);
